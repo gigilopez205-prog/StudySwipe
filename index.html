@@ -50,7 +50,7 @@
         .btn-buy { background: var(--green); }
         .btn-sell { background: transparent; border: 2px solid var(--red); color: var(--red); }
         .btn-blue { background: var(--blue); width: 100%; margin-top: 10px; }
-        .btn-delete { background: var(--red); padding: 8px 15px; font-size: 12px; margin-top: 10px; }
+        .btn-delete { background: var(--red); padding: 8px 15px; font-size: 12px; border: none; color: white; border-radius: 8px; cursor: pointer; }
 
         /* MEMES */
         .meme-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); background: var(--bg-card); padding: 25px; border: 3px solid var(--blue); border-radius: 25px; z-index: 1000; text-align: center; transition: 0.4s; box-shadow: 0 0 100px rgba(0,0,0,0.8); }
@@ -84,19 +84,19 @@
         <section id="inicio" class="page active">
             <h1 class="title">Bienvenido, <span id="display-name">Inversionista</span></h1>
             <div class="card" style="border-left: 6px solid var(--blue);">
-                <h3>Panel de Control Masari 🚀</h3>
-                <p style="margin-top: 10px; line-height: 1.6; color: var(--gray);">Gestiona tus clases, observa el mercado y conecta con otros traders.</p>
+                <h3>Panel Masari 🚀</h3>
+                <p style="color: var(--gray);">Gestiona tus clases y tu capital en tiempo real.</p>
             </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                <div class="card"><h4>Cartera Estimada</h4><h2 id="ui-cartera" style="color: var(--green); margin-top:10px;">$0</h2></div>
-                <div class="card"><h4>Acciones Masari</h4><h2 id="ui-acciones" style="margin-top:10px;">0</h2></div>
+                <div class="card"><h4>Cartera</h4><h2 id="ui-cartera" style="color: var(--green);">$0</h2></div>
+                <div class="card"><h4>Acciones</h4><h2 id="ui-acciones">0</h2></div>
             </div>
         </section>
 
         <section id="comunidad" class="page">
             <h1 class="title">Comunidad <span>Masari</span></h1>
             <div class="social-grid" id="users-container">
-                <div class="user-social-card" id="my-social-card">
+                <div class="user-social-card">
                     <img id="my-social-img" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" style="width:70px; border-radius:50%; border:2px solid var(--blue)">
                     <h3 id="my-social-name">Tú</h3>
                     <span class="badge-info">Miembro Activo</span>
@@ -106,21 +106,18 @@
 
         <section id="academia" class="page">
             <h1 class="title">Academia <span>Pro</span></h1>
-            
             <div class="card">
-                <h3>Crear Nueva Clase y Profesor 🎥</h3>
+                <h3>Crear Nueva Clase 🎥</h3>
                 <div class="class-form">
                     <input type="text" id="cl-title" placeholder="Título de la clase" class="full">
-                    <input type="text" id="cl-url" placeholder="Link de YouTube (URL completa)">
-                    <input type="number" id="cl-limit" placeholder="Límite de inscritos (ej: 50)">
-                    <textarea id="cl-desc" placeholder="Descripción detallada de la clase" class="full"></textarea>
-                    <textarea id="cl-prof" placeholder="Descripción del profesor y su trayectoria" class="full"></textarea>
-                    <button class="btn btn-buy full" onclick="saveClass()">SUBIR CLASE A LA RED</button>
+                    <input type="text" id="cl-url" placeholder="Link de YouTube">
+                    <input type="number" id="cl-limit" placeholder="Límite de alumnos">
+                    <textarea id="cl-desc" placeholder="Descripción de la clase" class="full"></textarea>
+                    <textarea id="cl-prof" placeholder="Sobre el profesor" class="full"></textarea>
+                    <button class="btn btn-buy full" onclick="saveClass()">PUBLICAR CLASE</button>
                 </div>
             </div>
-
-            <div id="classes-list">
-                </div>
+            <div id="classes-list"></div>
         </section>
 
         <section id="bolsa" class="page">
@@ -141,7 +138,7 @@
             <h1 class="title">Mi <span>Perfil</span></h1>
             <div class="card">
                 <input type="text" id="user-name" value="Inversionista Masari">
-                <button class="btn btn-blue" style="margin-top:15px" onclick="saveP()">ACTUALIZAR DATOS</button>
+                <button class="btn btn-blue" style="margin-top:15px" onclick="saveP()">GUARDAR</button>
             </div>
         </section>
     </main>
@@ -149,68 +146,47 @@
     <script>
         let xp = 2500, price = 800000, stocks = 0;
 
-        // --- LÓGICA DE CLASES (NUEVO) ---
+        // --- ELIMINAR CLASE (CORREGIDO) ---
+        function removeClass(button) {
+            const card = button.closest('.card');
+            if(card) {
+                card.remove();
+                meme(false, "Clase eliminada");
+            }
+        }
+
+        // --- GUARDAR CLASE ---
         function saveClass() {
             const title = document.getElementById('cl-title').value;
             const url = document.getElementById('cl-url').value;
             const limit = document.getElementById('cl-limit').value;
             const desc = document.getElementById('cl-desc').value;
             const prof = document.getElementById('cl-prof').value;
-            const id = "class-" + Date.now();
 
-            if(!title || !url || !limit || !desc || !prof) return alert("Por favor, llena todos los campos de la clase y profesor.");
+            if(!title || !url || !limit) return alert("Faltan datos");
 
             let vId = url.includes("v=") ? url.split("v=")[1].split("&")[0] : (url.includes("be/") ? url.split("be/")[1] : "");
-            if(!vId) return alert("URL de YouTube no válida.");
-
+            
             const html = `
-                <div class="card" id="${id}">
-                    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div class="card">
+                    <div style="display:flex; justify-content:space-between;">
                         <h2 style="color:var(--blue)">${title}</h2>
-                        <button class="btn btn-delete" onclick="document.getElementById('${id}').remove()">ELIMINAR CLASE</button>
+                        <button class="btn-delete" onclick="removeClass(this)">BORRAR</button>
                     </div>
-                    <p style="margin-top:5px; color:var(--gray); font-weight:bold;">Profesor: <span style="color:var(--white)">${prof}</span></p>
-                    
+                    <p style="margin:10px 0; color:var(--gray)"><b>Profesor:</b> ${prof}</p>
                     <div class="video-container"><iframe src="https://www.youtube.com/embed/${vId}"></iframe></div>
-                    
-                    <p style="margin-bottom:15px;">${desc}</p>
-                    
-                    <div style="background:rgba(0,0,0,0.3); padding:15px; border-radius:12px; display:flex; justify-content:space-between; align-items:center;">
-                        <div>
-                            <span class="badge-info" id="count-${id}">0</span> 
-                            <span style="font-size:14px; margin-left:5px;">inscritos de ${limit}</span>
-                        </div>
-                        <button class="btn btn-buy" id="btn-${id}" style="padding:8px 15px;" onclick="enroll('${id}', ${limit})">INSCRIBIRME AHORA</button>
+                    <p>${desc}</p>
+                    <div style="margin-top:15px; background:rgba(0,0,0,0.2); padding:10px; border-radius:8px; display:flex; justify-content:space-between; align-items:center;">
+                        <span>Inscritos: <b id="count">0</b> / ${limit}</span>
+                        <button class="btn btn-buy" style="padding:5px 10px;" onclick="this.previousElementSibling.querySelector('b').innerText = parseInt(this.previousElementSibling.querySelector('b').innerText)+1; this.disabled=true; this.innerText='INSCRITO';">INSCRIBIRME</button>
                     </div>
                 </div>
             `;
             document.getElementById('classes-list').insertAdjacentHTML('afterbegin', html);
-            
-            // Limpiar campos
-            document.getElementById('cl-title').value = ""; document.getElementById('cl-url').value = "";
-            document.getElementById('cl-limit').value = ""; document.getElementById('cl-desc').value = "";
-            document.getElementById('cl-prof').value = "";
-            
-            meme(true, "¡Clase Publicada con Éxito!");
+            meme(true, "Clase subida");
         }
 
-        function enroll(id, limit) {
-            let counter = document.getElementById('count-'+id);
-            let btn = document.getElementById('btn-'+id);
-            let current = parseInt(counter.innerText);
-
-            if(current < limit) {
-                counter.innerText = current + 1;
-                btn.innerText = "¡ESTÁS INSCRITO!";
-                btn.style.background = "var(--gray)";
-                btn.disabled = true;
-                meme(true, "Inscripción confirmada");
-            } else {
-                alert("Lo sentimos, esta clase ya alcanzó el límite de alumnos.");
-            }
-        }
-
-        // --- LÓGICA DE BOLSA ---
+        // --- BOLSA ---
         const ctx = document.getElementById('graficaReal').getContext('2d');
         const chart = new Chart(ctx, {
             type: 'line',
@@ -224,7 +200,7 @@
             updateUI();
         }, 1200);
 
-        // --- GENERAL ---
+        // --- FUNCIONES EXTRA ---
         function goto(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
@@ -241,13 +217,13 @@
             const name = document.getElementById('user-name').value;
             document.getElementById('display-name').innerText = name;
             document.getElementById('my-social-name').innerText = name;
-            alert("Perfil Actualizado"); 
+            alert("Guardado"); 
         }
         function meme(isWin, txt) {
-            document.getElementById('meme-img').src = isWin ? "https://media.giphy.com/media/LdOyjZ7TC5K3LghXY8/giphy.gif" : "";
+            document.getElementById('meme-img').src = isWin ? "https://media.giphy.com/media/LdOyjZ7TC5K3LghXY8/giphy.gif" : "https://media.giphy.com/media/hStvd5LiWCFzXYZAzM/giphy.gif";
             document.getElementById('meme-msg').innerText = txt;
             document.getElementById('meme-box').classList.add('active');
-            setTimeout(() => document.getElementById('meme-box').classList.remove('active'), 2500);
+            setTimeout(() => document.getElementById('meme-box').classList.remove('active'), 2000);
         }
     </script>
 </body>
