@@ -3,159 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SwipeLearn - Tu Asistente de Estudio</title>
+    <title>SwipeLearn App</title>
     <style>
         :root {
             --primary-purple: #8e679e;
-            --dark-purple: #5e3a6e;
             --accent-orange: #d98e5e;
-            --light-gray: #f4f4f9;
-            --text-color: #333;
+            --bg-color: #f0f2f5;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-color);
             margin: 0;
-            line-height: 1.6;
-            color: var(--text-color);
-            background-color: var(--light-gray);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
         }
 
-        header {
-            background-color: var(--primary-purple);
+        .header {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary-purple);
             color: white;
-            padding: 2rem 1rem;
             text-align: center;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        .container {
-            max-width: 1000px;
-            margin: auto;
+        /* Contenedor de las tarjetas */
+        .swipe-container {
+            position: relative;
+            width: 320px;
+            height: 480px;
+            margin-top: 50px;
+        }
+
+        .tutor-card {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            cursor: grab;
+            user-select: none;
+        }
+
+        .tutor-image {
+            width: 100%;
+            height: 60%;
+            background: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+        }
+
+        .tutor-info {
             padding: 20px;
         }
 
-        section {
-            background: white;
-            margin-bottom: 20px;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        .tutor-info h3 {
+            margin: 0;
+            color: var(--primary-purple);
         }
 
-        h2 {
-            color: var(--dark-purple);
-            border-bottom: 2px solid var(--primary-purple);
-            padding-bottom: 10px;
+        .tutor-info p {
+            margin: 5px 0;
+            font-size: 0.9em;
+            color: #666;
         }
 
-        .hero {
-            text-align: center;
-            padding: 50px 20px;
-            background: linear-gradient(rgba(142, 103, 158, 0.9), rgba(142, 103, 158, 0.9));
-            color: white;
-            border-radius: 0 0 50% 50% / 10%;
-        }
-
-        .cta-button {
-            display: inline-block;
-            background: var(--accent-orange);
-            color: white;
-            padding: 15px 30px;
-            text-decoration: none;
-            border-radius: 25px;
-            font-weight: bold;
-            margin-top: 20px;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        /* Botones de acción */
+        .controls {
+            margin-top: 30px;
+            display: flex;
             gap: 20px;
         }
 
-        .card {
-            background: #fff;
-            padding: 20px;
-            border-left: 5px solid var(--primary-purple);
+        .btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: 0.2s;
         }
 
-        .price-box {
-            text-align: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--dark-purple);
-            padding: 20px;
-            border: 2px dashed var(--accent-orange);
-        }
+        .btn-no { background: white; color: #ff4b2b; }
+        .btn-yes { background: var(--accent-orange); color: white; }
+        .btn:active { transform: scale(0.9); }
 
-        footer {
-            text-align: center;
-            padding: 40px;
-            background: #333;
-            color: white;
-        }
+        /* Clases para animación de swipe */
+        .swipe-left { transform: translateX(-1000px) rotate(-30deg) !important; opacity: 0; }
+        .swipe-right { transform: translateX(1000px) rotate(30deg) !important; opacity: 0; }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>SwipeLearn</h1>
-        <p>Potenciado por Enactus</p>
-    </header>
+    <div class="header">SwipeLearn: Connect & Learn</div>
 
-    <div class="hero">
-        <h2>¿Qué quieres aprender hoy?</h2>
-        <p>La aplicación de asistente de estudio entre pares diseñada para España. </p>
-        <a href="#" class="cta-button">¡Regístrate / Inicia Sesión!</a>
-    </div>
-
-    <div class="container">
-        
-        <section id="sobre-nosotros">
-            <h2>Sobre SwipeLearn</h2>
-            <p><strong>SwipeLearn</strong> aborda las necesidades académicas de los estudiantes proporcionando apoyo de estudio personalizado, facilitando la colaboración y optimizando los horarios de estudio. </p>
-        </section>
-
-        <section id="problemas">
-            <h2>Problemas que resolvemos</h2>
-            <p>Abordamos los problemas comunes encontrados por estudiantes de pregrado y posgrado en España. [cite: 18, 19]</p>
-            <div class="grid">
-                <div class="card">
-                    <h3>Mercado Sin Explotar</h3>
-                    <p>Identificamos una oportunidad única en el sector educativo español. [cite: 31]</p>
-                </div>
-                <div class="card">
-                    <h3>Innovación</h3>
-                    <p>Aplicamos nuevas tecnologías para conectar estudiantes de forma efectiva. [cite: 35]</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="viabilidad">
-            <h2>Presupuesto y Gastos</h2>
-            <p>Para garantizar una plataforma segura y eficiente, estimamos los siguientes gastos de desarrollo: [cite: 69, 78]</p>
-            <ul>
-                <li>Desarrollo de la estructura de la aplicación [cite: 71]</li>
-                <li>Servicios de base de datos y protocolos de seguridad [cite: 72]</li>
-                <li>Implementación de APIs [cite: 73, 79]</li>
-            </ul>
-            <div class="price-box">
-                Inversión estimada: € 7.000 - 10.000 
-            </div>
-        </section>
-
-        <section id="contacto">
-            <h2>Contacto</h2>
-            <p>¿Tienes dudas? ¡Contáctanos!</p>
-            <p>📧 Email: swipelearn2024@gmail.com</p>
-            <p>📸 Instagram: @_swipelearn_</p>
+    <div class="swipe-container" id="cardStack">
         </div>
 
+    <div class="controls">
+        <button class="btn btn-no" onclick="swipe('left')">✘</button>
+        <button class="btn btn-yes" onclick="swipe('right')">✔</button>
     </div>
 
-    <footer>
-        <p>&copy; 2026 SwipeLearn - De la confusión a la solución. </p>
-    </footer>
+    <script>
+        const tutors = [
+            { nombre: "Carlos R.", materia: "Cálculo II", uni: "Univ. Madrid" },
+            { nombre: "Elena M.", materia: "Programación Web", uni: "Univ. Barcelona" },
+            { nombre: "Javier G.", materia: "Economía Aplicada", uni: "Univ. Valencia" },
+            { nombre: "Sofía L.", materia: "Psicología Social", uni: "Univ. Sevilla" }
+        ];
 
+        const stack = document.getElementById('cardStack');
+
+        function createCard(tutor) {
+            const card = document.createElement('div');
+            card.className = 'tutor-card';
+            card.innerHTML = `
+                <div class="tutor-image">👤</div>
+                <div class="tutor-info">
+                    <h3>${tutor.nombre}</h3>
+                    <p><b>Materia:</b> ${tutor.materia}</p>
+                    <p><b>Ubicación:</b> ${tutor.uni}</p>
+                </div>
+            `;
+            return card;
+        }
+
+        // Cargar tarjetas
+        tutors.forEach(tutor => {
+            const card = createCard(tutor);
+            stack.appendChild(card);
+        });
+
+        function swipe(direction) {
+            const cards = document.querySelectorAll('.tutor-card');
+            if (cards.length === 0) return;
+
+            const lastCard = cards[cards.length - 1];
+            if (direction === 'left') {
+                lastCard.classList.add('swipe-left');
+            } else {
+                lastCard.classList.add('swipe-right');
+                console.log("¡Has conectado con un tutor!");
+            }
+
+            setTimeout(() => {
+                lastCard.remove();
+                if (document.querySelectorAll('.tutor-card').length === 0) {
+                    stack.innerHTML = "<h3 style='text-align:center; margin-top:50%;'>No hay más tutores cerca de ti</h3>";
+                }
+            }, 500);
+        }
+    </script>
 </body>
 </html>
