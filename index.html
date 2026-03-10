@@ -55,12 +55,16 @@
         .user-card { background: var(--glass); border: 1px solid var(--glass-border); padding: 20px; border-radius: 25px; text-align: center; transition: 0.3s; backdrop-filter: blur(10px); }
         .user-card:hover { border-color: var(--electric-blue); transform: translateY(-5px); }
         .user-card img { width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--electric-blue); margin-bottom: 10px; object-fit: cover; }
-        .group-card { background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(37, 99, 235, 0.1)); border: 1px dashed var(--electric-blue); padding: 25px; border-radius: 25px; display: flex; flex-direction: column; justify-content: space-between; }
+        .group-card { background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(37, 99, 235, 0.1)); border: 1px dashed var(--electric-blue); padding: 25px; border-radius: 25px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
         .group-tag { font-size: 0.7rem; background: var(--electric-blue); color: var(--navy-dark); padding: 3px 12px; border-radius: 10px; font-weight: 800; width: fit-content; margin-bottom: 10px; }
+        
+        /* MODAL INTERACTIVO */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
+        .modal-content { background: var(--navy-soft); padding: 40px; border-radius: 30px; border: 2px solid var(--electric-blue); width: 90%; max-width: 500px; text-align: left; }
 
         /* EXPLORAR */
         .swipe-stack { position: relative; width: 320px; height: 450px; }
-        .tutor-card { position: absolute; width: 100%; height: 100%; background: var(--white); border-radius: 30px; overflow: hidden; color: var(--navy-dark); box-shadow: 0 20px 40px rgba(0,0,0,0.5); transition: transform 0.5s ease, opacity 0.5s ease; }
+        .tutor-card { position: absolute; width: 100%; height: 100%; background: var(--white); border-radius: 30px; overflow: hidden; color: var(--navy-dark); box-shadow: 0 20px 40px rgba(0,0,0,0.5); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease; cursor: grab; }
         
         .btn-main { background: linear-gradient(90deg, var(--accent-orange), #fbbf24); color: white; border: none; padding: 16px 35px; border-radius: 50px; font-weight: 800; cursor: pointer; transition: 0.3s; }
         
@@ -73,6 +77,29 @@
 <body>
 
     <canvas id="bg-canvas"></canvas>
+
+    <div id="groupModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2 style="color:var(--electric-blue); margin-top:0;">🚀 Nuevo Grupo de Estudio</h2>
+            <p style="opacity:0.8;">Configura tu espacio colaborativo:</p>
+            
+            <label style="display:block; margin-bottom:8px;">Nombre del Grupo:</label>
+            <input type="text" id="modalGroupName" placeholder="Ej: Supervivientes de Cálculo II" style="width:100%; padding:15px; border-radius:12px; border:none; background:rgba(255,255,255,0.1); color:white; margin-bottom:20px;">
+            
+            <label style="display:block; margin-bottom:8px;">Categoría:</label>
+            <select id="modalGroupTag" style="width:100%; padding:15px; border-radius:12px; border:none; background:rgba(255,255,255,0.1); color:white; margin-bottom:20px;">
+                <option value="EXAMEN">📚 Examen Final</option>
+                <option value="PROYECTO">💻 Proyecto/Taller</option>
+                <option value="REPASO">📝 Repaso Semanal</option>
+                <option value="IDIOMAS">🗣️ Idiomas</option>
+            </select>
+
+            <div style="display:flex; gap:10px;">
+                <button class="btn-main" onclick="confirmarCrearGrupo()" style="flex:1;">Crear Ahora</button>
+                <button onclick="cerrarModal()" style="flex:1; background:transparent; border:1px solid #666; color:white; border-radius:50px; cursor:pointer;">Cancelar</button>
+            </div>
+        </div>
+    </div>
 
     <nav class="navbar">
         <div class="logo" onclick="showSection('landing')">LearnSwipe.</div>
@@ -130,40 +157,20 @@
         <div style="width:100%; max-width:1000px;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
                 <h2 style="margin:0;">Networking 🌐</h2>
-                <button class="btn-main" onclick="crearGrupo()" style="padding:10px 25px; font-size:0.9rem;">+ Crear Grupo</button>
+                <button class="btn-main" onclick="abrirModal()" style="padding:10px 25px; font-size:0.9rem;">+ Crear Grupo Interactivo</button>
             </div>
 
             <h3 style="color:var(--electric-blue); margin: 20px 0 10px 0;">Compañeros Destacados</h3>
             <div class="net-grid" id="users-list">
-                <div class="user-card">
-                    <img src="https://i.pravatar.cc/150?u=a1">
-                    <h4 style="margin:5px 0;">Mateo Valencia</h4>
-                    <p style="font-size:0.8rem; opacity:0.7;">Diseño Industrial</p>
-                    <button class="skill-chip" style="width:100%; margin-top:10px; border-radius: 10px;">Conectar</button>
                 </div>
-                <div class="user-card">
-                    <img src="https://i.pravatar.cc/150?u=a2">
-                    <h4 style="margin:5px 0;">Lucía Méndez</h4>
-                    <p style="font-size:0.8rem; opacity:0.7;">Psicología</p>
-                    <button class="skill-chip" style="width:100%; margin-top:10px; border-radius: 10px;">Conectar</button>
-                </div>
-            </div>
 
-            <h3 style="color:var(--accent-orange); margin: 40px 0 10px 0;">Grupos de Estudio</h3>
+            <h3 style="color:var(--accent-orange); margin: 40px 0 10px 0;">Grupos de Estudio Activos</h3>
             <div class="net-grid" id="groups-list">
                 <div class="group-card">
                     <div>
                         <span class="group-tag">EXAMEN</span>
                         <h4>Física Mecánica</h4>
                         <p style="font-size:0.8rem; opacity:0.8;">5 estudiantes activos</p>
-                    </div>
-                    <button class="btn-main" style="padding:10px; margin-top:15px; font-size:0.8rem;">Unirse</button>
-                </div>
-                <div class="group-card">
-                    <div>
-                        <span class="group-tag">PROYECTO</span>
-                        <h4>Marketing Digital</h4>
-                        <p style="font-size:0.8rem; opacity:0.8;">3 estudiantes activos</p>
                     </div>
                     <button class="btn-main" style="padding:10px; margin-top:15px; font-size:0.8rem;">Unirse</button>
                 </div>
@@ -176,15 +183,17 @@
             <h2>Muro de Ayuda🫂</h2>
             <textarea id="postText" placeholder="¿En qué necesitas ayuda hoy?" style="width:100%; padding:15px; border-radius:15px; margin-bottom:10px; border:1px solid #ddd;"></textarea>
             <button class="btn-main" style="width:100%" onclick="addPost()">Publicar</button>
-            <div id="feed" style="margin-top:20px;"></div>
+            <div id="feed" style="margin-top:20px;">
+                </div>
         </div>
     </div>
 
     <div id="app" class="section">
-        <div class="swipe-stack" id="card-stack"></div>
+        <div class="swipe-stack" id="card-stack">
+            </div>
         <div style="margin-top:40px; display:flex; gap:30px;">
-            <button onclick="swipe('left')" style="width:70px; height:70px; border-radius:50%; border:none; background:white; color:#ef4444; font-size:1.5rem; cursor:pointer;">✕</button>
-            <button onclick="swipe('right')" style="width:70px; height:70px; border-radius:50%; border:none; background:var(--electric-blue); color:var(--navy-dark); font-size:1.5rem; cursor:pointer;">❤</button>
+            <button onclick="swipe('left')" style="width:70px; height:70px; border-radius:50%; border:none; background:white; color:#ef4444; font-size:1.5rem; cursor:pointer; box-shadow:0 10px 20px rgba(0,0,0,0.2)">✕</button>
+            <button onclick="swipe('right')" style="width:70px; height:70px; border-radius:50%; border:none; background:var(--electric-blue); color:var(--navy-dark); font-size:1.5rem; cursor:pointer; box-shadow:0 10px 20px rgba(56,189,248,0.3)">❤</button>
         </div>
     </div>
 
@@ -249,7 +258,6 @@
             requestAnimationFrame(animateBg);
         }
         initBg(); animateBg();
-        window.addEventListener('resize', initBg);
 
         // --- 3. NAVEGACIÓN ---
         function showSection(id) {
@@ -258,72 +266,128 @@
             if(id === 'app') initCards();
         }
 
-        // --- 4. TEMPORIZADOR ---
-        let timerInterval;
-        let isRunning = false;
+        // --- 4. NETWORKING INTERACTIVO ---
+        function abrirModal() { document.getElementById('groupModal').style.display = 'flex'; }
+        function cerrarModal() { document.getElementById('groupModal').style.display = 'none'; }
+        
+        function confirmarCrearGrupo() {
+            const nombre = document.getElementById('modalGroupName').value;
+            const tag = document.getElementById('modalGroupTag').value;
+            if(!nombre) return alert("Ponle un nombre a tu grupo");
+
+            const list = document.getElementById('groups-list');
+            const div = document.createElement('div');
+            div.className = 'group-card';
+            div.innerHTML = `
+                <div>
+                    <span class="group-tag">${tag}</span>
+                    <h4>${nombre}</h4>
+                    <p style="font-size:0.8rem; opacity:0.8;">1 miembro (Tú)</p>
+                </div>
+                <button class="btn-main" style="padding:10px; margin-top:15px; font-size:0.8rem;">Gestionar</button>
+            `;
+            list.prepend(div);
+            cerrarModal();
+            showToast("¡Grupo Creado!");
+            document.getElementById('modalGroupName').value = "";
+        }
+
+        // --- 5. GENERACIÓN DE EJEMPLOS (100 TOTAL) ---
+        
+        // 50 EJEMPLOS PARA EXPLORAR (CARDS)
+        const carreras = ["Medicina", "Derecho", "Ing. Sistemas", "Psicología", "Artes Visuales", "Arquitectura", "Biología", "Economía", "Filosofía", "Música"];
+        const nombres = ["Andrés", "Camila", "Julián", "Sara", "Mateo", "Valentina", "Diego", "Paula", "Ricardo", "Elena", "Fernando", "Gabriela", "Hugo", "Isabel"];
+
+        function initCards() {
+            const stack = document.getElementById('card-stack'); 
+            stack.innerHTML = "";
+            for(let i=0; i<50; i++) {
+                const nombre = nombres[Math.floor(Math.random()*nombres.length)] + " " + (i+1);
+                const carrera = carreras[Math.floor(Math.random()*carreras.length)];
+                const imgId = Math.floor(Math.random()*70);
+                const card = document.createElement('div');
+                card.className = 'tutor-card';
+                card.innerHTML = `
+                    <div style="height:70%; background:url('https://i.pravatar.cc/300?u=${i}') center/cover"></div>
+                    <div style="padding:20px">
+                        <h3 style="margin:0">${nombre}</h3>
+                        <p style="opacity:0.6">${carrera}</p>
+                    </div>`;
+                stack.appendChild(card);
+            }
+        }
+
+        // 50 EJEMPLOS PARA COMUNIDAD (FEED)
+        const temas = [
+            "¿Alguien entiende las integrales triples? 🤯",
+            "Busco grupo para el proyecto de Sociología",
+            "¡Pasé el examen de Anatomía! Gracias por los apuntes",
+            "¿Mejor café para estudiar toda la noche?",
+            "Recomienden libros de microeconomía porfa",
+            "¿Diferencia entre Java y C++?",
+            "Duda existencial sobre Nietzsche...",
+            "Tengo resumen de Historia del Arte, ¿quién lo quiere?",
+            "¿Cómo se citan las leyes en APA 7?",
+            "Busco alguien para practicar Inglés B2"
+        ];
+
+        function initFeed() {
+            const feed = document.getElementById('feed');
+            for(let i=0; i<50; i++) {
+                const user = nombres[Math.floor(Math.random()*nombres.length)];
+                const msg = temas[Math.floor(Math.random()*temas.length)];
+                const div = document.createElement('div');
+                div.style = "background:#f8fafc; padding:15px; border-radius:15px; margin-top:10px; border-left:4px solid var(--electric-blue); color:#333;";
+                div.innerHTML = `<b>${user}:</b> ${msg}`;
+                feed.appendChild(div);
+            }
+        }
+        initFeed();
+
+        // LLENAR NETWORKING DE USUARIOS
+        function initNetworking() {
+            const net = document.getElementById('users-list');
+            for(let i=0; i<8; i++) {
+                const n = nombres[Math.floor(Math.random()*nombres.length)];
+                const c = carreras[Math.floor(Math.random()*carreras.length)];
+                const div = document.createElement('div');
+                div.className = 'user-card';
+                div.innerHTML = `<img src="https://i.pravatar.cc/150?u=net${i}"><h4>${n}</h4><p>${c}</p><button class="skill-chip" style="width:100%">Conectar</button>`;
+                net.appendChild(div);
+            }
+        }
+        initNetworking();
+
+        // --- 6. FUNCIONES BASE ---
+        function swipe(dir) {
+            const cards = document.querySelectorAll('.tutor-card'); if(!cards.length) return;
+            const top = cards[cards.length - 1];
+            top.style.transform = dir === 'right' ? 'translateX(600px) rotate(25deg)' : 'translateX(-600px) rotate(-25deg)';
+            top.style.opacity = "0";
+            if(dir === 'right') showToast("¡Match enviado! ❤️");
+            setTimeout(() => top.remove(), 500);
+        }
+
         function toggleTimer() {
-            if (isRunning) {
-                clearInterval(timerInterval);
-                document.getElementById('btnTimer').innerText = "Reanudar";
-            } else {
-                let m = 24, s = 59;
-                timerInterval = setInterval(() => {
-                    document.getElementById('timer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
-                    if(s == 0) { if(m == 0) clearInterval(timerInterval); else { m--; s = 59; } } else s--;
-                }, 1000);
-                document.getElementById('btnTimer').innerText = "Pausar";
-            }
-            isRunning = !isRunning;
-        }
-
-        // --- 5. PERFIL ---
-        function previewImage(event) {
-            const reader = new FileReader();
-            reader.onload = () => document.getElementById('pPicDisp').src = reader.result;
-            reader.readAsDataURL(event.target.files[0]);
-        }
-
-        function handleSkillEnter(event) {
-            if (event.key === 'Enter') {
-                const val = event.target.value.trim();
-                if (val) {
-                    const chip = document.createElement('span');
-                    chip.className = 'skill-chip'; chip.innerText = val;
-                    chip.onclick = function() { this.remove(); };
-                    document.getElementById('pSkillsDisp').appendChild(chip);
-                    event.target.value = "";
-                }
-            }
+            let m = 24, s = 59;
+            setInterval(() => {
+                document.getElementById('timer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
+                if(s == 0) { if(m == 0) return; else { m--; s = 59; } } else s--;
+            }, 1000);
+            document.getElementById('btnTimer').innerText = "En marcha...";
         }
 
         function updateProfile() {
             const name = document.getElementById('inName').value;
             document.getElementById('pNameDisp').innerText = name || "Tu Nombre";
-            document.getElementById('pGradeDisp').innerText = document.getElementById('inGrade').value || "Carrera / Grado";
             document.getElementById('userNameHello').innerText = (name || "Estudiante").split(' ')[0];
         }
 
-        // --- 6. NETWORKING ---
-        function crearGrupo() {
-            const nombre = prompt("¿Cómo se llamará el grupo de estudio?");
-            if (nombre) {
-                const list = document.getElementById('groups-list');
-                const div = document.createElement('div');
-                div.className = 'group-card';
-                div.innerHTML = `
-                    <div>
-                        <span class="group-tag">NUEVO</span>
-                        <h4>${nombre}</h4>
-                        <p style="font-size:0.8rem; opacity:0.8;">1 miembro (Tú)</p>
-                    </div>
-                    <button class="btn-main" style="padding:10px; margin-top:15px; font-size:0.8rem;">Gestionar</button>
-                `;
-                list.prepend(div);
-                showToast("¡Grupo '" + nombre + "' creado con éxito!");
-            }
+        function showToast(msg) {
+            const x = document.getElementById("toast"); x.innerText = msg;
+            x.className = "show"; setTimeout(() => x.className = "", 3000);
         }
 
-        // --- 7. COMUNIDAD ---
         function addPost() {
             const text = document.getElementById('postText').value; if(!text) return;
             const div = document.createElement('div');
@@ -331,36 +395,6 @@
             div.innerHTML = `<b>Tú:</b> ${text}`;
             document.getElementById('feed').prepend(div);
             document.getElementById('postText').value = "";
-        }
-
-        // --- 8. SWIPE CARDS ---
-        const tutors = [
-            {n: "Elena M.", s: "Ingeniería Software", i: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400"},
-            {n: "Marc R.", s: "Matemáticas / Física", i: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400"},
-            {n: "Sofía L.", s: "Diseño Gráfico", i: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400"}
-        ];
-
-        function initCards() {
-            const stack = document.getElementById('card-stack'); stack.innerHTML = "";
-            tutors.forEach(t => {
-                const card = document.createElement('div'); card.className = 'tutor-card';
-                card.innerHTML = `<div style="height:70%; background:url('${t.i}') center/cover"></div><div style="padding:20px"><h3 style="margin:0">${t.n}</h3><p style="opacity:0.6">${t.s}</p></div>`;
-                stack.appendChild(card);
-            });
-        }
-
-        function swipe(dir) {
-            const cards = document.querySelectorAll('.tutor-card'); if(!cards.length) return;
-            const top = cards[cards.length - 1];
-            top.style.transform = dir === 'right' ? 'translateX(500px) rotate(20deg)' : 'translateX(-500px) rotate(-20deg)';
-            top.style.opacity = "0";
-            if(dir === 'right') showToast("¡Match enviado! ❤️");
-            setTimeout(() => top.remove(), 500);
-        }
-
-        function showToast(msg) {
-            const x = document.getElementById("toast"); x.innerText = msg;
-            x.className = "show"; setTimeout(() => x.className = "", 3000);
         }
     </script>
 </body>
