@@ -42,7 +42,6 @@
         }
         .nav-links button:hover { opacity: 1; color: var(--electric-blue); }
 
-        /* Icono Notificaciones */
         .noti-badge { background: #ef4444; width: 10px; height: 10px; border-radius: 50%; display: inline-block; position: absolute; top: 0; right: 0; }
 
         /* --- SECCIONES --- */
@@ -57,27 +56,26 @@
         .stats-bar { display: flex; gap: 20px; margin-top: 30px; flex-wrap: wrap; justify-content: center; }
         .stat-card { background: var(--glass); padding: 20px 40px; border-radius: 20px; border: 1px solid var(--glass-border); text-align: center; }
 
-        /* --- MODO ENFOQUE (NUEVO) --- */
         .focus-timer { background: linear-gradient(135deg, #0ea5e9, #2563eb); padding: 20px; border-radius: 25px; margin-top: 40px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 10px 30px rgba(37, 99, 235, 0.3); }
 
         /* --- PERFIL --- */
         .profile-layout { display: grid; grid-template-columns: 1fr 1.5fr; gap: 40px; width: 100%; }
         .profile-preview { background: var(--navy-soft); padding: 40px; border-radius: 35px; border: 1px solid var(--electric-blue); text-align: center; }
         .user-pic { width: 150px; height: 150px; border-radius: 50%; border: 4px solid var(--electric-blue); object-fit: cover; margin-bottom: 20px; box-shadow: 0 0 30px rgba(56, 189, 248, 0.3); }
-        .skill-chip { display: inline-block; background: rgba(56, 189, 248, 0.1); border: 1px solid var(--electric-blue); color: var(--electric-blue); padding: 6px 16px; border-radius: 25px; margin: 5px; font-size: 0.85rem; cursor: pointer; }
-        .skill-chip:hover { background: #ef4444; border-color: #ef4444; color: white; }
+        .skill-chip { display: inline-block; background: rgba(56, 189, 248, 0.1); border: 1px solid var(--electric-blue); color: var(--electric-blue); padding: 6px 16px; border-radius: 25px; margin: 5px; font-size: 0.85rem; cursor: pointer; transition: 0.2s; }
+        .skill-chip:hover { background: #ef4444; border-color: #ef4444; color: white; transform: scale(0.95); }
 
         /* --- MURO --- */
         .muro-container { width: 100%; max-width: 650px; background: var(--warm-bg); border-radius: 35px; padding: 30px; color: #444; }
-        .post-input { width: 100%; border: 2px solid #e5e7eb; border-radius: 20px; padding: 15px; font-size: 1rem; margin-bottom: 15px; resize: none; }
-        .feed-card { background: white; padding: 20px; border-radius: 20px; margin-bottom: 15px; border-left: 6px solid var(--accent-orange); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .post-input { width: 100%; border: 2px solid #e5e7eb; border-radius: 20px; padding: 15px; font-size: 1rem; margin-bottom: 15px; resize: none; background: white; }
+        .feed-card { background: white; padding: 20px; border-radius: 20px; margin-bottom: 15px; border-left: 6px solid var(--accent-orange); box-shadow: 0 4px 6px rgba(0,0,0,0.05); position: relative; }
         .bot-card { border-left-color: var(--electric-blue); background: #f0f9ff; }
+        .kudos-btn { position: absolute; bottom: 15px; right: 20px; background: #fff1f2; border: 1px solid #fda4af; color: #e11d48; padding: 4px 10px; border-radius: 10px; font-size: 0.75rem; cursor: pointer; font-weight: bold; }
 
-        /* --- EXPLORAR CON FILTROS (NUEVO) --- */
+        /* --- EXPLORAR --- */
         .filter-bar { display: flex; gap: 10px; margin-bottom: 20px; }
         .filter-btn { background: var(--glass); border: 1px solid var(--glass-border); color: white; padding: 8px 15px; border-radius: 12px; cursor: pointer; font-size: 0.8rem; }
-        .filter-btn:hover { border-color: var(--electric-blue); }
-
+        
         .swipe-stack { position: relative; width: 340px; height: 480px; }
         .tutor-card { position: absolute; width: 100%; height: 100%; background: var(--white); border-radius: 35px; overflow: hidden; color: var(--navy-dark); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
 
@@ -85,6 +83,11 @@
         .btn-main { background: var(--accent-orange); color: white; border: none; padding: 16px 35px; border-radius: 50px; font-weight: 800; cursor: pointer; transition: 0.3s; }
         .btn-main:hover { transform: scale(1.05); box-shadow: 0 10px 20px rgba(245, 158, 11, 0.4); }
 
+        /* Toast Notification */
+        #toast { visibility: hidden; min-width: 250px; background-color: #22c55e; color: white; text-align: center; border-radius: 15px; padding: 16px; position: fixed; z-index: 2000; left: 50%; transform: translateX(-50%); bottom: 30px; font-weight: bold; }
+        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
     </style>
 </head>
 <body>
@@ -115,8 +118,8 @@
 
         <div class="focus-timer">
             <h4 style="margin:0">⏳ Modo Enfoque Grupal</h4>
-            <div style="font-size: 2rem; font-weight: 800; margin: 10px 0;">25:00</div>
-            <button style="background:white; color:#2563eb; border:none; padding:8px 20px; border-radius:15px; font-weight:bold; cursor:pointer">Iniciar Pomodoro</button>
+            <div style="font-size: 2rem; font-weight: 800; margin: 10px 0;" id="timer">25:00</div>
+            <button onclick="startTimer()" style="background:white; color:#2563eb; border:none; padding:8px 20px; border-radius:15px; font-weight:bold; cursor:pointer">Iniciar Pomodoro</button>
         </div>
     </div>
 
@@ -131,9 +134,11 @@
 
             <div style="background:var(--glass); padding:30px; border-radius:35px; border:1px solid var(--glass-border);">
                 <h3>Personaliza tu Perfil</h3>
-                <input type="file" accept="image/*" onchange="loadPhoto(event)" style="margin-bottom:20px;">
+                <label style="font-size:0.8rem; opacity:0.6">Sube tu foto de la galería:</label>
+                <input type="file" accept="image/*" onchange="loadPhoto(event)" style="margin-bottom:20px; display:block; margin-top:10px;">
                 <input type="text" id="inName" placeholder="Nombre completo" onkeyup="updateProfile()" style="width:100%; padding:15px; margin-bottom:15px; border-radius:15px; background:rgba(0,0,0,0.2); border:1px solid var(--glass-border); color:white;">
                 <input type="text" id="inSkill" placeholder="Añade una skill (ej: Java) y pulsa Enter" onkeydown="if(event.key==='Enter') addSkill()" style="width:100%; padding:15px; margin-bottom:15px; border-radius:15px; background:rgba(0,0,0,0.2); border:1px solid var(--glass-border); color:white;">
+                <button class="btn-main" style="width:100%" onclick="showToast('Perfil guardado con éxito')">Guardar Todo</button>
             </div>
         </div>
     </div>
@@ -141,11 +146,11 @@
     <div id="community" class="section">
         <div class="muro-container">
             <h2 style="margin-top:0; color:var(--navy-dark)">Muro de Apoyo 🫂</h2>
-            <textarea class="post-input" id="postText" placeholder="Comparte un pensamiento..."></textarea>
+            <textarea class="post-input" id="postText" placeholder="Comparte una duda académica..."></textarea>
             <button class="btn-main" style="width:100%; margin-bottom:30px;" onclick="addPost()">Publicar</button>
             <div id="feed">
-                <div class="feed-card bot-card"><b>🤖 LearnBot:</b> ¡Hola! Hay 5 personas estudiando Medicina ahora mismo.</div>
-                <div class="feed-card"><b>Alex G.</b> ¿Alguien sabe resolver integrales triples? Ayuda pls.</div>
+                <div class="feed-card bot-card"><b>🤖 LearnBot:</b> ¡Hola! ¿Te gustaría ganar reputación? Ayuda a alguien hoy.</div>
+                <div class="feed-card"><b>Alex G.</b> Necesito ayuda con los tiempos verbales en Alemán. <button class="kudos-btn" onclick="this.innerText='❤️ +1'">Kudos</button></div>
             </div>
         </div>
     </div>
@@ -155,7 +160,6 @@
             <button class="filter-btn">🔥 Urgente</button>
             <button class="filter-btn">💻 Remoto</button>
             <button class="filter-btn">📍 Presencial</button>
-            <button class="filter-btn">⚙️ Filtros</button>
         </div>
         <div class="swipe-stack" id="card-stack"></div>
         <div style="margin-top:40px; display:flex; gap:30px;">
@@ -163,6 +167,8 @@
             <button onclick="swipe('right')" style="width:70px; height:70px; border-radius:50%; border:none; background:var(--electric-blue); color:var(--navy-dark); font-size:1.5rem; cursor:pointer; box-shadow:0 10px 20px rgba(56, 189, 248, 0.3)">❤</button>
         </div>
     </div>
+
+    <div id="toast">Perfil guardado con éxito</div>
 
     <script>
         function showSection(id) {
@@ -199,14 +205,29 @@
             const text = document.getElementById('postText').value; if(!text) return;
             const div = document.createElement('div');
             div.className = 'feed-card';
-            div.innerHTML = `<b>Tú:</b> ${text}`;
+            div.innerHTML = `<b>Tú:</b> ${text} <button class="kudos-btn" onclick="this.innerText='❤️ +1'">Kudos</button>`;
             document.getElementById('feed').prepend(div);
             document.getElementById('postText').value = "";
         }
 
+        function startTimer() {
+            let m = 24, s = 59;
+            const t = setInterval(() => {
+                document.getElementById('timer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
+                if(s == 0) { if(m == 0) clearInterval(t); else { m--; s = 59; } } else s--;
+            }, 1000);
+        }
+
+        function showToast(msg) {
+            const x = document.getElementById("toast");
+            x.innerText = msg;
+            x.className = "show";
+            setTimeout(() => x.className = x.className.replace("show", ""), 3000);
+        }
+
         const tutors = [
-            {n: "Elena M.", s: "Ingeniería de Software", i: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=400&q=80"},
-            {n: "Marc R.", s: "Física Cuántica", i: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80"}
+            {n: "Elena M.", s: "Software Eng.", i: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=400&q=80"},
+            {n: "Marc R.", s: "Física", i: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80"}
         ];
 
         function initCards() {
@@ -226,6 +247,7 @@
             top.style.transition = "0.6s ease";
             top.style.transform = dir === 'right' ? 'translateX(1000px) rotate(30deg)' : 'translateX(-1000px) rotate(-30deg)';
             top.style.opacity = "0";
+            if(dir === 'right') showToast("¡Es un Match! 🎉");
             setTimeout(() => top.remove(), 600);
         }
     </script>
