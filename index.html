@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LearnSwipe | Connect. Focus. Solve.</title>
+    <title>LearnSwipe | Connect & Solve</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -13,79 +13,79 @@
             --white: #ffffff;
             --accent-orange: #f59e0b;
             --warm-bg: #fffcf2;
-            --glass: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
         }
 
-        * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; }
+        * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
 
         body {
             margin: 0; background: var(--navy-dark); color: var(--white);
             min-height: 100vh; overflow-x: hidden;
         }
 
-        /* FONDO VIVO */
-        #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(circle at 50% 50%, #1e3a8a 0%, #020617 100%); }
+        /* FONDO INTERACTIVO RESTAURADO */
+        #bg-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; background: radial-gradient(circle at center, #1e3a8a 0%, #0f172a 100%);
+        }
 
         /* --- NAVEGACIÓN --- */
         .navbar {
-            background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(30px);
+            background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(20px);
             padding: 15px 40px; display: flex; justify-content: space-between;
             align-items: center; border-bottom: 1px solid var(--glass-border);
             position: sticky; top: 0; z-index: 1000;
         }
 
-        .logo { font-weight: 800; font-size: 1.6rem; color: var(--electric-blue); cursor: pointer; letter-spacing: -1px; }
+        .logo { font-weight: 800; font-size: 1.6rem; color: var(--electric-blue); cursor: pointer; }
 
         .nav-links button {
-            background: transparent; border: none; color: white; margin-left: 18px;
-            cursor: pointer; font-weight: 600; transition: 0.3s; opacity: 0.6;
+            background: transparent; border: none; color: white; margin-left: 15px;
+            cursor: pointer; font-weight: 600; transition: 0.3s; opacity: 0.7;
         }
-        .nav-links button:hover { opacity: 1; color: var(--electric-blue); transform: scale(1.05); }
+        .nav-links button:hover { opacity: 1; color: var(--electric-blue); }
 
         .noti-container { position: relative; }
-        .noti-badge { background: #ef4444; width: 8px; height: 8px; border-radius: 50%; position: absolute; top: -2px; right: -2px; box-shadow: 0 0 12px #ef4444; }
+        .noti-badge { background: #ef4444; width: 10px; height: 10px; border-radius: 50%; position: absolute; top: 0; right: 0; box-shadow: 0 0 10px #ef4444; }
+        
+        .noti-dropdown { 
+            display: none; position: absolute; top: 40px; right: 0; 
+            background: var(--navy-soft); border: 1px solid var(--glass-border); 
+            width: 250px; border-radius: 15px; padding: 10px; z-index: 2000;
+        }
 
         /* --- SECCIONES --- */
-        .section { display: none; padding: 40px 20px; animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1); width: 100%; max-width: 1100px; margin: 0 auto; }
+        .section { display: none; padding: 40px 20px; animation: slideUp 0.6s ease; width: 100%; max-width: 1200px; margin: 0 auto; }
         .active { display: flex; flex-direction: column; align-items: center; }
 
-        @keyframes slideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- DASHBOARD INNOVADOR --- */
-        .dash-grid { display: grid; grid-template-columns: 1.8fr 1fr; gap: 30px; width: 100%; }
-        .stat-card { background: var(--glass); padding: 25px; border-radius: 30px; border: 1px solid var(--glass-border); text-align: center; backdrop-filter: blur(10px); }
-        
-        .pulse-online { display: inline-flex; align-items: center; gap: 8px; background: rgba(34, 197, 94, 0.1); color: #4ade80; padding: 6px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; margin-bottom: 15px; border: 1px solid rgba(34, 197, 94, 0.2); }
-        .dot-blink { width: 6px; height: 6px; background: #22c55e; border-radius: 50%; animation: blink 1.5s infinite; }
-        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+        /* --- DASHBOARD --- */
+        .welcome-hero { text-align: center; margin-bottom: 40px; }
+        .welcome-hero h1 { font-size: 3.5rem; letter-spacing: -2px; margin-bottom: 10px; }
+        .stats-bar { display: flex; gap: 20px; margin-top: 30px; flex-wrap: wrap; justify-content: center; }
+        .stat-card { background: var(--glass); padding: 25px 45px; border-radius: 20px; border: 1px solid var(--glass-border); text-align: center; backdrop-filter: blur(10px); }
 
-        .focus-timer { 
-            background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); padding: 35px; 
-            border-radius: 40px; margin-top: 20px; text-align: center; position: relative; overflow: hidden;
-        }
-        .timer-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 200px; height: 200px; background: var(--electric-blue); filter: blur(100px); opacity: 0.15; z-index: -1; }
+        .focus-timer { background: linear-gradient(135deg, #0ea5e9, #2563eb); padding: 25px; border-radius: 30px; margin-top: 40px; width: 100%; max-width: 450px; text-align: center; box-shadow: 0 15px 35px rgba(37, 99, 235, 0.3); }
 
-        /* --- PERFIL UNIQUE --- */
-        .profile-layout { display: grid; grid-template-columns: 1fr 1.5fr; gap: 30px; width: 100%; }
-        .profile-card { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(20px); padding: 40px; border-radius: 40px; border: 1px solid var(--electric-blue); text-align: center; }
-        .mood-tag { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--electric-blue); margin-bottom: 10px; display: block; }
-        .xp-label { font-size: 0.65rem; opacity: 0.5; margin-top: 5px; display: block; }
+        /* --- PERFIL --- */
+        .profile-layout { display: grid; grid-template-columns: 1fr 1.5fr; gap: 40px; width: 100%; }
+        .profile-preview { background: var(--navy-soft); padding: 40px; border-radius: 35px; border: 1px solid var(--electric-blue); text-align: center; }
+        .user-pic { width: 150px; height: 150px; border-radius: 50%; border: 4px solid var(--electric-blue); object-fit: cover; margin-bottom: 20px; }
 
         /* --- MURO --- */
-        .muro-container { background: rgba(255,255,255,0.98); border-radius: 40px; padding: 40px; color: #1e293b; box-shadow: 0 30px 60px rgba(0,0,0,0.4); }
-        .post-input { width: 100%; border: 2px solid #f1f5f9; border-radius: 20px; padding: 20px; font-size: 1rem; margin-bottom: 15px; resize: none; transition: 0.3s; }
-        .post-input:focus { border-color: var(--electric-blue); outline: none; }
+        .muro-layout { display: grid; grid-template-columns: 1fr 250px; gap: 20px; width: 100%; max-width: 900px; }
+        .muro-container { background: var(--warm-bg); border-radius: 35px; padding: 30px; color: #444; }
+        .feed-card { background: white; padding: 20px; border-radius: 20px; margin-bottom: 15px; border-left: 6px solid var(--accent-orange); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
 
-        /* --- BOTONES --- */
-        .btn-main { 
-            background: linear-gradient(135deg, #38bdf8, #2563eb); color: white; border: none; 
-            padding: 16px 45px; border-radius: 50px; font-weight: 800; cursor: pointer; transition: 0.3s;
-            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3); text-transform: uppercase; letter-spacing: 1px;
-        }
-        .btn-main:hover { transform: scale(1.05) translateY(-2px); box-shadow: 0 15px 30px rgba(37, 99, 235, 0.4); }
+        /* --- EXPLORAR --- */
+        .swipe-stack { position: relative; width: 340px; height: 480px; }
+        .tutor-card { position: absolute; width: 100%; height: 100%; background: var(--white); border-radius: 35px; overflow: hidden; color: var(--navy-dark); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
 
-        #toast { visibility: hidden; min-width: 280px; background: #0f172a; color: white; text-align: center; border-radius: 20px; padding: 20px; position: fixed; z-index: 2000; left: 50%; transform: translateX(-50%); bottom: 40px; font-weight: 600; border: 1px solid var(--electric-blue); }
+        .btn-main { background: linear-gradient(90deg, var(--accent-orange), #fbbf24); color: white; border: none; padding: 16px 35px; border-radius: 50px; font-weight: 800; cursor: pointer; transition: 0.3s; }
+
+        #toast { visibility: hidden; min-width: 250px; background-color: #22c55e; color: white; text-align: center; border-radius: 15px; padding: 16px; position: fixed; z-index: 2000; left: 50%; transform: translateX(-50%); bottom: 30px; font-weight: bold; }
         #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
     </style>
 </head>
@@ -96,89 +96,77 @@
     <nav class="navbar">
         <div class="logo" onclick="showSection('landing')">LearnSwipe.</div>
         <div class="nav-links">
-            <button onclick="showSection('landing')">Home</button>
-            <button onclick="showSection('profile')">Perfil</button>
-            <button onclick="showSection('community')">Muro</button>
-            <button onclick="showSection('app')">Matches</button>
+            <button onclick="showSection('landing')">Dashboard</button>
+            <button onclick="showSection('profile')">Mi Perfil</button>
+            <button onclick="showSection('community')">Comunidad</button>
+            <button onclick="showSection('app')">Explorar</button>
             <div class="noti-container">
-                <button onclick="toggleNotifications()" style="font-size:1.2rem">🔔<span class="noti-badge" id="dot"></span></button>
-                <div class="noti-dropdown" id="notiBox" style="display:none; position:absolute; top:45px; right:0; background:var(--navy-soft); border:1px solid var(--glass-border); width:280px; border-radius:20px; padding:15px; box-shadow:0 20px 40px rgba(0,0,0,0.6);">
-                    <div style="font-size:0.8rem; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:10px;"><b>Reciente</b></div>
-                    <div style="padding:10px 0; font-size:0.75rem; opacity:0.8;">🔥 Tienes un nuevo match sugerido en Física.</div>
+                <button onclick="toggleNotifications()">🔔<span class="noti-badge" id="dot"></span></button>
+                <div class="noti-dropdown" id="notiBox">
+                    <div style="padding:10px; font-size:0.8rem; border-bottom:1px solid var(--glass-border);">✨ ¡Nueva racha de 5 días!</div>
+                    <div style="padding:10px; font-size:0.8rem;">🤖 LearnBot: Tienes 3 sugerencias.</div>
                 </div>
             </div>
         </div>
     </nav>
 
     <div id="landing" class="section active">
-        <div class="dash-grid">
-            <div class="content">
-                <div class="pulse-online"><div class="dot-blink"></div> 1,240 Estudiantes estudiando ahora</div>
-                <h1 style="font-size: 3.8rem; margin:0; letter-spacing:-2px">Focus, <span id="userNameHello" style="color:var(--electric-blue)">Pro</span>.</h1>
-                <p style="opacity: 0.6; font-size: 1.2rem; margin-top:10px;">Tu próxima gran idea está a un Pomodoro de distancia.</p>
-                <div style="display:flex; gap:15px; margin-top:30px;">
-                    <div class="stat-card"><h3>🔥 5</h3><p style="font-size:0.7rem; opacity:0.5">RACHA</p></div>
-                    <div class="stat-card"><h3>⭐ 4.9</h3><p style="font-size:0.7rem; opacity:0.5">KUDOS</p></div>
-                </div>
-            </div>
-            <div class="focus-timer">
-                <div class="timer-glow"></div>
-                <h4 style="margin:0; font-size:0.7rem; letter-spacing:2px; opacity:0.6">DEEP WORK MODE</h4>
-                <div style="font-size: 4rem; font-weight: 800; margin:10px 0;" id="timer">25:00</div>
-                <button class="btn-main" onclick="startTimer()" style="padding:12px 30px; font-size:0.8rem">Iniciar Sesión</button>
-            </div>
+        <div class="welcome-hero">
+            <h1>Hola, <span id="userNameHello" style="color:var(--electric-blue)">Estudiante</span>.</h1>
+            <p style="opacity: 0.7; font-size: 1.2rem;">¿Listo para resolver tus dudas hoy?</p>
+            <button class="btn-main" onclick="showSection('app')">Encontrar Tutor</button>
+        </div>
+        <div class="stats-bar">
+            <div class="stat-card"><h3>🔥 5</h3><p>Racha</p></div>
+            <div class="stat-card"><h3>📚 12</h3><p>Sesiones</p></div>
+        </div>
+        <div class="focus-timer">
+            <h4 style="margin:0">⏳ MODO ENFOQUE</h4>
+            <div style="font-size: 2.5rem; font-weight: 800; margin: 10px 0;" id="timer">25:00</div>
+            <button onclick="startTimer()" style="background:white; color:#2563eb; border:none; padding:10px 25px; border-radius:15px; font-weight:bold; cursor:pointer;">Iniciar</button>
         </div>
     </div>
 
     <div id="profile" class="section">
         <div class="profile-layout">
-            <div class="profile-card">
-                <span class="mood-tag" id="moodDisp">Estado: Enfocado 🎯</span>
-                <img src="https://via.placeholder.com/150" id="pPicDisp" style="width:140px; height:140px; border-radius:50%; border:3px solid var(--electric-blue); padding:5px; object-fit:cover;">
-                <h2 id="pNameDisp" style="margin:15px 0 5px 0">Nombre Usuario</h2>
-                <div class="xp-bar"><div class="xp-progress"></div></div>
-                <span class="xp-label">650 / 1000 XP para Nivel 5</span>
-                <p id="pGradeDisp" style="color:var(--electric-blue); font-weight:bold; font-size:0.9rem">Carrera</p>
-                <p id="pBioDisp" style="opacity:0.6; font-size:0.8rem; font-style:italic;">"Describe tu meta..."</p>
-                <div id="pSkillsDisp" style="margin-top:15px"></div>
+            <div class="profile-preview">
+                <img src="https://via.placeholder.com/150" class="user-pic" id="pPicDisp">
+                <h2 id="pNameDisp" style="margin:0">Tu Nombre</h2>
+                <p id="pGradeDisp" style="color:var(--electric-blue)">Tu Carrera</p>
+                <div id="pSkillsDisp"></div>
             </div>
-            <div style="background:var(--glass); padding:40px; border-radius:40px; border:1px solid var(--glass-border); backdrop-filter:blur(15px);">
-                <h3 style="margin-top:0">Personalización</h3>
-                <input type="file" accept="image/*" onchange="loadPhoto(event)" style="margin-bottom:20px; font-size:0.7rem;">
-                <input type="text" id="inName" placeholder="Nombre completo" onkeyup="updateProfile()" style="width:100%; padding:14px; margin-bottom:12px; border-radius:15px; background:rgba(0,0,0,0.2); border:1px solid var(--glass-border); color:white;">
-                <input type="text" id="inGrade" placeholder="¿Qué estudias?" onkeyup="updateProfile()" style="width:100%; padding:14px; margin-bottom:12px; border-radius:15px; background:rgba(0,0,0,0.2); border:1px solid var(--glass-border); color:white;">
-                <textarea id="inBio" placeholder="Tu bio..." onkeyup="updateProfile()" style="width:100%; height:80px; padding:14px; margin-bottom:12px; border-radius:15px; background:rgba(0,0,0,0.2); border:1px solid var(--glass-border); color:white; resize:none;"></textarea>
-                <input type="text" id="inSkill" placeholder="Nueva Skill + Enter" onkeydown="if(event.key==='Enter') addSkill()" style="width:100%; padding:14px; border-radius:15px; background:rgba(0,0,0,0.2); border:1px solid var(--glass-border); color:white;">
-                <button class="btn-main" style="width:100%; margin-top:20px;" onclick="showToast('¡Identidad Actualizada! ✨')">Guardar Cambios</button>
+            <div style="background:var(--glass); padding:30px; border-radius:35px; border:1px solid var(--glass-border); backdrop-filter:blur(10px);">
+                <h3>Configuración</h3>
+                <input type="text" id="inName" placeholder="Nombre" onkeyup="updateProfile()" style="width:100%; padding:15px; margin-bottom:10px; border-radius:12px; background:rgba(0,0,0,0.3); border:1px solid var(--glass-border); color:white;">
+                <input type="text" id="inGrade" placeholder="Carrera" onkeyup="updateProfile()" style="width:100%; padding:15px; margin-bottom:10px; border-radius:12px; background:rgba(0,0,0,0.3); border:1px solid var(--glass-border); color:white;">
+                <button class="btn-main" style="width:100%" onclick="showToast('¡Guardado!')">Guardar Perfil</button>
             </div>
         </div>
     </div>
 
     <div id="community" class="section">
-        <div class="muro-container" style="width:100%; max-width:750px;">
-            <h2 style="margin-top:0; letter-spacing:-1px;">Study Feed 🫂</h2>
-            <textarea id="postText" class="post-input" placeholder="¿En qué te has atascado hoy?"></textarea>
-            <button class="btn-main" style="width:100%; margin-bottom:30px;" onclick="addPost()">Compartir con la Red</button>
-            <div id="feed">
-                <div style="padding:20px; border-radius:25px; background:#f8fafc; border:1px solid #e2e8f0; border-left:6px solid var(--electric-blue);">
-                    <b>🤖 LearnBot:</b> ¡Hola! Hay una sesión de Java comenzando en 5 min. ¿Te unes?
-                </div>
+        <div class="muro-layout">
+            <div class="muro-container">
+                <h2 style="margin:0 0 20px 0; color:var(--navy-dark)">Comunidad 🫂</h2>
+                <textarea id="postText" placeholder="¿Qué estudias hoy?" style="width:100%; padding:15px; border-radius:15px; margin-bottom:10px;"></textarea>
+                <button class="btn-main" style="width:100%" onclick="addPost()">Publicar</button>
+                <div id="feed" style="margin-top:20px;"></div>
             </div>
         </div>
     </div>
 
     <div id="app" class="section">
-        <div id="card-stack" style="position:relative; width:340px; height:480px;"></div>
+        <div class="swipe-stack" id="card-stack"></div>
         <div style="margin-top:40px; display:flex; gap:30px;">
-            <button onclick="swipe('left')" style="width:75px; height:75px; border-radius:50%; border:none; background:white; color:#ef4444; font-size:1.8rem; cursor:pointer; box-shadow:0 15px 30px rgba(0,0,0,0.15)">✕</button>
-            <button onclick="swipe('right')" style="width:75px; height:75px; border-radius:50%; border:none; background:var(--electric-blue); color:var(--navy-dark); font-size:1.8rem; cursor:pointer; box-shadow:0 15px 30px rgba(56, 189, 248, 0.4)">❤</button>
+            <button onclick="swipe('left')" style="width:70px; height:70px; border-radius:50%; border:none; background:white; color:#ef4444; font-size:1.5rem; cursor:pointer;">✕</button>
+            <button onclick="swipe('right')" style="width:70px; height:70px; border-radius:50%; border:none; background:var(--electric-blue); color:var(--navy-dark); font-size:1.5rem; cursor:pointer;">❤</button>
         </div>
     </div>
 
-    <div id="toast">Notificación</div>
+    <div id="toast">Acción realizada</div>
 
     <script>
-        // --- CANVAS ANIMATION ---
+        // --- FONDO INTERACTIVO ---
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -190,17 +178,17 @@
             constructor() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 1.5 + 0.5;
-                this.speedX = Math.random() * 0.8 - 0.4;
-                this.speedY = Math.random() * 0.8 - 0.4;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1 - 0.5;
             }
             update() {
                 this.x += this.speedX; this.y += this.speedY;
-                if(this.x > canvas.width || this.x < 0) this.speedX *= -1;
-                if(this.y > canvas.height || this.y < 0) this.speedY *= -1;
+                if (this.x > canvas.width || this.x < 0) this.speedX *= -1;
+                if (this.y > canvas.height || this.y < 0) this.speedY *= -1;
             }
             draw() {
-                ctx.fillStyle = 'rgba(56, 189, 248, 0.2)';
+                ctx.fillStyle = 'rgba(56, 189, 248, 0.3)';
                 ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
             }
         }
@@ -208,26 +196,26 @@
         function initBg() {
             canvas.width = window.innerWidth; canvas.height = window.innerHeight;
             particles = [];
-            for(let i=0; i<100; i++) particles.push(new Particle());
+            for (let i = 0; i < 80; i++) particles.push(new Particle());
         }
 
-        function animate() {
-            ctx.clearRect(0,0, canvas.width, canvas.height);
+        function animateBg() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             particles.forEach(p => {
                 p.update(); p.draw();
                 let dx = mouse.x - p.x; let dy = mouse.y - p.y;
                 let dist = Math.sqrt(dx*dx + dy*dy);
-                if(dist < 120) {
-                    ctx.strokeStyle = `rgba(56, 189, 248, ${0.2 * (1 - dist/120)})`;
-                    ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
+                if(dist < 150) {
+                    ctx.strokeStyle = `rgba(56, 189, 248, ${1 - dist/150})`;
+                    ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
                 }
             });
-            requestAnimationFrame(animate);
+            requestAnimationFrame(animateBg);
         }
-        initBg(); animate();
+        initBg(); animateBg();
         window.addEventListener('resize', initBg);
 
-        // --- APP LOGIC ---
+        // --- LÓGICA APP ---
         function showSection(id) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
@@ -240,77 +228,55 @@
             document.getElementById('dot').style.display = 'none';
         }
 
-        function loadPhoto(e) {
-            const reader = new FileReader();
-            reader.onload = () => document.getElementById('pPicDisp').src = reader.result;
-            reader.readAsDataURL(e.target.files[0]);
-        }
-
         function updateProfile() {
-            const n = document.getElementById('inName').value || "Estudiante";
-            document.getElementById('pNameDisp').innerText = n;
-            document.getElementById('pGradeDisp').innerText = document.getElementById('inGrade').value || "Carrera";
-            document.getElementById('pBioDisp').innerText = document.getElementById('inBio').value || "Bio...";
-            document.getElementById('userNameHello').innerText = n.split(' ')[0];
-        }
-
-        function addSkill() {
-            const v = document.getElementById('inSkill').value;
-            if(v) {
-                const s = document.createElement('span');
-                s.style = "display:inline-block; background:rgba(56,189,248,0.1); border:1px solid var(--electric-blue); color:var(--electric-blue); padding:5px 12px; border-radius:20px; margin:4px; font-size:0.75rem; cursor:pointer;";
-                s.innerText = v; s.onclick = function() { this.remove(); };
-                document.getElementById('pSkillsDisp').appendChild(s);
-                document.getElementById('inSkill').value = "";
-            }
+            document.getElementById('pNameDisp').innerText = document.getElementById('inName').value || "Tu Nombre";
+            document.getElementById('pGradeDisp').innerText = document.getElementById('inGrade').value || "Tu Carrera";
+            document.getElementById('userNameHello').innerText = (document.getElementById('inName').value || "Estudiante").split(' ')[0];
         }
 
         function addPost() {
-            const t = document.getElementById('postText').value; if(!t) return;
-            const d = document.createElement('div');
-            d.style = "background:white; padding:20px; border-radius:25px; margin-top:15px; box-shadow:0 10px 20px rgba(0,0,0,0.03); border-left:6px solid var(--accent-orange); animation: slideUp 0.4s ease;";
-            d.innerHTML = `<b>Tú:</b> ${t}`;
-            document.getElementById('feed').prepend(d);
+            const text = document.getElementById('postText').value; if(!text) return;
+            const div = document.createElement('div'); div.className = 'feed-card';
+            div.innerHTML = `<b>Tú:</b> ${text}`;
+            document.getElementById('feed').prepend(div);
             document.getElementById('postText').value = "";
         }
 
         function startTimer() {
             let m = 24, s = 59;
-            const i = setInterval(() => {
+            setInterval(() => {
                 document.getElementById('timer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
-                if(s == 0) { if(m == 0) { clearInterval(i); showToast("¡Sesión completada! +50 XP"); } else { m--; s = 59; } } else s--;
+                if(s == 0) { m--; s = 59; } else s--;
             }, 1000);
         }
 
-        function showToast(m) {
-            const x = document.getElementById("toast"); x.innerText = m;
+        function showToast(msg) {
+            const x = document.getElementById("toast"); x.innerText = msg;
             x.className = "show"; setTimeout(() => x.className = "", 3000);
         }
 
         const tutors = [
-            {n: "Elena M.", s: "Ingeniería", i: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=400&q=80"},
-            {n: "Marc R.", s: "Matemáticas", i: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80"}
+            {n: "Elena M.", s: "Software Eng.", i: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=400&q=80"},
+            {n: "Marc R.", s: "Física", i: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80"}
         ];
 
         function initCards() {
-            const st = document.getElementById('card-stack'); st.innerHTML = "";
+            const stack = document.getElementById('card-stack'); stack.innerHTML = "";
             tutors.forEach(t => {
-                const c = document.createElement('div');
-                c.className = 'tutor-card';
-                c.style = "position:absolute; width:100%; height:100%; background:white; border-radius:40px; overflow:hidden; color:#1e293b; box-shadow:0 20px 40px rgba(0,0,0,0.3);";
-                c.innerHTML = `<div style="height:70%; background:url('${t.i}') center/cover"></div><div style="padding:30px"><h3 style="margin:0">${t.n}</h3><p style="opacity:0.6; font-size:0.9rem">${t.s}</p></div>`;
-                st.appendChild(c);
+                const card = document.createElement('div'); card.className = 'tutor-card';
+                card.innerHTML = `<div style="height:70%; background:url('${t.i}') center/cover"></div><div style="padding:25px"><h3 style="margin:0">${t.n}</h3><p style="opacity:0.6">${t.s}</p></div>`;
+                stack.appendChild(card);
             });
         }
 
-        function swipe(d) {
-            const cs = document.querySelectorAll('.tutor-card'); if(!cs.length) return;
-            const t = cs[cs.length - 1];
-            t.style.transition = "0.7s cubic-bezier(0.16, 1, 0.3, 1)";
-            t.style.transform = d === 'right' ? 'translateX(1000px) rotate(45deg)' : 'translateX(-1000px) rotate(-45deg)';
-            t.style.opacity = "0";
-            if(d === 'right') showToast("¡Conexión establecida! 🚀");
-            setTimeout(() => t.remove(), 700);
+        function swipe(dir) {
+            const cards = document.querySelectorAll('.tutor-card'); if(!cards.length) return;
+            const top = cards[cards.length - 1];
+            top.style.transition = "0.6s ease";
+            top.style.transform = dir === 'right' ? 'translateX(1000px) rotate(30deg)' : 'translateX(-1000px) rotate(-30deg)';
+            top.style.opacity = "0";
+            if(dir === 'right') showToast("¡Match! 🎉");
+            setTimeout(() => top.remove(), 600);
         }
     </script>
 </body>
