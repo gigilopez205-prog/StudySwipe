@@ -50,7 +50,15 @@
         .user-pic { width: 150px; height: 150px; border-radius: 50%; border: 4px solid var(--electric-blue); object-fit: cover; margin-bottom: 20px; background: #000; }
         .skill-chip { display: inline-block; background: rgba(56, 189, 248, 0.1); border: 1px solid var(--electric-blue); color: var(--electric-blue); padding: 6px 16px; border-radius: 25px; margin: 5px; font-size: 0.85rem; cursor: pointer; }
 
-        /* EXPLORAR (TARJETAS) */
+        /* NETWORKING */
+        .net-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; width: 100%; margin-top: 20px; }
+        .user-card { background: var(--glass); border: 1px solid var(--glass-border); padding: 20px; border-radius: 25px; text-align: center; transition: 0.3s; backdrop-filter: blur(10px); }
+        .user-card:hover { border-color: var(--electric-blue); transform: translateY(-5px); }
+        .user-card img { width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--electric-blue); margin-bottom: 10px; object-fit: cover; }
+        .group-card { background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(37, 99, 235, 0.1)); border: 1px dashed var(--electric-blue); padding: 25px; border-radius: 25px; display: flex; flex-direction: column; justify-content: space-between; }
+        .group-tag { font-size: 0.7rem; background: var(--electric-blue); color: var(--navy-dark); padding: 3px 12px; border-radius: 10px; font-weight: 800; width: fit-content; margin-bottom: 10px; }
+
+        /* EXPLORAR */
         .swipe-stack { position: relative; width: 320px; height: 450px; }
         .tutor-card { position: absolute; width: 100%; height: 100%; background: var(--white); border-radius: 30px; overflow: hidden; color: var(--navy-dark); box-shadow: 0 20px 40px rgba(0,0,0,0.5); transition: transform 0.5s ease, opacity 0.5s ease; }
         
@@ -71,6 +79,7 @@
         <div class="nav-links">
             <button onclick="showSection('landing')">Dashboard</button>
             <button onclick="showSection('profile')">Mi Perfil</button>
+            <button onclick="showSection('networking')">Networking</button>
             <button onclick="showSection('community')">Comunidad</button>
             <button onclick="showSection('app')">Explorar</button>
         </div>
@@ -86,8 +95,8 @@
         </div>
         <div class="dash-container">
             <div>
-                <div class="fact-box"><h4>🚀 ¿Por qué LearnSwipe?</h4><p>Aprende conectando con otros estudiantes en tiempo real.</p></div>
-                <div class="fact-box"><h4>💡 Tip del día</h4><p>Tomar descansos de 5 min mejora la retención.</p></div>
+                <div class="fact-box"><h4>🚀 Networking Activo</h4><p>¡Nuevos grupos de estudio creados cerca de ti!</p></div>
+                <div class="fact-box"><h4>💡 Tip del día</h4><p>Enseñar a otros es la mejor forma de aprender.</p></div>
                 <button class="btn-main" onclick="showSection('app')" style="width:100%;">Empezar a Explorar</button>
             </div>
             <div class="focus-timer">
@@ -112,7 +121,52 @@
                 <input type="text" id="inName" placeholder="Nombre" onkeyup="updateProfile()" style="width:100%; padding:15px; margin-bottom:15px; border-radius:12px; background:rgba(0,0,0,0.3); color:white; border:1px solid #444;">
                 <input type="text" id="inGrade" placeholder="Carrera" onkeyup="updateProfile()" style="width:100%; padding:15px; margin-bottom:15px; border-radius:12px; background:rgba(0,0,0,0.3); color:white; border:1px solid #444;">
                 <input type="text" id="inSkill" placeholder="Habilidades (Pulsa Enter)" onkeydown="handleSkillEnter(event)" style="width:100%; padding:15px; margin-bottom:15px; border-radius:12px; background:rgba(0,0,0,0.3); color:white; border:1px solid var(--electric-blue);">
-                <button class="btn-main" style="width:100%" onclick="showToast('¡Perfil guardado localmente!')">Guardar Cambios</button>
+                <button class="btn-main" style="width:100%" onclick="showToast('¡Perfil actualizado!')">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="networking" class="section">
+        <div style="width:100%; max-width:1000px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+                <h2 style="margin:0;">Networking 🌐</h2>
+                <button class="btn-main" onclick="crearGrupo()" style="padding:10px 25px; font-size:0.9rem;">+ Crear Grupo</button>
+            </div>
+
+            <h3 style="color:var(--electric-blue); margin: 20px 0 10px 0;">Compañeros Destacados</h3>
+            <div class="net-grid" id="users-list">
+                <div class="user-card">
+                    <img src="https://i.pravatar.cc/150?u=a1">
+                    <h4 style="margin:5px 0;">Mateo Valencia</h4>
+                    <p style="font-size:0.8rem; opacity:0.7;">Diseño Industrial</p>
+                    <button class="skill-chip" style="width:100%; margin-top:10px; border-radius: 10px;">Conectar</button>
+                </div>
+                <div class="user-card">
+                    <img src="https://i.pravatar.cc/150?u=a2">
+                    <h4 style="margin:5px 0;">Lucía Méndez</h4>
+                    <p style="font-size:0.8rem; opacity:0.7;">Psicología</p>
+                    <button class="skill-chip" style="width:100%; margin-top:10px; border-radius: 10px;">Conectar</button>
+                </div>
+            </div>
+
+            <h3 style="color:var(--accent-orange); margin: 40px 0 10px 0;">Grupos de Estudio</h3>
+            <div class="net-grid" id="groups-list">
+                <div class="group-card">
+                    <div>
+                        <span class="group-tag">EXAMEN</span>
+                        <h4>Física Mecánica</h4>
+                        <p style="font-size:0.8rem; opacity:0.8;">5 estudiantes activos</p>
+                    </div>
+                    <button class="btn-main" style="padding:10px; margin-top:15px; font-size:0.8rem;">Unirse</button>
+                </div>
+                <div class="group-card">
+                    <div>
+                        <span class="group-tag">PROYECTO</span>
+                        <h4>Marketing Digital</h4>
+                        <p style="font-size:0.8rem; opacity:0.8;">3 estudiantes activos</p>
+                    </div>
+                    <button class="btn-main" style="padding:10px; margin-top:15px; font-size:0.8rem;">Unirse</button>
+                </div>
             </div>
         </div>
     </div>
@@ -129,20 +183,31 @@
     <div id="app" class="section">
         <div class="swipe-stack" id="card-stack"></div>
         <div style="margin-top:40px; display:flex; gap:30px;">
-            <button onclick="swipe('left')" style="width:70px; height:70px; border-radius:50%; border:none; background:white; color:#ef4444; font-size:1.5rem; cursor:pointer; box-shadow:0 10px 20px rgba(0,0,0,0.2)">✕</button>
-            <button onclick="swipe('right')" style="width:70px; height:70px; border-radius:50%; border:none; background:var(--electric-blue); color:var(--navy-dark); font-size:1.5rem; cursor:pointer; box-shadow:0 10px 20px rgba(56,189,248,0.3)">❤</button>
+            <button onclick="swipe('left')" style="width:70px; height:70px; border-radius:50%; border:none; background:white; color:#ef4444; font-size:1.5rem; cursor:pointer;">✕</button>
+            <button onclick="swipe('right')" style="width:70px; height:70px; border-radius:50%; border:none; background:var(--electric-blue); color:var(--navy-dark); font-size:1.5rem; cursor:pointer;">❤</button>
         </div>
     </div>
 
     <div id="toast">¡Hecho!</div>
 
     <script>
-        // --- 1. FONDO DE PARTÍCULAS INTERACTIVO ---
+        // --- 1. CONFIGURACIÓN FIREBASE ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyBD0ocsjfTh9DRrYroAwTGfHfsXycFpSAg",
+            authDomain: "learnswipe-8357e.firebaseapp.com",
+            projectId: "learnswipe-8357e",
+            storageBucket: "learnswipe-8357e.firebasestorage.app",
+            messagingSenderId: "649764089830",
+            appId: "1:649764089830:web:acbef338401a6921e67027"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // --- 2. FONDO DE PARTÍCULAS ---
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
         let mouse = { x: null, y: null };
-
         window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
 
         class Particle {
@@ -186,14 +251,14 @@
         initBg(); animateBg();
         window.addEventListener('resize', initBg);
 
-        // --- 2. NAVEGACIÓN ---
+        // --- 3. NAVEGACIÓN ---
         function showSection(id) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             if(id === 'app') initCards();
         }
 
-        // --- 3. TEMPORIZADOR ---
+        // --- 4. TEMPORIZADOR ---
         let timerInterval;
         let isRunning = false;
         function toggleTimer() {
@@ -211,7 +276,7 @@
             isRunning = !isRunning;
         }
 
-        // --- 4. PERFIL ---
+        // --- 5. PERFIL ---
         function previewImage(event) {
             const reader = new FileReader();
             reader.onload = () => document.getElementById('pPicDisp').src = reader.result;
@@ -238,17 +303,37 @@
             document.getElementById('userNameHello').innerText = (name || "Estudiante").split(' ')[0];
         }
 
-        // --- 5. COMUNIDAD ---
+        // --- 6. NETWORKING ---
+        function crearGrupo() {
+            const nombre = prompt("¿Cómo se llamará el grupo de estudio?");
+            if (nombre) {
+                const list = document.getElementById('groups-list');
+                const div = document.createElement('div');
+                div.className = 'group-card';
+                div.innerHTML = `
+                    <div>
+                        <span class="group-tag">NUEVO</span>
+                        <h4>${nombre}</h4>
+                        <p style="font-size:0.8rem; opacity:0.8;">1 miembro (Tú)</p>
+                    </div>
+                    <button class="btn-main" style="padding:10px; margin-top:15px; font-size:0.8rem;">Gestionar</button>
+                `;
+                list.prepend(div);
+                showToast("¡Grupo '" + nombre + "' creado con éxito!");
+            }
+        }
+
+        // --- 7. COMUNIDAD ---
         function addPost() {
             const text = document.getElementById('postText').value; if(!text) return;
             const div = document.createElement('div');
-            div.style = "background:#f1f5f9; padding:15px; border-radius:15px; margin-top:10px; border-left:5px solid var(--accent-orange); color:#333; animation: slideUp 0.4s ease;";
+            div.style = "background:#f1f5f9; padding:15px; border-radius:15px; margin-top:10px; border-left:5px solid var(--accent-orange); color:#333;";
             div.innerHTML = `<b>Tú:</b> ${text}`;
             document.getElementById('feed').prepend(div);
             document.getElementById('postText').value = "";
         }
 
-        // --- 6. SWIPE CARDS ---
+        // --- 8. SWIPE CARDS ---
         const tutors = [
             {n: "Elena M.", s: "Ingeniería Software", i: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400"},
             {n: "Marc R.", s: "Matemáticas / Física", i: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400"},
