@@ -50,7 +50,7 @@
         .user-pic { width: 150px; height: 150px; border-radius: 50%; border: 4px solid var(--electric-blue); object-fit: cover; margin-bottom: 20px; background: #000; }
         .skill-chip { display: inline-block; background: rgba(56, 189, 248, 0.1); border: 1px solid var(--electric-blue); color: var(--electric-blue); padding: 6px 16px; border-radius: 25px; margin: 5px; font-size: 0.85rem; cursor: pointer; }
 
-        /* NUEVOS ESTILOS PERFIL: MATCHES Y CALENDARIO */
+        /* MATCHES Y CALENDARIO */
         .profile-footer { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; width: 100%; margin-top: 40px; }
         .match-list { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 10px; }
         .match-avatar { width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--electric-blue); flex-shrink: 0; cursor: pointer; transition: 0.3s; }
@@ -147,18 +147,20 @@
             </div>
             <div style="background:var(--glass); padding:30px; border-radius:35px; border:1px solid var(--glass-border); backdrop-filter:blur(10px);">
                 <h3>Editar Perfil</h3>
+                <label style="display:block; margin-bottom:10px; opacity:0.8;">Cambiar foto de perfil:</label>
+                <input type="file" id="imageInput" accept="image/*" onchange="previewImage(event)" style="margin-bottom:20px; color:white; font-size: 0.9rem;">
+                
                 <input type="text" id="inName" placeholder="Nombre" onkeyup="updateProfile()" style="width:100%; padding:15px; margin-bottom:15px; border-radius:12px; background:rgba(0,0,0,0.3); color:white; border:1px solid #444;">
                 <input type="text" id="inGrade" placeholder="Carrera" onkeyup="updateProfile()" style="width:100%; padding:15px; margin-bottom:15px; border-radius:12px; background:rgba(0,0,0,0.3); color:white; border:1px solid #444;">
                 <input type="text" id="inSkill" placeholder="Habilidades + Enter" onkeydown="handleSkillEnter(event)" style="width:100%; padding:15px; margin-bottom:15px; border-radius:12px; background:rgba(0,0,0,0.3); color:white; border:1px solid var(--electric-blue);">
-                <button class="btn-main" style="width:100%" onclick="showToast('¡Guardado!')">Actualizar</button>
+                <button class="btn-main" style="width:100%" onclick="showToast('¡Perfil actualizado!')">Actualizar</button>
             </div>
         </div>
 
         <div class="profile-footer">
             <div style="background:var(--glass); padding:25px; border-radius:30px; border:1px solid var(--glass-border);">
                 <h4 style="margin-top:0; color:var(--electric-blue);">Tus Matches ❤️</h4>
-                <div class="match-list" id="match-display">
-                    </div>
+                <div class="match-list" id="match-display"></div>
                 <p style="font-size:0.8rem; opacity:0.6; margin-top:10px;">Tutores con los que has conectado recientemente.</p>
             </div>
             <div style="background:var(--glass); padding:25px; border-radius:30px; border:1px solid var(--glass-border);">
@@ -286,6 +288,16 @@
             }
         }
 
+        // LÓGICA DE IMAGEN DESDE GALERÍA
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                const output = document.getElementById('pPicDisp');
+                output.src = reader.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
         // MODAL
         function abrirModal() { document.getElementById('groupModal').style.display = 'flex'; }
         function cerrarModal() { document.getElementById('groupModal').style.display = 'none'; }
@@ -325,14 +337,12 @@
         }
         initFeed();
 
-        // INICIALIZAR MATCHES EN PERFIL
         function initMatches() {
             const display = document.getElementById('match-display');
             for(let i=10; i<18; i++) {
                 const img = document.createElement('img');
                 img.src = `https://i.pravatar.cc/100?u=match${i}`;
                 img.className = 'match-avatar';
-                img.title = nombres[i%8];
                 display.appendChild(img);
             }
         }
@@ -349,7 +359,6 @@
         }
         initNetworking();
 
-        // BASE FUNCIONES
         function swipe(dir) {
             const cards = document.querySelectorAll('.tutor-card'); if(!cards.length) return;
             const top = cards[cards.length - 1];
@@ -361,7 +370,9 @@
 
         function updateProfile() {
             const name = document.getElementById('inName').value;
+            const grade = document.getElementById('inGrade').value;
             document.getElementById('pNameDisp').innerText = name || "Tu Nombre";
+            document.getElementById('pGradeDisp').innerText = grade || "Carrera";
             document.getElementById('userNameHello').innerText = (name || "Estudiante").split(' ')[0];
         }
 
