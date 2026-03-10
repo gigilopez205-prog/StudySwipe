@@ -46,48 +46,40 @@
         }
         .nav-links button:hover { opacity: 1; color: var(--electric-blue); }
 
-        .noti-container { position: relative; }
-        .noti-badge { background: #ef4444; width: 10px; height: 10px; border-radius: 50%; position: absolute; top: 0; right: 0; box-shadow: 0 0 10px #ef4444; }
-        
-        .noti-dropdown { 
-            display: none; position: absolute; top: 40px; right: 0; 
-            background: var(--navy-soft); border: 1px solid var(--glass-border); 
-            width: 250px; border-radius: 15px; padding: 10px; z-index: 2000;
-        }
-
         /* --- SECCIONES --- */
         .section { display: none; padding: 40px 20px; animation: slideUp 0.6s ease; width: 100%; max-width: 1200px; margin: 0 auto; }
         .active { display: flex; flex-direction: column; align-items: center; }
 
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- DASHBOARD --- */
-        .welcome-hero { text-align: center; margin-bottom: 40px; }
-        .welcome-hero h1 { font-size: 3.5rem; letter-spacing: -2px; margin-bottom: 10px; }
-        .stats-bar { display: flex; gap: 20px; margin-top: 30px; flex-wrap: wrap; justify-content: center; }
-        .stat-card { background: var(--glass); padding: 25px 45px; border-radius: 20px; border: 1px solid var(--glass-border); text-align: center; backdrop-filter: blur(10px); }
+        /* --- DASHBOARD REORGANIZADO --- */
+        .dash-container { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; width: 100%; margin-top: 20px; }
+        
+        .welcome-hero { grid-column: 1 / -1; text-align: left; }
+        .welcome-hero h1 { font-size: 3.5rem; letter-spacing: -2px; margin: 0; }
+        
+        .stat-group { display: flex; gap: 15px; margin-top: 15px; }
+        .stat-card { background: var(--glass); padding: 20px 30px; border-radius: 20px; border: 1px solid var(--glass-border); text-align: center; flex: 1; }
 
-        .fun-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 50px; width: 100%; }
-        .fact-box { background: rgba(255,255,255,0.03); padding: 20px; border-radius: 20px; border-left: 4px solid var(--electric-blue); }
+        .fact-grid { display: flex; flex-direction: column; gap: 15px; }
+        .fact-box { background: rgba(255,255,255,0.03); padding: 20px; border-radius: 25px; border-left: 4px solid var(--electric-blue); backdrop-filter: blur(10px); }
 
-        .focus-timer { background: linear-gradient(135deg, #0ea5e9, #2563eb); padding: 25px; border-radius: 30px; margin-top: 40px; width: 100%; max-width: 450px; text-align: center; box-shadow: 0 15px 35px rgba(37, 99, 235, 0.3); }
+        .focus-timer { 
+            background: linear-gradient(135deg, #0ea5e9, #2563eb); padding: 40px; 
+            border-radius: 40px; text-align: center; box-shadow: 0 15px 35px rgba(37, 99, 235, 0.3); 
+            display: flex; flex-direction: column; justify-content: center;
+        }
 
         /* --- PERFIL --- */
         .profile-layout { display: grid; grid-template-columns: 1fr 1.5fr; gap: 40px; width: 100%; }
-        .profile-preview { background: var(--navy-soft); padding: 40px; border-radius: 35px; border: 1px solid var(--electric-blue); text-align: center; }
-        .user-pic { width: 150px; height: 150px; border-radius: 50%; border: 4px solid var(--electric-blue); object-fit: cover; margin-bottom: 20px; }
+        .profile-preview { background: var(--navy-soft); padding: 40px; border-radius: 35px; border: 1px solid var(--electric-blue); text-align: center; position: relative; }
+        .user-pic { width: 150px; height: 150px; border-radius: 50%; border: 4px solid var(--electric-blue); object-fit: cover; margin-bottom: 20px; background: #000; }
         .skill-chip { display: inline-block; background: rgba(56, 189, 248, 0.1); border: 1px solid var(--electric-blue); color: var(--electric-blue); padding: 6px 16px; border-radius: 25px; margin: 5px; font-size: 0.85rem; cursor: pointer; }
 
-        /* --- EXPLORAR Y RADAR --- */
-        .explore-wrapper { position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; }
-        .radar-container { position: absolute; top: 50%; transform: translateY(-50%); width: 500px; height: 500px; border: 1px solid rgba(56, 189, 248, 0.1); border-radius: 50%; z-index: -1; pointer-events: none; }
-        .radar-pulse { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: 100%; border: 2px solid var(--electric-blue); border-radius: 50%; animation: radar 3s infinite linear; opacity: 0; }
-        @keyframes radar { 0% { width: 0; height: 0; opacity: 0.5; } 100% { width: 100%; height: 100%; opacity: 0; } }
-
-        .swipe-stack { position: relative; width: 340px; height: 480px; z-index: 2; }
+        /* --- EXPLORAR --- */
+        .swipe-stack { position: relative; width: 340px; height: 480px; }
         .tutor-card { position: absolute; width: 100%; height: 100%; background: var(--white); border-radius: 35px; overflow: hidden; color: var(--navy-dark); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
 
-        /* --- BOTONES --- */
         .btn-main { background: linear-gradient(90deg, var(--accent-orange), #fbbf24); color: white; border: none; padding: 16px 35px; border-radius: 50px; font-weight: 800; cursor: pointer; transition: 0.3s; }
 
         #toast { visibility: hidden; min-width: 250px; background-color: #22c55e; color: white; text-align: center; border-radius: 15px; padding: 16px; position: fixed; z-index: 2000; left: 50%; transform: translateX(-50%); bottom: 30px; font-weight: bold; }
@@ -105,43 +97,36 @@
             <button onclick="showSection('profile')">Mi Perfil</button>
             <button onclick="showSection('community')">Comunidad</button>
             <button onclick="showSection('app')">Explorar</button>
-            <div class="noti-container">
-                <button onclick="toggleNotifications()">🔔<span class="noti-badge" id="dot"></span></button>
-                <div class="noti-dropdown" id="notiBox">
-                    <div style="padding:10px; font-size:0.8rem; border-bottom:1px solid var(--glass-border);">✨ ¡Nueva racha de 5 días!</div>
-                    <div style="padding:10px; font-size:0.8rem;">🤖 Elena M. aceptó tu match.</div>
-                </div>
-            </div>
         </div>
     </nav>
 
     <div id="landing" class="section active">
         <div class="welcome-hero">
             <h1>Hola, <span id="userNameHello" style="color:var(--electric-blue)">Estudiante</span>.</h1>
-            <p style="opacity: 0.7; font-size: 1.2rem;">¿Listo para resolver tus dudas hoy?</p>
-            <button class="btn-main" onclick="showSection('app')">Encontrar Tutor Ahora</button>
+            <div class="stat-group">
+                <div class="stat-card"><h3>🔥 5</h3><p style="margin:0; font-size:0.8rem; opacity:0.7;">Racha de días</p></div>
+                <div class="stat-card"><h3>📚 12</h3><p style="margin:0; font-size:0.8rem; opacity:0.7;">Mentorías</p></div>
+            </div>
         </div>
         
-        <div class="stats-bar">
-            <div class="stat-card"><h3>🔥 5</h3><p>Racha</p></div>
-            <div class="stat-card"><h3>📚 12</h3><p>Sesiones</p></div>
-        </div>
-
-        <div class="fun-facts">
-            <div class="fact-box">
-                <h4>🚀 ¿Por qué LearnSwipe?</h4>
-                <p style="font-size: 0.85rem; opacity: 0.8;">Unimos el algoritmo de Match con la educación para que aprender sea tan fluido como deslizar una foto.</p>
+        <div class="dash-container">
+            <div class="fact-grid">
+                <div class="fact-box">
+                    <h4 style="margin:0 0 10px 0;">🚀 ¿Por qué LearnSwipe?</h4>
+                    <p style="font-size: 0.85rem; opacity: 0.8; margin:0;">Convertimos el aprendizaje en una experiencia social y adictiva.</p>
+                </div>
+                <div class="fact-box">
+                    <h4 style="margin:0 0 10px 0;">💡 Sabías que...</h4>
+                    <p style="font-size: 0.85rem; opacity: 0.8; margin:0;">El 60% de los estudiantes retienen mejor si explican el tema a otros.</p>
+                </div>
+                <button class="btn-main" onclick="showSection('app')" style="width:100%;">Explorar Tutores</button>
             </div>
-            <div class="fact-box">
-                <h4>💡 El Dato</h4>
-                <p style="font-size: 0.85rem; opacity: 0.8;">Estudiar en pares mejora la retención de conceptos complejos en un 60% comparado con estudiar solo.</p>
-            </div>
-        </div>
 
-        <div class="focus-timer">
-            <h4 style="margin:0">⏳ MODO ENFOQUE</h4>
-            <div style="font-size: 2.5rem; font-weight: 800; margin: 10px 0;" id="timer">25:00</div>
-            <button onclick="startTimer()" style="background:white; color:#2563eb; border:none; padding:10px 25px; border-radius:15px; font-weight:bold; cursor:pointer;">Iniciar</button>
+            <div class="focus-timer">
+                <h4 style="margin:0; letter-spacing: 1px;">MODO ENFOQUE</h4>
+                <div style="font-size: 4rem; font-weight: 800; margin: 15px 0;" id="timer">25:00</div>
+                <button onclick="startTimer()" style="background:white; color:#2563eb; border:none; padding:12px 30px; border-radius:15px; font-weight:bold; cursor:pointer;">Comenzar Sesión</button>
+            </div>
         </div>
     </div>
 
@@ -150,57 +135,52 @@
             <div class="profile-preview">
                 <img src="https://via.placeholder.com/150" class="user-pic" id="pPicDisp">
                 <h2 id="pNameDisp" style="margin:0">Tu Nombre</h2>
-                <p id="pGradeDisp" style="color:var(--electric-blue); font-weight:600;">Carrera</p>
-                <p id="pBioDisp" style="opacity:0.7; font-size: 0.9rem; margin: 15px 0;">"Tu descripción aquí..."</p>
-                <div id="pSkillsDisp"></div>
+                <p id="pGradeDisp" style="color:var(--electric-blue); font-weight: 600;">Carrera</p>
+                <div id="pSkillsDisp" style="margin-top:10px;"></div>
             </div>
             <div style="background:var(--glass); padding:30px; border-radius:35px; border:1px solid var(--glass-border); backdrop-filter:blur(10px);">
-                <h3>Editor de Perfil</h3>
-                <input type="text" id="inName" placeholder="Nombre" onkeyup="updateProfile()" style="width:100%; padding:15px; margin-bottom:10px; border-radius:12px; background:rgba(0,0,0,0.3); border:1px solid var(--glass-border); color:white;">
-                <input type="text" id="inGrade" placeholder="Carrera" onkeyup="updateProfile()" style="width:100%; padding:15px; margin-bottom:10px; border-radius:12px; background:rgba(0,0,0,0.3); border:1px solid var(--glass-border); color:white;">
-                <textarea id="inBio" placeholder="Bio / Descripción" onkeyup="updateProfile()" style="width:100%; height:60px; padding:15px; margin-bottom:10px; border-radius:12px; background:rgba(0,0,0,0.3); border:1px solid var(--glass-border); color:white; resize:none;"></textarea>
-                <input type="text" id="inSkill" placeholder="Escribe una habilidad y pulsa Enter" onkeydown="handleSkillEnter(event)" style="width:100%; padding:15px; margin-bottom:15px; border-radius:12px; background:rgba(0,0,0,0.3); border:1px solid var(--electric-blue); color:white;">
-                <button class="btn-main" style="width:100%" onclick="showToast('¡Perfil Actualizado! ✨')">Guardar Todo</button>
+                <h3>Configura tu Perfil</h3>
+                
+                <label style="font-size: 0.8rem; opacity: 0.7;">Foto de Perfil:</label>
+                <input type="file" id="fileInput" accept="image/*" onchange="previewImage(event)" style="margin: 10px 0 20px 0; color: white; display: block;">
+
+                <input type="text" id="inName" placeholder="Nombre" onkeyup="updateProfile()" style="width:100%; padding:15px; margin-bottom:15px; border-radius:12px; background:rgba(0,0,0,0.3); border:1px solid var(--glass-border); color:white;">
+                <input type="text" id="inGrade" placeholder="¿Qué estudias?" onkeyup="updateProfile()" style="width:100%; padding:15px; margin-bottom:15px; border-radius:12px; background:rgba(0,0,0,0.3); border:1px solid var(--glass-border); color:white;">
+                
+                <label style="font-size: 0.8rem; opacity: 0.7;">Habilidades (Escribe y presiona Enter):</label>
+                <input type="text" id="inSkill" placeholder="Ej: Python, Diseño..." onkeydown="handleSkillEnter(event)" style="width:100%; padding:15px; margin-bottom:15px; border-radius:12px; background:rgba(0,0,0,0.3); border:1px solid var(--electric-blue); color:white;">
+                
+                <button class="btn-main" style="width:100%" onclick="showToast('¡Perfil actualizado con éxito!')">Guardar Cambios</button>
             </div>
         </div>
     </div>
 
     <div id="community" class="section">
-        <div class="muro-container" style="background: var(--warm-bg); border-radius:35px; padding:30px; color:#333; width:100%; max-width:800px;">
-            <h2 style="margin-top:0">Feed de Dudas 🫂</h2>
-            <textarea id="postText" placeholder="¿En qué necesitas ayuda hoy?" style="width:100%; padding:15px; border-radius:15px; border:1px solid #ddd; margin-bottom:10px;"></textarea>
-            <button class="btn-main" style="width:100%" onclick="addPost()">Publicar Post</button>
+        <div style="background:var(--warm-bg); border-radius:35px; padding:30px; color:#333; width:100%; max-width:800px;">
+            <h2 style="margin:0 0 20px 0;">Muro de la Comunidad 🫂</h2>
+            <textarea id="postText" placeholder="¿Qué estás aprendiendo hoy?" style="width:100%; padding:15px; border-radius:15px; margin-bottom:10px;"></textarea>
+            <button class="btn-main" style="width:100%" onclick="addPost()">Publicar</button>
             <div id="feed" style="margin-top:20px;"></div>
         </div>
     </div>
 
     <div id="app" class="section">
-        <div class="explore-wrapper">
-            <div class="radar-container">
-                <div class="radar-pulse"></div>
-                <div class="radar-pulse" style="animation-delay: 1s;"></div>
-                <div class="radar-pulse" style="animation-delay: 2s;"></div>
-            </div>
-            <div class="swipe-stack" id="card-stack"></div>
+        <div class="swipe-stack" id="card-stack"></div>
+        <div style="margin-top:40px; display:flex; gap:30px;">
+            <button onclick="swipe('left')" style="width:70px; height:70px; border-radius:50%; border:none; background:white; color:#ef4444; font-size:1.5rem; cursor:pointer;">✕</button>
+            <button onclick="swipe('right')" style="width:70px; height:70px; border-radius:50%; border:none; background:var(--electric-blue); color:var(--navy-dark); font-size:1.5rem; cursor:pointer;">❤</button>
         </div>
-        <div style="margin-top:40px; display:flex; gap:30px; z-index:10;">
-            <button onclick="swipe('left')" style="width:70px; height:70px; border-radius:50%; border:none; background:white; color:#ef4444; font-size:1.5rem; cursor:pointer; box-shadow:0 10px 20px rgba(0,0,0,0.2)">✕</button>
-            <button onclick="swipe('right')" style="width:70px; height:70px; border-radius:50%; border:none; background:var(--electric-blue); color:var(--navy-dark); font-size:1.5rem; cursor:pointer; box-shadow:0 10px 20px rgba(56, 189, 248, 0.3)">❤</button>
-        </div>
-        <p style="margin-top:20px; font-size:0.8rem; opacity:0.6;">Buscando tutores expertos cerca de ti...</p>
     </div>
 
-    <div id="toast">Acción completada</div>
+    <div id="toast">Notificación</div>
 
     <script>
-        // --- FONDO INTERACTIVO ---
+        // --- FONDO INTERACTIVO (NO SE TOCA) ---
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
         let mouse = { x: null, y: null };
-
         window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
-
         class Particle {
             constructor() {
                 this.x = Math.random() * canvas.width;
@@ -215,17 +195,15 @@
                 if (this.y > canvas.height || this.y < 0) this.speedY *= -1;
             }
             draw() {
-                ctx.fillStyle = 'rgba(56, 189, 248, 0.25)';
+                ctx.fillStyle = 'rgba(56, 189, 248, 0.3)';
                 ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
             }
         }
-
         function initBg() {
             canvas.width = window.innerWidth; canvas.height = window.innerHeight;
             particles = [];
             for (let i = 0; i < 70; i++) particles.push(new Particle());
         }
-
         function animateBg() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             particles.forEach(p => {
@@ -240,47 +218,51 @@
             requestAnimationFrame(animateBg);
         }
         initBg(); animateBg();
-        window.addEventListener('resize', initBg);
 
-        // --- LÓGICA DE SKILLS CON ENTER ---
-        function handleSkillEnter(e) {
-            if (e.key === 'Enter') {
-                const val = e.target.value.trim();
-                if (val) {
+        // --- FUNCIONALIDADES PEDIDAS ---
+
+        // 1. Imagen desde galería
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function(){
+                const output = document.getElementById('pPicDisp');
+                output.src = reader.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        // 2. Agregar skills con Enter
+        function handleSkillEnter(event) {
+            if (event.key === 'Enter') {
+                const val = event.target.value.trim();
+                if (val !== "") {
                     const chip = document.createElement('span');
                     chip.className = 'skill-chip';
                     chip.innerText = val;
                     chip.onclick = function() { this.remove(); };
                     document.getElementById('pSkillsDisp').appendChild(chip);
-                    e.target.value = "";
+                    event.target.value = ""; // Limpiar input
                 }
             }
         }
 
-        // --- LÓGICA GENERAL ---
+        // --- LÓGICA DE NAVEGACIÓN Y APP ---
         function showSection(id) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             if(id === 'app') initCards();
         }
 
-        function toggleNotifications() {
-            const box = document.getElementById('notiBox');
-            box.style.display = box.style.display === 'block' ? 'none' : 'block';
-            document.getElementById('dot').style.display = 'none';
-        }
-
         function updateProfile() {
             document.getElementById('pNameDisp').innerText = document.getElementById('inName').value || "Tu Nombre";
-            document.getElementById('pGradeDisp').innerText = document.getElementById('inGrade').value || "Tu Carrera";
-            document.getElementById('pBioDisp').innerText = document.getElementById('inBio').value || "Tu descripción aquí...";
+            document.getElementById('pGradeDisp').innerText = document.getElementById('inGrade').value || "Carrera";
             document.getElementById('userNameHello').innerText = (document.getElementById('inName').value || "Estudiante").split(' ')[0];
         }
 
         function addPost() {
             const text = document.getElementById('postText').value; if(!text) return;
-            const div = document.createElement('div'); div.className = 'feed-card';
-            div.style = "background:white; padding:15px; border-radius:15px; margin-bottom:10px; border-left:5px solid var(--accent-orange);";
+            const div = document.createElement('div');
+            div.style = "background:white; padding:15px; border-radius:15px; margin-top:10px; border-left:5px solid var(--accent-orange);";
             div.innerHTML = `<b>Tú:</b> ${text}`;
             document.getElementById('feed').prepend(div);
             document.getElementById('postText').value = "";
@@ -294,15 +276,9 @@
             }, 1000);
         }
 
-        function showToast(msg) {
-            const x = document.getElementById("toast"); x.innerText = msg;
-            x.className = "show"; setTimeout(() => x.className = "", 3000);
-        }
-
         const tutors = [
-            {n: "Elena M.", s: "Ingeniería de Software", i: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=400&q=80"},
-            {n: "Marc R.", s: "Física Cuántica", i: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80"},
-            {n: "Lucía P.", s: "Diseño UX/UI", i: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80"}
+            {n: "Elena M.", s: "Ingeniería", i: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=400&q=80"},
+            {n: "Marc R.", s: "Física", i: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80"}
         ];
 
         function initCards() {
@@ -317,11 +293,15 @@
         function swipe(dir) {
             const cards = document.querySelectorAll('.tutor-card'); if(!cards.length) return;
             const top = cards[cards.length - 1];
-            top.style.transition = "0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+            top.style.transition = "0.6s ease";
             top.style.transform = dir === 'right' ? 'translateX(1000px) rotate(30deg)' : 'translateX(-1000px) rotate(-30deg)';
             top.style.opacity = "0";
-            if(dir === 'right') showToast("¡Es un Match! 🎉");
             setTimeout(() => top.remove(), 600);
+        }
+
+        function showToast(msg) {
+            const x = document.getElementById("toast"); x.innerText = msg;
+            x.className = "show"; setTimeout(() => x.className = "", 3000);
         }
     </script>
 </body>
