@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SwipeLearn - Study Aesthetic Navy</title>
+    <title>SwipeLearn - De la Confusión a la Solución</title>
     <style>
         :root {
-            --primary-navy: #1a2a6c; /* Azul marino profundo */
-            --light-navy: #2a4858;
+            --primary-navy: #1a2a6c;
+            --dark-navy: #0d1b3e;
             --accent-orange: #d98e5e;
             --white: #ffffff;
+            --text-light: #f0f0f0;
         }
 
         body {
@@ -17,126 +18,106 @@
             margin: 0;
             display: flex;
             flex-direction: column;
-            height: 100vh;
+            min-height: 100vh;
             color: #333;
-            /* Fondo azul marino con textura de grano */
             background: 
                 linear-gradient(180deg, #0f2027 0%, var(--primary-navy) 100%),
                 url('https://www.transparenttextures.com/patterns/stardust.png');
             background-attachment: fixed;
+            overflow-x: hidden;
         }
 
-        /* Barra de navegación superior */
+        /* --- PÁGINA DE INICIO (LANDING) --- */
+        #landing-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            color: var(--white);
+            text-align: center;
+            animation: fadeIn 1s ease;
+        }
+
+        .hero-section { max-width: 800px; margin-bottom: 50px; }
+        .hero-section h1 { font-size: 3rem; margin-bottom: 10px; letter-spacing: 3px; }
+        .hero-section p { font-size: 1.2rem; opacity: 0.9; line-height: 1.6; }
+
+        .start-btn {
+            background: var(--accent-orange);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            transition: 0.3s;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .start-btn:hover { transform: scale(1.05); background: #e69b6d; }
+
+        /* Secciones de Contenido */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1000px;
+            margin-top: 40px;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: left;
+        }
+
+        .info-card h3 { color: var(--accent-orange); margin-top: 0; }
+
+        /* --- SECCIÓN SWIPE (OCULTA AL PRINCIPIO) --- */
+        #app-section { display: none; flex-direction: column; align-items: center; }
+
+        /* Reutilización de estilos anteriores */
         .navbar {
-            background-color: #0d1b3e; /* Azul marino más oscuro para la barra */
+            width: 100%;
+            background-color: var(--dark-navy);
             color: white;
             padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-            z-index: 1000;
+            box-sizing: border-box;
         }
 
-        .navbar h1 { margin: 0; font-size: 1.2rem; letter-spacing: 2px; font-weight: 300; }
-
-        .nav-links button {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            padding: 8px 18px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        /* Sección de Favoritos */
-        #favorites-section {
-            display: none;
-            width: 90%;
-            max-width: 400px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            height: 70vh;
-            position: absolute;
-            top: 20px;
-            border-radius: 30px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            padding: 25px;
-            overflow-y: auto;
-            z-index: 2000;
-        }
-
-        /* Stack de Tarjetas */
-        .swipe-container {
-            position: relative;
-            width: 340px;
-            height: 500px;
-        }
-
+        .swipe-container { position: relative; width: 340px; height: 500px; margin-top: 20px; }
         .tutor-card {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: var(--white);
-            border-radius: 30px;
+            position: absolute; width: 100%; height: 100%;
+            background: var(--white); border-radius: 30px;
             box-shadow: 0 15px 40px rgba(0,0,0,0.4);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
+            display: flex; flex-direction: column; overflow: hidden;
             transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.5s ease;
         }
 
         .tutor-photo {
-            height: 70%;
-            background-size: cover;
-            background-position: center;
-            position: relative;
+            height: 70%; background-size: cover; background-position: center;
             box-shadow: inset 0 -40px 60px rgba(0,0,0,0.3);
         }
 
-        .tutor-photo::after {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: url('https://www.transparenttextures.com/patterns/felt.png');
-            opacity: 0.15;
-            pointer-events: none;
-        }
-
-        .tutor-details {
-            padding: 20px;
-            background: white;
-            flex-grow: 1;
-        }
-
-        .tutor-details h3 { margin: 0; color: var(--primary-navy); font-size: 1.3rem; }
-        .tutor-details p { margin: 4px 0; font-size: 0.9rem; color: #555; }
-
-        /* Controles */
-        .controls {
-            margin-top: 20px;
-            display: flex;
-            gap: 40px;
-        }
-
+        .controls { margin: 20px 0; display: flex; gap: 40px; }
         .btn {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            border: none;
-            font-size: 1.8rem;
-            cursor: pointer;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 70px; height: 70px; border-radius: 50%; border: none;
+            font-size: 1.8rem; cursor: pointer; display: flex;
+            align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
-
         .btn-dislike { background: white; color: #d32f2f; }
         .btn-like { background: var(--accent-orange); color: white; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         .swipe-left { transform: translateX(-1000px) rotate(-35deg) !important; opacity: 0; }
         .swipe-right { transform: translateX(1000px) rotate(35deg) !important; opacity: 0; }
@@ -144,19 +125,39 @@
 </head>
 <body>
 
-    <nav class="navbar">
-        <h1>SWIPE LEARN</h1>
-        <div class="nav-links">
-            <button onclick="toggleFavs()">Mis Conexiones (<span id="fav-count">0</span>)</button>
+    <div id="landing-page">
+        <div class="hero-section">
+            <h1>SwipeLearn</h1>
+            <p>¿Cansado de estudiar solo? Somos la primera plataforma en España que conecta estudiantes de grado y posgrado mediante un sistema inteligente de "swipe". De la confusión a la solución en un solo movimiento.</p>
+            <button class="start-btn" onclick="showApp()">Empezar a Explorar</button>
         </div>
-    </nav>
 
-    <div class="main-content" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-        <div id="favorites-section">
-            <h2 style="color: var(--primary-navy); font-weight: 300;">Estudiando con...</h2>
-            <div id="fav-list"></div>
-            <button style="background: var(--primary-navy); color: white; border: none; padding: 12px; width: 100%; border-radius: 15px; margin-top: 20px; cursor: pointer;" onclick="toggleFavs()">Cerrar</button>
+        <div class="info-grid">
+            <div class="info-card">
+                <h3>🧠 Sabías que...</h3>
+                <ul style="padding-left: 20px; line-height: 1.6;">
+                    <li>El cerebro recuerda mejor la información si la explicas a otra persona (Efecto Protégé).</li>
+                    <li>Estudiar en bloques de 25 min (Pomodoro) evita la fatiga mental.</li>
+                    <li>Tu capacidad de atención mejora un 20% si hay luz natural y una planta cerca.</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>🌍 Noticias del Mundo</h3>
+                <p><strong>Educación:</strong> La IA se integra en el 60% de las universidades europeas.</p>
+                <p><strong>Tecnología:</strong> Nuevas becas de movilidad para estudiantes tech en España.</p>
+                <p><strong>Global:</strong> Récord de colaboración académica internacional en 2025.</p>
+            </div>
         </div>
+    </div>
+
+    <div id="app-section">
+        <nav class="navbar">
+            <h1>SWIPE LEARN</h1>
+            <div class="nav-links">
+                <button style="background:none; border:1px solid white; color:white; border-radius:20px; padding:5px 15px; cursor:pointer;" onclick="toggleFavs()">Conexiones (<span id="fav-count">0</span>)</button>
+            </div>
+        </nav>
 
         <div class="swipe-container" id="card-stack"></div>
 
@@ -164,9 +165,12 @@
             <button class="btn btn-dislike" onclick="handleSwipe('left')">✕</button>
             <button class="btn btn-like" onclick="handleSwipe('right')">❤</button>
         </div>
+        
+        <button onclick="location.reload()" style="background:none; border:none; color:white; cursor:pointer; text-decoration:underline;">Volver al inicio</button>
     </div>
 
     <script>
+        // Datos de Tutores
         const tutorData = [
             { id: 1, nombre: "Lucía M.", materia: "Física Cuántica", uni: "Complutense", img: "https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&w=400&q=80" },
             { id: 2, nombre: "Marcos T.", materia: "Derecho Civil", uni: "U. de Barcelona", img: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=400&q=80" },
@@ -176,20 +180,24 @@
 
         let favorites = [];
         const stack = document.getElementById('card-stack');
-        const favList = document.getElementById('fav-list');
-        const favCount = document.getElementById('fav-count');
+
+        function showApp() {
+            document.getElementById('landing-page').style.display = 'none';
+            document.getElementById('app-section').style.display = 'flex';
+            initCards();
+        }
 
         function initCards() {
+            stack.innerHTML = "";
             tutorData.forEach(tutor => {
                 const card = document.createElement('div');
                 card.className = 'tutor-card';
                 card.dataset.id = tutor.id;
                 card.innerHTML = `
                     <div class="tutor-photo" style="background-image: url('${tutor.img}')"></div>
-                    <div class="tutor-details">
-                        <h3>${tutor.nombre}</h3>
-                        <p><b>Especialidad:</b> ${tutor.materia}</p>
-                        <p><b>Centro:</b> ${tutor.uni}</p>
+                    <div style="padding:20px;">
+                        <h3 style="margin:0; color:var(--primary-navy);">${tutor.nombre}</h3>
+                        <p style="margin:5px 0; color:#666;">${tutor.materia} • ${tutor.uni}</p>
                     </div>
                 `;
                 stack.appendChild(card);
@@ -200,11 +208,11 @@
             const cards = document.querySelectorAll('.tutor-card');
             if (cards.length === 0) return;
             const topCard = cards[cards.length - 1];
-            const tutorId = parseInt(topCard.dataset.id);
-
+            
             if (direction === 'right') {
                 topCard.classList.add('swipe-right');
-                addToFavorites(tutorId);
+                favorites.push(topCard.dataset.id);
+                document.getElementById('fav-count').innerText = favorites.length;
             } else {
                 topCard.classList.add('swipe-left');
             }
@@ -212,35 +220,14 @@
             setTimeout(() => {
                 topCard.remove();
                 if (document.querySelectorAll('.tutor-card').length === 0) {
-                    stack.innerHTML = "<h3 style='color: white; font-weight: 300; text-align:center;'>Sesión de búsqueda terminada. <br> ¡A por el sobresaliente! 📚</h3>";
+                    stack.innerHTML = "<h3 style='color:white; margin-top:100px;'>¡Has conectado con todos!<br>Abre tus conexiones arriba.</h3>";
                 }
             }, 500);
         }
 
-        function addToFavorites(id) {
-            const tutor = tutorData.find(t => t.id === id);
-            if (!favorites.find(f => f.id === id)) {
-                favorites.push(tutor);
-                updateFavUI();
-            }
-        }
-
-        function updateFavUI() {
-            favCount.innerText = favorites.length;
-            favList.innerHTML = favorites.map(f => `
-                <div class="fav-item" style="display: flex; align-items: center; padding: 12px; border-bottom: 1px solid #ddd; gap: 15px;">
-                    <img src="${f.img}" style="width: 50px; height: 50px; border-radius: 10px; object-fit: cover;">
-                    <div><strong>${f.nombre}</strong><br><small style="color:#666">${f.materia}</small></div>
-                </div>
-            `).join('');
-        }
-
         function toggleFavs() {
-            const favSec = document.getElementById('favorites-section');
-            favSec.style.display = favSec.style.display === 'block' ? 'none' : 'block';
+            alert("Has conectado con " + favorites.length + " personas. ¡Pronto podrás chatear con ellas!");
         }
-
-        initCards();
     </script>
 </body>
 </html>
