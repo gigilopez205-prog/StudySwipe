@@ -62,9 +62,9 @@
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
         .modal-content { background: var(--navy-soft); padding: 40px; border-radius: 30px; border: 2px solid var(--electric-blue); width: 90%; max-width: 500px; text-align: left; }
 
-        /* EXPLORAR */
+        /* EXPLORAR - SOMBRA SUAVIZADA */
         .swipe-stack { position: relative; width: 320px; height: 450px; }
-        .tutor-card { position: absolute; width: 100%; height: 100%; background: var(--white); border-radius: 30px; overflow: hidden; color: var(--navy-dark); box-shadow: 0 20px 40px rgba(0,0,0,0.5); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease; cursor: grab; }
+        .tutor-card { position: absolute; width: 100%; height: 100%; background: var(--white); border-radius: 30px; overflow: hidden; color: var(--navy-dark); box-shadow: 0 15px 35px rgba(0,0,0,0.15); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease; cursor: grab; }
         
         .btn-main { background: linear-gradient(90deg, var(--accent-orange), #fbbf24); color: white; border: none; padding: 16px 35px; border-radius: 50px; font-weight: 800; cursor: pointer; transition: 0.3s; }
         
@@ -82,10 +82,8 @@
         <div class="modal-content">
             <h2 style="color:var(--electric-blue); margin-top:0;">🚀 Nuevo Grupo de Estudio</h2>
             <p style="opacity:0.8;">Configura tu espacio colaborativo:</p>
-            
             <label style="display:block; margin-bottom:8px;">Nombre del Grupo:</label>
             <input type="text" id="modalGroupName" placeholder="Ej: Supervivientes de Cálculo II" style="width:100%; padding:15px; border-radius:12px; border:none; background:rgba(255,255,255,0.1); color:white; margin-bottom:20px;">
-            
             <label style="display:block; margin-bottom:8px;">Categoría:</label>
             <select id="modalGroupTag" style="width:100%; padding:15px; border-radius:12px; border:none; background:rgba(255,255,255,0.1); color:white; margin-bottom:20px;">
                 <option value="EXAMEN">📚 Examen Final</option>
@@ -93,7 +91,6 @@
                 <option value="REPASO">📝 Repaso Semanal</option>
                 <option value="IDIOMAS">🗣️ Idiomas</option>
             </select>
-
             <div style="display:flex; gap:10px;">
                 <button class="btn-main" onclick="confirmarCrearGrupo()" style="flex:1;">Crear Ahora</button>
                 <button onclick="cerrarModal()" style="flex:1; background:transparent; border:1px solid #666; color:white; border-radius:50px; cursor:pointer;">Cancelar</button>
@@ -159,11 +156,8 @@
                 <h2 style="margin:0;">Networking 🌐</h2>
                 <button class="btn-main" onclick="abrirModal()" style="padding:10px 25px; font-size:0.9rem;">+ Crear Grupo Interactivo</button>
             </div>
-
             <h3 style="color:var(--electric-blue); margin: 20px 0 10px 0;">Compañeros Destacados</h3>
-            <div class="net-grid" id="users-list">
-                </div>
-
+            <div class="net-grid" id="users-list"></div>
             <h3 style="color:var(--accent-orange); margin: 40px 0 10px 0;">Grupos de Estudio Activos</h3>
             <div class="net-grid" id="groups-list">
                 <div class="group-card">
@@ -183,24 +177,22 @@
             <h2>Muro de Ayuda🫂</h2>
             <textarea id="postText" placeholder="¿En qué necesitas ayuda hoy?" style="width:100%; padding:15px; border-radius:15px; margin-bottom:10px; border:1px solid #ddd;"></textarea>
             <button class="btn-main" style="width:100%" onclick="addPost()">Publicar</button>
-            <div id="feed" style="margin-top:20px;">
-                </div>
+            <div id="feed" style="margin-top:20px;"></div>
         </div>
     </div>
 
     <div id="app" class="section">
-        <div class="swipe-stack" id="card-stack">
-            </div>
+        <div class="swipe-stack" id="card-stack"></div>
         <div style="margin-top:40px; display:flex; gap:30px;">
-            <button onclick="swipe('left')" style="width:70px; height:70px; border-radius:50%; border:none; background:white; color:#ef4444; font-size:1.5rem; cursor:pointer; box-shadow:0 10px 20px rgba(0,0,0,0.2)">✕</button>
-            <button onclick="swipe('right')" style="width:70px; height:70px; border-radius:50%; border:none; background:var(--electric-blue); color:var(--navy-dark); font-size:1.5rem; cursor:pointer; box-shadow:0 10px 20px rgba(56,189,248,0.3)">❤</button>
+            <button onclick="swipe('left')" style="width:70px; height:70px; border-radius:50%; border:none; background:white; color:#ef4444; font-size:1.5rem; cursor:pointer; box-shadow:0 10px 20px rgba(0,0,0,0.1)">✕</button>
+            <button onclick="swipe('right')" style="width:70px; height:70px; border-radius:50%; border:none; background:var(--electric-blue); color:var(--navy-dark); font-size:1.5rem; cursor:pointer; box-shadow:0 10px 20px rgba(56,189,248,0.2)">❤</button>
         </div>
     </div>
 
     <div id="toast">¡Hecho!</div>
 
     <script>
-        // --- 1. CONFIGURACIÓN FIREBASE ---
+        // CONFIG FIREBASE
         const firebaseConfig = {
             apiKey: "AIzaSyBD0ocsjfTh9DRrYroAwTGfHfsXycFpSAg",
             authDomain: "learnswipe-8357e.firebaseapp.com",
@@ -212,13 +204,12 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // --- 2. FONDO DE PARTÍCULAS ---
+        // FONDO PARTÍCULAS
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
         let mouse = { x: null, y: null };
         window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
-
         class Particle {
             constructor() {
                 this.x = Math.random() * canvas.width;
@@ -237,13 +228,11 @@
                 ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
             }
         }
-
         function initBg() {
             canvas.width = window.innerWidth; canvas.height = window.innerHeight;
             particles = [];
             for (let i = 0; i < 70; i++) particles.push(new Particle());
         }
-
         function animateBg() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             particles.forEach(p => {
@@ -259,44 +248,63 @@
         }
         initBg(); animateBg();
 
-        // --- 3. NAVEGACIÓN ---
+        // NAVEGACIÓN
         function showSection(id) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             if(id === 'app') initCards();
         }
 
-        // --- 4. NETWORKING INTERACTIVO ---
+        // --- TEMPORIZADOR CON PAUSA ---
+        let timerInterval;
+        let isRunning = false;
+        let timeLeft = 25 * 60; 
+
+        function toggleTimer() {
+            const btn = document.getElementById('btnTimer');
+            if (isRunning) {
+                clearInterval(timerInterval);
+                btn.innerText = "Reanudar";
+                isRunning = false;
+            } else {
+                isRunning = true;
+                btn.innerText = "Pausar";
+                timerInterval = setInterval(() => {
+                    timeLeft--;
+                    const m = Math.floor(timeLeft / 60);
+                    const s = timeLeft % 60;
+                    document.getElementById('timer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
+                    if(timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        isRunning = false;
+                        btn.innerText = "Terminado";
+                        showToast("¡Tiempo cumplido! Descansa.");
+                    }
+                }, 1000);
+            }
+        }
+
+        // NETWORKING
         function abrirModal() { document.getElementById('groupModal').style.display = 'flex'; }
         function cerrarModal() { document.getElementById('groupModal').style.display = 'none'; }
-        
         function confirmarCrearGrupo() {
             const nombre = document.getElementById('modalGroupName').value;
             const tag = document.getElementById('modalGroupTag').value;
             if(!nombre) return alert("Ponle un nombre a tu grupo");
-
             const list = document.getElementById('groups-list');
             const div = document.createElement('div');
             div.className = 'group-card';
-            div.innerHTML = `
-                <div>
-                    <span class="group-tag">${tag}</span>
-                    <h4>${nombre}</h4>
-                    <p style="font-size:0.8rem; opacity:0.8;">1 miembro (Tú)</p>
-                </div>
-                <button class="btn-main" style="padding:10px; margin-top:15px; font-size:0.8rem;">Gestionar</button>
-            `;
+            div.innerHTML = `<div><span class="group-tag">${tag}</span><h4>${nombre}</h4><p style="font-size:0.8rem; opacity:0.8;">1 miembro (Tú)</p></div><button class="btn-main" style="padding:10px; margin-top:15px; font-size:0.8rem;">Gestionar</button>`;
             list.prepend(div);
             cerrarModal();
             showToast("¡Grupo Creado!");
             document.getElementById('modalGroupName').value = "";
         }
 
-        // --- 5. GENERACIÓN DE EJEMPLOS (100 TOTAL) ---
-        
-        // 50 EJEMPLOS PARA EXPLORAR (CARDS)
-        const carreras = ["Medicina", "Derecho", "Ing. Sistemas", "Psicología", "Artes Visuales", "Arquitectura", "Biología", "Economía", "Filosofía", "Música"];
-        const nombres = ["Andrés", "Camila", "Julián", "Sara", "Mateo", "Valentina", "Diego", "Paula", "Ricardo", "Elena", "Fernando", "Gabriela", "Hugo", "Isabel"];
+        // GENERACIÓN DE EJEMPLOS
+        const carreras = ["Medicina", "Derecho", "Ing. Sistemas", "Psicología", "Arquitectura", "Biología", "Economía", "Música"];
+        const nombres = ["Andrés", "Camila", "Julián", "Sara", "Mateo", "Valentina", "Diego", "Paula", "Elena", "Fernando"];
+        const temas = ["¿Alguien entiende las integrales triples? 🤯", "Busco grupo para Sociología", "¡Pasé el examen de Anatomía!", "¿Mejor café para estudiar?", "Tengo resumen de Historia del Arte"];
 
         function initCards() {
             const stack = document.getElementById('card-stack'); 
@@ -304,32 +312,12 @@
             for(let i=0; i<50; i++) {
                 const nombre = nombres[Math.floor(Math.random()*nombres.length)] + " " + (i+1);
                 const carrera = carreras[Math.floor(Math.random()*carreras.length)];
-                const imgId = Math.floor(Math.random()*70);
                 const card = document.createElement('div');
                 card.className = 'tutor-card';
-                card.innerHTML = `
-                    <div style="height:70%; background:url('https://i.pravatar.cc/300?u=${i}') center/cover"></div>
-                    <div style="padding:20px">
-                        <h3 style="margin:0">${nombre}</h3>
-                        <p style="opacity:0.6">${carrera}</p>
-                    </div>`;
+                card.innerHTML = `<div style="height:70%; background:url('https://i.pravatar.cc/300?u=${i}') center/cover"></div><div style="padding:20px"><h3 style="margin:0">${nombre}</h3><p style="opacity:0.6">${carrera}</p></div>`;
                 stack.appendChild(card);
             }
         }
-
-        // 50 EJEMPLOS PARA COMUNIDAD (FEED)
-        const temas = [
-            "¿Alguien entiende las integrales triples? 🤯",
-            "Busco grupo para el proyecto de Sociología",
-            "¡Pasé el examen de Anatomía! Gracias por los apuntes",
-            "¿Mejor café para estudiar toda la noche?",
-            "Recomienden libros de microeconomía porfa",
-            "¿Diferencia entre Java y C++?",
-            "Duda existencial sobre Nietzsche...",
-            "Tengo resumen de Historia del Arte, ¿quién lo quiere?",
-            "¿Cómo se citan las leyes en APA 7?",
-            "Busco alguien para practicar Inglés B2"
-        ];
 
         function initFeed() {
             const feed = document.getElementById('feed');
@@ -344,7 +332,6 @@
         }
         initFeed();
 
-        // LLENAR NETWORKING DE USUARIOS
         function initNetworking() {
             const net = document.getElementById('users-list');
             for(let i=0; i<8; i++) {
@@ -358,7 +345,7 @@
         }
         initNetworking();
 
-        // --- 6. FUNCIONES BASE ---
+        // FUNCIONES BASE
         function swipe(dir) {
             const cards = document.querySelectorAll('.tutor-card'); if(!cards.length) return;
             const top = cards[cards.length - 1];
@@ -366,15 +353,6 @@
             top.style.opacity = "0";
             if(dir === 'right') showToast("¡Match enviado! ❤️");
             setTimeout(() => top.remove(), 500);
-        }
-
-        function toggleTimer() {
-            let m = 24, s = 59;
-            setInterval(() => {
-                document.getElementById('timer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
-                if(s == 0) { if(m == 0) return; else { m--; s = 59; } } else s--;
-            }, 1000);
-            document.getElementById('btnTimer').innerText = "En marcha...";
         }
 
         function updateProfile() {
