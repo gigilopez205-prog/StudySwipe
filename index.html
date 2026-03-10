@@ -15,8 +15,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, sans-serif;
-            margin: 0;
-            display: flex; flex-direction: column;
+            margin: 0; display: flex; flex-direction: column;
             min-height: 100vh; color: white;
             background: linear-gradient(180deg, #0f2027 0%, var(--primary-navy) 100%),
                         url('https://www.transparenttextures.com/patterns/stardust.png');
@@ -34,8 +33,8 @@
 
         .nav-links button {
             background: var(--glass); border: 1px solid rgba(255,255,255,0.3);
-            color: white; padding: 8px 15px; border-radius: 20px;
-            cursor: pointer; margin-left: 5px; transition: 0.3s; font-size: 0.85rem;
+            color: white; padding: 8px 12px; border-radius: 20px;
+            cursor: pointer; margin-left: 5px; transition: 0.3s; font-size: 0.8rem;
         }
         .nav-links button:hover { background: white; color: var(--primary-navy); }
 
@@ -45,30 +44,35 @@
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- SECCIÓN MI PERFIL --- */
-        .profile-container {
-            display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; width: 100%; max-width: 900px;
+        /* --- EXPLORAR (SWIPE + MOODBOARD) --- */
+        .explore-layout {
+            display: flex; flex-wrap: wrap; gap: 40px; justify-content: center; align-items: flex-start; width: 100%; max-width: 1100px;
         }
-        .profile-form, .profile-display {
-            background: var(--glass); backdrop-filter: blur(10px);
-            padding: 30px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1);
-            flex: 1; min-width: 320px;
+        
+        /* Moodboard Derecha */
+        .moodboard {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 340px;
         }
-        .profile-display { background: white; color: #333; text-align: center; }
-        .user-photo-circle {
-            width: 120px; height: 120px; border-radius: 50%; background: #eee; margin: 0 auto 15px;
-            background-size: cover; background-position: center; border: 3px solid var(--accent-orange);
+        .mood-box {
+            background: white; border-radius: 20px; height: 160px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4); color: #333;
+            padding: 15px; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+            font-size: 0.9rem; position: relative; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.2);
         }
+        .mood-box img { width: 100%; height: 100%; object-fit: cover; border-radius: 15px; }
 
-        /* --- ESTILOS REUTILIZADOS --- */
-        .btn-main { background: var(--accent-orange); color: white; border: none; padding: 12px 30px; border-radius: 25px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; }
-        input, textarea { width: 100%; padding: 10px; margin-bottom: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.2); color: white; box-sizing: border-box; }
-        .class-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; width: 100%; max-width: 1100px; }
-        .class-card { background: white; color: #333; padding: 20px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
-        .swipe-container { position: relative; width: 330px; height: 480px; }
-        .tutor-card { position: absolute; width: 100%; height: 100%; background: white; border-radius: 30px; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.5); color: #333; }
-        .tutor-photo { height: 70%; background-size: cover; background-position: center; }
-        .post { background: #fff; color: #333; padding: 15px; border-radius: 10px; width: 250px; transform: rotate(-1deg); }
+        /* --- LANDING / INICIO --- */
+        .hero { text-align: center; margin: 40px 0; }
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 1000px; width: 100%; }
+        .card-info { background: var(--glass); padding: 25px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.1); }
+
+        /* --- PERFIL / CLASES / MURO --- */
+        input, textarea { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 10px; background: rgba(0,0,0,0.3); color: white; border: 1px solid rgba(255,255,255,0.2); box-sizing: border-box;}
+        .btn-main { background: var(--accent-orange); color: white; border: none; padding: 12px 25px; border-radius: 25px; cursor: pointer; font-weight: bold; }
+        .tutor-card { position: absolute; width: 330px; height: 450px; background: white; border-radius: 30px; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.5); color: #333; transition: transform 0.5s; }
+        .swipe-container { position: relative; width: 330px; height: 450px; }
     </style>
 </head>
 <body>
@@ -76,78 +80,91 @@
     <nav class="navbar">
         <h1 style="cursor:pointer" onclick="showSection('landing')">SwipeLearn</h1>
         <div class="nav-links">
-            <button onclick="showSection('profile')">Mi Perfil 👤</button>
+            <button onclick="showSection('landing')">Inicio 🏠</button>
+            <button onclick="showSection('profile')">Perfil 👤</button>
             <button onclick="showSection('community')">Muro 🫂</button>
             <button onclick="showSection('classes')">Clases 💻</button>
             <button onclick="showSection('app')">Explorar 🔍</button>
         </div>
     </nav>
 
-    <div id="profile" class="section">
-        <h2 style="margin-bottom: 30px;">Configura tu Perfil de Estudiante</h2>
-        <div class="profile-container">
-            <div class="profile-form">
-                <input type="text" id="userName" placeholder="Nombre completo">
-                <input type="text" id="userGrade" placeholder="Grado (Ej: 3º Ingeniería)">
-                <input type="text" id="userSubject" placeholder="Materia favorita">
-                <input type="text" id="userFrom" placeholder="¿De dónde eres?">
-                <input type="number" id="userAge" placeholder="Edad">
-                <input type="text" id="userPhoto" placeholder="URL de tu foto (Link)">
-                <textarea id="userBio" placeholder="Breve descripción sobre ti..."></textarea>
-                <button class="btn-main" onclick="saveProfile()">Guardar Perfil</button>
-            </div>
-
-            <div class="profile-display" id="profileCard">
-                <div class="user-photo-circle" id="previewPhoto" style="background-image: url('https://via.placeholder.com/150')"></div>
-                <h2 id="displayTitle" style="margin: 5px 0; color: var(--primary-navy)">Tu Nombre</h2>
-                <p id="displayGrade" style="font-weight: bold; color: var(--accent-orange);">Grado Académico</p>
-                <hr style="opacity: 0.2">
-                <p>📍 <span id="displayFrom">Ciudad</span> • 🎂 <span id="displayAge">?</span> años</p>
-                <p>📚 <b>Favorita:</b> <span id="displaySub">Materia</span></p>
-                <p style="font-style: italic; color: #666;" id="displayBio">"Tu descripción aparecerá aquí..."</p>
-            </div>
-        </div>
-    </div>
-
     <div id="landing" class="section active">
-        <div style="text-align:center; margin: 40px 0;">
-            <h1 style="font-size: 3.5rem;">SwipeLearn</h1>
-            <p style="max-width: 700px; margin: 0 auto; font-size: 1.2rem; opacity: 0.9;">Conectamos el talento universitario. El lugar donde tu duda se convierte en la solución de otro compañero.</p>
-            <button class="btn-main" style="width: auto; margin-top: 30px; padding: 15px 40px;" onclick="showSection('app')">Empezar a Explorar</button>
+        <div class="hero">
+            <h1>SwipeLearn</h1>
+            <p style="max-width:700px; line-height:1.6;">De la confusión a la solución. Conectamos estudiantes para que el estudio sea colaborativo, cozy y efectivo.</p>
+            <button class="btn-main" style="padding:15px 40px" onclick="showSection('app')">Empezar a Explorar</button>
         </div>
-        <div style="display:flex; gap:20px; flex-wrap:wrap; justify-content:center; max-width:1000px;">
-            <div style="background:var(--glass); padding:20px; border-radius:20px; flex:1; min-width:300px;">
-                <h3 style="color:var(--accent-orange)">🧠 Fun Fact</h3>
-                <p>Tu cerebro está más receptivo para aprender nuevas materias entre las 10:00 y las 14:00. ¡Aprovecha el pico de dopamina!</p>
+        <div class="info-grid">
+            <div class="card-info">
+                <h3>🧠 Sabías que...</h3>
+                <p>Tu cerebro aprende un 90% más cuando enseñas a otro compañero. ¡Es el efecto SwipeLearn!</p>
+            </div>
+            <div class="card-info">
+                <h3>🌍 Noticias</h3>
+                <p>Nuevos grupos de estudio creados en Madrid y Barcelona. ¡Únete a la red académica más grande!</p>
             </div>
         </div>
     </div>
 
-    <div id="classes" class="section">
-        <h2>Clases Online</h2>
-        <div style="background:var(--glass); padding:20px; border-radius:20px; width:100%; max-width:500px; margin-bottom:30px;">
-            <input type="text" id="classTitle" placeholder="Título"><br>
-            <textarea id="classDesc" placeholder="Descripción..."></textarea><br>
-            <button class="btn-main" onclick="addClass()">Publicar Clase</button>
+    <div id="app" class="section">
+        <div class="explore-layout">
+            <div style="display:flex; flex-direction:column; align-items:center;">
+                <div class="swipe-container" id="card-stack"></div>
+                <div style="margin-top:20px; display:flex; gap:30px;">
+                    <button onclick="swipe('left')" class="btn-main" style="background:white; color:red; width:60px; height:60px; border-radius:50%">✕</button>
+                    <button onclick="swipe('right')" class="btn-main" style="width:60px; height:60px; border-radius:50%">❤</button>
+                </div>
+            </div>
+
+            <div class="moodboard">
+                <div class="mood-box">
+                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=300&q=80" alt="Study Aesthetic">
+                    <small style="position:absolute; bottom:5px; color:white; background:rgba(0,0,0,0.5); padding:2px 5px; border-radius:5px;">Pinterest Vibe</small>
+                </div>
+                <div class="mood-box" style="background:#f9f9f9; font-style:italic;">
+                    "No te detengas hasta que estés orgulloso." ✨
+                </div>
+                <div class="mood-box" style="background:#fff3e0;">
+                    <span style="font-size:1.5rem;">🔥</span>
+                    <p style="font-weight:bold; font-size:0.7rem;">Yo: Solo 5 min de descanso.<br>3 horas después...</p>
+                </div>
+                <div class="mood-box" style="background:#e3f2fd; font-size:2rem;">
+                    🌸 🌱 📚 ☕
+                    <small style="font-size:0.7rem; display:block;">Spring Semester</small>
+                </div>
+            </div>
         </div>
-        <div class="class-grid" id="classContainer"></div>
+    </div>
+
+    <div id="profile" class="section">
+        <div style="background:var(--glass); padding:30px; border-radius:30px; width:100%; max-width:500px;">
+            <h2>Mi Perfil</h2>
+            <input type="text" id="pName" placeholder="Nombre">
+            <input type="text" id="pGrade" placeholder="Grado">
+            <input type="text" id="pSubj" placeholder="Materia Favorita">
+            <input type="text" id="pFrom" placeholder="Ciudad">
+            <input type="number" id="pAge" placeholder="Edad">
+            <textarea id="pBio" placeholder="Descripción..."></textarea>
+            <button class="btn-main" onclick="alert('Perfil Guardado')">Guardar</button>
+        </div>
     </div>
 
     <div id="community" class="section">
-        <h2>Muro de Desahogo 🍃</h2>
+        <h2>Muro de la Comunidad 🫂</h2>
         <div style="background:var(--glass); padding:20px; border-radius:20px; width:100%; max-width:500px; margin-bottom:20px;">
-            <textarea id="postInput" placeholder="Exprésate..."></textarea>
-            <button class="btn-main" onclick="addPost()">Subir</button>
+            <textarea id="postIn" placeholder="Escribe anónimamente..."></textarea>
+            <button class="btn-main" onclick="addPost()">Postear</button>
         </div>
         <div id="feed" style="display:flex; flex-wrap:wrap; gap:15px; justify-content:center;"></div>
     </div>
 
-    <div id="app" class="section">
-        <div class="swipe-container" id="card-stack"></div>
-        <div style="margin-top:30px; display:flex; gap:30px;">
-            <button onclick="swipe('left')" class="btn-main" style="background:white; color:red; font-size:1.5rem; width:70px;">✕</button>
-            <button onclick="swipe('right')" class="btn-main" style="font-size:1.5rem; width:70px;">❤</button>
+    <div id="classes" class="section">
+        <h2>Clases Online 💻</h2>
+        <div style="background:var(--glass); padding:20px; border-radius:20px; margin-bottom:20px;">
+            <input type="text" id="clTitle" placeholder="Título de la clase">
+            <button class="btn-main" onclick="addClass()">Publicar</button>
         </div>
+        <div id="classCont" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:20px; width:100%;"></div>
     </div>
 
     <script>
@@ -157,51 +174,9 @@
             if(id === 'app') initCards();
         }
 
-        // Lógica Perfil
-        function saveProfile() {
-            const name = document.getElementById('userName').value;
-            const photo = document.getElementById('userPhoto').value;
-            const grade = document.getElementById('userGrade').value;
-            const sub = document.getElementById('userSubject').value;
-            const from = document.getElementById('userFrom').value;
-            const age = document.getElementById('userAge').value;
-            const bio = document.getElementById('userBio').value;
-
-            if(name) document.getElementById('displayTitle').innerText = name;
-            if(photo) document.getElementById('previewPhoto').style.backgroundImage = `url('${photo}')`;
-            if(grade) document.getElementById('displayGrade').innerText = grade;
-            if(sub) document.getElementById('displaySub').innerText = sub;
-            if(from) document.getElementById('displayFrom').innerText = from;
-            if(age) document.getElementById('displayAge').innerText = age;
-            if(bio) document.getElementById('displayBio').innerText = bio;
-
-            alert("¡Perfil actualizado con éxito!");
-        }
-
-        // Funciones auxiliares
-        function addClass() {
-            const t = document.getElementById('classTitle').value;
-            const d = document.getElementById('classDesc').value;
-            if(!t) return;
-            const card = document.createElement('div');
-            card.className = 'class-card';
-            card.innerHTML = `<h3>${t}</h3><p>${d}</p>`;
-            document.getElementById('classContainer').prepend(card);
-        }
-
-        function addPost() {
-            const val = document.getElementById('postInput').value;
-            if(!val) return;
-            const p = document.createElement('div');
-            p.className = 'post';
-            p.innerHTML = `<b>Anónimo:</b> ${val}`;
-            document.getElementById('feed').prepend(p);
-            document.getElementById('postInput').value = "";
-        }
-
         const tutorData = [
-            { n: "Lucía M.", m: "Física", i: "https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&w=400&q=80" },
-            { n: "Marcos T.", m: "Derecho", i: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=400&q=80" }
+            { n: "Lucía M.", m: "Física", i: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=400&q=80" },
+            { n: "Marcos T.", m: "Derecho", i: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=400&q=80" }
         ];
 
         function initCards() {
@@ -210,7 +185,8 @@
             tutorData.forEach(t => {
                 const c = document.createElement('div');
                 c.className = 'tutor-card';
-                c.innerHTML = `<div class="tutor-photo" style="background-image:url('${t.i}')"></div><div style="padding:15px"><h3>${t.n}</h3><p>${t.m}</p></div>`;
+                c.innerHTML = `<div style="height:70%; background:url('${t.i}') center/cover"></div>
+                               <div style="padding:15px"><h3>${t.n}</h3><p>${t.m}</p></div>`;
                 stack.appendChild(c);
             });
         }
@@ -219,8 +195,22 @@
             const cards = document.querySelectorAll('.tutor-card');
             if(cards.length === 0) return;
             const top = cards[cards.length - 1];
-            top.style.transform = dir === 'right' ? 'translateX(1000px) rotate(30deg)' : 'translateX(-1000px) rotate(-30deg)';
-            setTimeout(() => top.remove(), 500);
+            top.style.transform = dir === 'right' ? 'translateX(800px) rotate(30deg)' : 'translateX(-800px) rotate(-30deg)';
+            setTimeout(() => top.remove(), 400);
+        }
+
+        function addPost() {
+            const val = document.getElementById('postIn').value; if(!val) return;
+            const p = document.createElement('div'); p.className = 'post';
+            p.innerHTML = `<b>Anónimo:</b> ${val}`; document.getElementById('feed').prepend(p);
+            document.getElementById('postIn').value = "";
+        }
+
+        function addClass() {
+            const t = document.getElementById('clTitle').value; if(!t) return;
+            const c = document.createElement('div'); c.className = 'mood-box';
+            c.style.height="auto"; c.innerHTML = `<h3>${t}</h3><button class="btn-main" onclick="this.parentElement.remove()">Eliminar</button>`;
+            document.getElementById('classCont').prepend(c);
         }
     </script>
 </body>
