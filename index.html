@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LearnSwipe | Connect & Solve</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore-compat.js"></script>
+
     <style>
         :root {
             --navy-dark: #0f172a;
@@ -12,75 +16,43 @@
             --electric-blue: #38bdf8;
             --white: #ffffff;
             --accent-orange: #f59e0b;
-            --warm-bg: #fffcf2;
             --glass: rgba(255, 255, 255, 0.05);
             --glass-border: rgba(255, 255, 255, 0.1);
         }
 
         * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { margin: 0; background: var(--navy-dark); color: var(--white); min-height: 100vh; overflow-x: hidden; }
 
-        body {
-            margin: 0; background: var(--navy-dark); color: var(--white);
-            min-height: 100vh; overflow-x: hidden;
-        }
+        #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(circle at center, #1e3a8a 0%, #0f172a 100%); }
 
-        /* FONDO INTERACTIVO */
-        #bg-canvas {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; background: radial-gradient(circle at center, #1e3a8a 0%, #0f172a 100%);
-        }
-
-        /* --- NAVEGACIÓN --- */
-        .navbar {
-            background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(20px);
-            padding: 15px 40px; display: flex; justify-content: space-between;
-            align-items: center; border-bottom: 1px solid var(--glass-border);
-            position: sticky; top: 0; z-index: 1000;
-        }
-
+        .navbar { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(20px); padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--glass-border); position: sticky; top: 0; z-index: 1000; }
         .logo { font-weight: 800; font-size: 1.6rem; color: var(--electric-blue); cursor: pointer; }
-
-        .nav-links button {
-            background: transparent; border: none; color: white; margin-left: 15px;
-            cursor: pointer; font-weight: 600; transition: 0.3s; opacity: 0.7;
-        }
+        .nav-links button { background: transparent; border: none; color: white; margin-left: 15px; cursor: pointer; font-weight: 600; transition: 0.3s; opacity: 0.7; }
         .nav-links button:hover { opacity: 1; color: var(--electric-blue); }
 
-        /* --- SECCIONES --- */
         .section { display: none; padding: 40px 20px; animation: slideUp 0.6s ease; width: 100%; max-width: 1200px; margin: 0 auto; }
         .active { display: flex; flex-direction: column; align-items: center; }
-
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- DASHBOARD REORGANIZADO --- */
+        /* DASHBOARD */
         .dash-container { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; width: 100%; margin-top: 20px; }
-        
         .welcome-hero { grid-column: 1 / -1; text-align: left; }
         .welcome-hero h1 { font-size: 3.5rem; letter-spacing: -2px; margin: 0; }
-        
-        .stat-group { display: flex; gap: 15px; margin-top: 15px; }
-        .stat-card { background: var(--glass); padding: 20px 30px; border-radius: 20px; border: 1px solid var(--glass-border); text-align: center; flex: 1; }
+        .stat-card { background: var(--glass); padding: 20px; border-radius: 20px; border: 1px solid var(--glass-border); text-align: center; flex: 1; }
+        .fact-box { background: rgba(255,255,255,0.03); padding: 20px; border-radius: 25px; border-left: 4px solid var(--electric-blue); margin-bottom: 15px; }
+        .focus-timer { background: linear-gradient(135deg, #0ea5e9, #2563eb); padding: 40px; border-radius: 40px; text-align: center; }
 
-        .fact-grid { display: flex; flex-direction: column; gap: 15px; }
-        .fact-box { background: rgba(255,255,255,0.03); padding: 20px; border-radius: 25px; border-left: 4px solid var(--electric-blue); backdrop-filter: blur(10px); }
-
-        .focus-timer { 
-            background: linear-gradient(135deg, #0ea5e9, #2563eb); padding: 40px; 
-            border-radius: 40px; text-align: center; box-shadow: 0 15px 35px rgba(37, 99, 235, 0.3); 
-            display: flex; flex-direction: column; justify-content: center;
-        }
-
-        /* --- PERFIL --- */
+        /* PERFIL */
         .profile-layout { display: grid; grid-template-columns: 1fr 1.5fr; gap: 40px; width: 100%; }
-        .profile-preview { background: var(--navy-soft); padding: 40px; border-radius: 35px; border: 1px solid var(--electric-blue); text-align: center; position: relative; }
+        .profile-preview { background: var(--navy-soft); padding: 40px; border-radius: 35px; border: 1px solid var(--electric-blue); text-align: center; }
         .user-pic { width: 150px; height: 150px; border-radius: 50%; border: 4px solid var(--electric-blue); object-fit: cover; margin-bottom: 20px; background: #000; }
         .skill-chip { display: inline-block; background: rgba(56, 189, 248, 0.1); border: 1px solid var(--electric-blue); color: var(--electric-blue); padding: 6px 16px; border-radius: 25px; margin: 5px; font-size: 0.85rem; cursor: pointer; }
 
-        /* --- EXPLORAR --- */
+        .btn-main { background: linear-gradient(90deg, var(--accent-orange), #fbbf24); color: white; border: none; padding: 16px 35px; border-radius: 50px; font-weight: 800; cursor: pointer; transition: 0.3s; }
+        
+        /* EXPLORAR */
         .swipe-stack { position: relative; width: 340px; height: 480px; }
         .tutor-card { position: absolute; width: 100%; height: 100%; background: var(--white); border-radius: 35px; overflow: hidden; color: var(--navy-dark); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
-
-        .btn-main { background: linear-gradient(90deg, var(--accent-orange), #fbbf24); color: white; border: none; padding: 16px 35px; border-radius: 50px; font-weight: 800; cursor: pointer; transition: 0.3s; }
 
         #toast { visibility: hidden; min-width: 250px; background-color: #22c55e; color: white; text-align: center; border-radius: 15px; padding: 16px; position: fixed; z-index: 2000; left: 50%; transform: translateX(-50%); bottom: 30px; font-weight: bold; }
         #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
@@ -103,29 +75,21 @@
     <div id="landing" class="section active">
         <div class="welcome-hero">
             <h1>Hola, <span id="userNameHello" style="color:var(--electric-blue)">Estudiante</span>.</h1>
-            <div class="stat-group">
-                <div class="stat-card"><h3>🔥 5</h3><p style="margin:0; font-size:0.8rem; opacity:0.7;">Racha de días</p></div>
-                <div class="stat-card"><h3>📚 12</h3><p style="margin:0; font-size:0.8rem; opacity:0.7;">Mentorías</p></div>
+            <div style="display:flex; gap:15px; margin-top:15px;">
+                <div class="stat-card"><h3>🔥 5</h3><p>Racha</p></div>
+                <div class="stat-card"><h3>📚 12</h3><p>Clases</p></div>
             </div>
         </div>
-        
         <div class="dash-container">
-            <div class="fact-grid">
-                <div class="fact-box">
-                    <h4 style="margin:0 0 10px 0;">🚀 ¿Por qué LearnSwipe?</h4>
-                    <p style="font-size: 0.85rem; opacity: 0.8; margin:0;">Convertimos el aprendizaje en una experiencia social y adictiva.</p>
-                </div>
-                <div class="fact-box">
-                    <h4 style="margin:0 0 10px 0;">💡 Sabías que...</h4>
-                    <p style="font-size: 0.85rem; opacity: 0.8; margin:0;">El 60% de los estudiantes retienen mejor si explican el tema a otros.</p>
-                </div>
-                <button class="btn-main" onclick="showSection('app')" style="width:100%;">Explorar Tutores</button>
+            <div>
+                <div class="fact-box"><h4>🚀 ¿Por qué LearnSwipe?</h4><p>Aprender es mejor cuando conectas con personas reales.</p></div>
+                <div class="fact-box"><h4>💡 Dato Curioso</h4><p>El modo enfoque ayuda a estudiar un 40% más rápido.</p></div>
+                <button class="btn-main" onclick="showSection('app')" style="width:100%;">Buscar Tutor</button>
             </div>
-
             <div class="focus-timer">
-                <h4 style="margin:0; letter-spacing: 1px;">MODO ENFOQUE</h4>
+                <h4 style="margin:0;">MODO ENFOQUE</h4>
                 <div style="font-size: 4rem; font-weight: 800; margin: 15px 0;" id="timer">25:00</div>
-                <button onclick="startTimer()" style="background:white; color:#2563eb; border:none; padding:12px 30px; border-radius:15px; font-weight:bold; cursor:pointer;">Comenzar Sesión</button>
+                <button onclick="startTimer()" style="background:white; color:#2563eb; border:none; padding:12px 30px; border-radius:15px; font-weight:bold; cursor:pointer;">Iniciar</button>
             </div>
         </div>
     </div>
@@ -134,31 +98,25 @@
         <div class="profile-layout">
             <div class="profile-preview">
                 <img src="https://via.placeholder.com/150" class="user-pic" id="pPicDisp">
-                <h2 id="pNameDisp" style="margin:0">Tu Nombre</h2>
-                <p id="pGradeDisp" style="color:var(--electric-blue); font-weight: 600;">Carrera</p>
-                <div id="pSkillsDisp" style="margin-top:10px;"></div>
+                <h2 id="pNameDisp">Tu Nombre</h2>
+                <p id="pGradeDisp" style="color:var(--electric-blue);">Carrera</p>
+                <div id="pSkillsDisp"></div>
             </div>
             <div style="background:var(--glass); padding:30px; border-radius:35px; border:1px solid var(--glass-border); backdrop-filter:blur(10px);">
                 <h3>Configura tu Perfil</h3>
-                
-                <label style="font-size: 0.8rem; opacity: 0.7;">Foto de Perfil:</label>
-                <input type="file" id="fileInput" accept="image/*" onchange="previewImage(event)" style="margin: 10px 0 20px 0; color: white; display: block;">
-
-                <input type="text" id="inName" placeholder="Nombre" onkeyup="updateProfile()" style="width:100%; padding:15px; margin-bottom:15px; border-radius:12px; background:rgba(0,0,0,0.3); border:1px solid var(--glass-border); color:white;">
-                <input type="text" id="inGrade" placeholder="¿Qué estudias?" onkeyup="updateProfile()" style="width:100%; padding:15px; margin-bottom:15px; border-radius:12px; background:rgba(0,0,0,0.3); border:1px solid var(--glass-border); color:white;">
-                
-                <label style="font-size: 0.8rem; opacity: 0.7;">Habilidades (Escribe y presiona Enter):</label>
-                <input type="text" id="inSkill" placeholder="Ej: Python, Diseño..." onkeydown="handleSkillEnter(event)" style="width:100%; padding:15px; margin-bottom:15px; border-radius:12px; background:rgba(0,0,0,0.3); border:1px solid var(--electric-blue); color:white;">
-                
-                <button class="btn-main" style="width:100%" onclick="showToast('¡Perfil actualizado con éxito!')">Guardar Cambios</button>
+                <input type="file" accept="image/*" onchange="previewImage(event)" style="margin-bottom:20px;">
+                <input type="text" id="inName" placeholder="Nombre" onkeyup="updateProfile()" style="width:100%; padding:15px; margin-bottom:15px; border-radius:12px; background:rgba(0,0,0,0.3); color:white; border:1px solid #444;">
+                <input type="text" id="inGrade" placeholder="Carrera" onkeyup="updateProfile()" style="width:100%; padding:15px; margin-bottom:15px; border-radius:12px; background:rgba(0,0,0,0.3); color:white; border:1px solid #444;">
+                <input type="text" id="inSkill" placeholder="Habilidades (Enter)" onkeydown="handleSkillEnter(event)" style="width:100%; padding:15px; margin-bottom:15px; border-radius:12px; background:rgba(0,0,0,0.3); color:white; border:1px solid var(--electric-blue);">
+                <button class="btn-main" style="width:100%" onclick="saveToCloud()">Guardar en Firebase ☁️</button>
             </div>
         </div>
     </div>
 
     <div id="community" class="section">
-        <div style="background:var(--warm-bg); border-radius:35px; padding:30px; color:#333; width:100%; max-width:800px;">
-            <h2 style="margin:0 0 20px 0;">Muro de la Comunidad 🫂</h2>
-            <textarea id="postText" placeholder="¿Qué estás aprendiendo hoy?" style="width:100%; padding:15px; border-radius:15px; margin-bottom:10px;"></textarea>
+        <div style="background:white; border-radius:35px; padding:30px; color:#333; width:100%; max-width:800px;">
+            <h2>Muro de Dudas 🫂</h2>
+            <textarea id="postText" placeholder="¿En qué necesitas ayuda hoy?" style="width:100%; padding:15px; border-radius:15px; margin-bottom:10px;"></textarea>
             <button class="btn-main" style="width:100%" onclick="addPost()">Publicar</button>
             <div id="feed" style="margin-top:20px;"></div>
         </div>
@@ -172,10 +130,25 @@
         </div>
     </div>
 
-    <div id="toast">Notificación</div>
+    <div id="toast">¡Hecho!</div>
 
     <script>
-        // --- FONDO INTERACTIVO (NO SE TOCA) ---
+        // --- TUS DATOS DE FIREBASE (EXTRAÍDOS DE TU IMAGEN) ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyBD0ocsjfTh9DRrYroAwTGfHfsXycFpSAg",
+            authDomain: "learnswipe-8357e.firebaseapp.com",
+            projectId: "learnswipe-8357e",
+            storageBucket: "learnswipe-8357e.firebasestorage.app",
+            messagingSenderId: "649764089830",
+            appId: "1:649764089830:web:acbef338401a6921e67027",
+            measurementId: "G-HKH5NBP6S9"
+        };
+
+        // INICIALIZAR FIREBASE
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // --- FONDO DE PARTÍCULAS ---
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -186,8 +159,8 @@
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
                 this.size = Math.random() * 2 + 1;
-                this.speedX = Math.random() * 0.6 - 0.3;
-                this.speedY = Math.random() * 0.6 - 0.3;
+                this.speedX = Math.random() * 0.4 - 0.2;
+                this.speedY = Math.random() * 0.4 - 0.2;
             }
             update() {
                 this.x += this.speedX; this.y += this.speedY;
@@ -202,7 +175,7 @@
         function initBg() {
             canvas.width = window.innerWidth; canvas.height = window.innerHeight;
             particles = [];
-            for (let i = 0; i < 70; i++) particles.push(new Particle());
+            for (let i = 0; i < 60; i++) particles.push(new Particle());
         }
         function animateBg() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -211,58 +184,71 @@
                 let dx = mouse.x - p.x; let dy = mouse.y - p.y;
                 let dist = Math.sqrt(dx*dx + dy*dy);
                 if(dist < 150) {
-                    ctx.strokeStyle = `rgba(56, 189, 248, ${0.5 * (1 - dist/150)})`;
+                    ctx.strokeStyle = `rgba(56, 189, 248, ${0.4 * (1 - dist/150)})`;
                     ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
                 }
             });
             requestAnimationFrame(animateBg);
         }
         initBg(); animateBg();
+        window.addEventListener('resize', initBg);
 
-        // --- FUNCIONALIDADES PEDIDAS ---
-
-        // 1. Imagen desde galería
-        function previewImage(event) {
-            const reader = new FileReader();
-            reader.onload = function(){
-                const output = document.getElementById('pPicDisp');
-                output.src = reader.result;
-            };
-            reader.readAsDataURL(event.target.files[0]);
-        }
-
-        // 2. Agregar skills con Enter
-        function handleSkillEnter(event) {
-            if (event.key === 'Enter') {
-                const val = event.target.value.trim();
-                if (val !== "") {
-                    const chip = document.createElement('span');
-                    chip.className = 'skill-chip';
-                    chip.innerText = val;
-                    chip.onclick = function() { this.remove(); };
-                    document.getElementById('pSkillsDisp').appendChild(chip);
-                    event.target.value = ""; // Limpiar input
-                }
-            }
-        }
-
-        // --- LÓGICA DE NAVEGACIÓN Y APP ---
+        // --- LÓGICA DE NAVEGACIÓN ---
         function showSection(id) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             if(id === 'app') initCards();
         }
 
-        function updateProfile() {
-            document.getElementById('pNameDisp').innerText = document.getElementById('inName').value || "Tu Nombre";
-            document.getElementById('pGradeDisp').innerText = document.getElementById('inGrade').value || "Carrera";
-            document.getElementById('userNameHello').innerText = (document.getElementById('inName').value || "Estudiante").split(' ')[0];
+        // --- PERFIL Y FIREBASE ---
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = () => document.getElementById('pPicDisp').src = reader.result;
+            reader.readAsDataURL(event.target.files[0]);
         }
 
+        function handleSkillEnter(event) {
+            if (event.key === 'Enter') {
+                const val = event.target.value.trim();
+                if (val) {
+                    const chip = document.createElement('span');
+                    chip.className = 'skill-chip'; chip.innerText = val;
+                    chip.onclick = function() { this.remove(); };
+                    document.getElementById('pSkillsDisp').appendChild(chip);
+                    event.target.value = "";
+                }
+            }
+        }
+
+        function updateProfile() {
+            const name = document.getElementById('inName').value;
+            document.getElementById('pNameDisp').innerText = name || "Tu Nombre";
+            document.getElementById('pGradeDisp').innerText = document.getElementById('inGrade').value || "Carrera";
+            document.getElementById('userNameHello').innerText = (name || "Estudiante").split(' ')[0];
+        }
+
+        async function saveToCloud() {
+            const data = {
+                nombre: document.getElementById('inName').value,
+                carrera: document.getElementById('inGrade').value,
+                foto: document.getElementById('pPicDisp').src,
+                timestamp: new Date()
+            };
+            try {
+                // ESTO GUARDA EN TU BASE DE DATOS DE GOOGLE
+                await db.collection("usuarios").doc("mi_perfil").set(data);
+                showToast("¡Guardado en Firebase! 🚀");
+            } catch (e) {
+                console.error(e);
+                showToast("Error al guardar. Revisa la consola.");
+            }
+        }
+
+        // --- OTRAS FUNCIONES ---
         function addPost() {
             const text = document.getElementById('postText').value; if(!text) return;
             const div = document.createElement('div');
-            div.style = "background:white; padding:15px; border-radius:15px; margin-top:10px; border-left:5px solid var(--accent-orange);";
+            div.style = "background:#f8fafc; padding:15px; border-radius:15px; margin-top:10px; border-left:5px solid var(--accent-orange); color:#333;";
             div.innerHTML = `<b>Tú:</b> ${text}`;
             document.getElementById('feed').prepend(div);
             document.getElementById('postText').value = "";
@@ -270,15 +256,15 @@
 
         function startTimer() {
             let m = 24, s = 59;
-            const interval = setInterval(() => {
+            setInterval(() => {
                 document.getElementById('timer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
-                if(s == 0) { if(m == 0) clearInterval(interval); else { m--; s = 59; } } else s--;
+                if(s == 0) { if(m > 0) { m--; s = 59; } } else s--;
             }, 1000);
         }
 
         const tutors = [
-            {n: "Elena M.", s: "Ingeniería", i: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=400&q=80"},
-            {n: "Marc R.", s: "Física", i: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80"}
+            {n: "Elena M.", s: "Ingeniería", i: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400"},
+            {n: "Marc R.", s: "Física", i: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400"}
         ];
 
         function initCards() {
@@ -293,10 +279,10 @@
         function swipe(dir) {
             const cards = document.querySelectorAll('.tutor-card'); if(!cards.length) return;
             const top = cards[cards.length - 1];
-            top.style.transition = "0.6s ease";
-            top.style.transform = dir === 'right' ? 'translateX(1000px) rotate(30deg)' : 'translateX(-1000px) rotate(-30deg)';
+            top.style.transition = "0.5s ease";
+            top.style.transform = dir === 'right' ? 'translateX(500px) rotate(20deg)' : 'translateX(-500px) rotate(-20deg)';
             top.style.opacity = "0";
-            setTimeout(() => top.remove(), 600);
+            setTimeout(() => top.remove(), 500);
         }
 
         function showToast(msg) {
