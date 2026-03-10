@@ -3,24 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SwipeLearn - Encontrar Tutores</title>
+    <title>SwipeLearn - Study Aesthetic</title>
     <style>
         :root {
             --primary-purple: #8e679e;
             --dark-purple: #5e3a6e;
             --accent-orange: #d98e5e;
             --white: #ffffff;
+            --cozy-overlay: rgba(255, 255, 255, 0.05);
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, sans-serif;
-            /* Fondo morado que combina con la barra */
-            background: linear-gradient(180deg, #a68cb0 0%, var(--primary-purple) 100%);
             margin: 0;
             display: flex;
             flex-direction: column;
             height: 100vh;
             color: #333;
+            /* Fondo morado con textura de grano */
+            background: 
+                linear-gradient(180deg, #a68cb0 0%, var(--primary-purple) 100%),
+                url('https://www.transparenttextures.com/patterns/stardust.png'); /* Textura sutil */
+            background-attachment: fixed;
         }
 
         /* Barra de navegación superior */
@@ -31,36 +35,21 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             z-index: 1000;
         }
 
-        .navbar h1 { margin: 0; font-size: 1.2rem; letter-spacing: 1px; }
+        .navbar h1 { margin: 0; font-size: 1.2rem; letter-spacing: 2px; font-weight: 300; }
 
         .nav-links button {
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid white;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
             color: white;
             padding: 8px 18px;
             border-radius: 20px;
             cursor: pointer;
             transition: 0.3s;
-            font-weight: bold;
-        }
-
-        .nav-links button:hover {
-            background: white;
-            color: var(--primary-purple);
-        }
-
-        /* Contenedor Principal */
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
         }
 
         /* Sección de Favoritos */
@@ -68,13 +57,14 @@
             display: none;
             width: 90%;
             max-width: 400px;
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
             height: 70vh;
             position: absolute;
             top: 20px;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
-            padding: 20px;
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+            padding: 25px;
             overflow-y: auto;
             z-index: 2000;
         }
@@ -83,26 +73,15 @@
             display: flex;
             align-items: center;
             padding: 12px;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid #ddd;
             gap: 15px;
-        }
-
-        .fav-avatar {
-            background: var(--primary-purple);
-            color: white;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         /* Stack de Tarjetas */
         .swipe-container {
             position: relative;
-            width: 320px;
-            height: 460px;
+            width: 340px;
+            height: 500px;
         }
 
         .tutor-card {
@@ -110,40 +89,47 @@
             width: 100%;
             height: 100%;
             background: var(--white);
-            border-radius: 25px;
-            box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            transition: transform 0.5s ease, opacity 0.5s ease;
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.5s ease;
         }
 
-        /* Foto del tutor con sombra y textura */
+        /* Foto con textura y estética Pinterest */
         .tutor-photo {
-            height: 65%;
-            background: #e9ecef;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 80px;
-            /* Sombra interna para textura */
-            box-shadow: inset 0 -20px 30px rgba(0,0,0,0.1), 0 4px 10px rgba(0,0,0,0.05);
-            border-bottom: 1px solid #ddd;
+            height: 70%;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            /* Sombra interna para profundidad */
+            box-shadow: inset 0 -40px 60px rgba(0,0,0,0.3);
+        }
+
+        .tutor-photo::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/felt.png'); /* Textura en la foto */
+            opacity: 0.2;
+            pointer-events: none;
         }
 
         .tutor-details {
             padding: 20px;
             background: white;
+            flex-grow: 1;
         }
 
-        .tutor-details h3 { margin: 0; color: var(--dark-purple); font-size: 1.4rem; }
-        .tutor-details p { margin: 5px 0; font-size: 0.95rem; color: #666; }
+        .tutor-details h3 { margin: 0; color: var(--dark-purple); font-size: 1.3rem; }
+        .tutor-details p { margin: 4px 0; font-size: 0.9rem; color: #777; }
 
         /* Controles */
         .controls {
-            margin-top: 30px;
+            margin-top: 20px;
             display: flex;
-            gap: 35px;
+            gap: 40px;
         }
 
         .btn {
@@ -151,68 +137,53 @@
             height: 70px;
             border-radius: 50%;
             border: none;
-            font-size: 1.6rem;
+            font-size: 1.8rem;
             cursor: pointer;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-            transition: transform 0.2s, background 0.3s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .btn-dislike { background: white; color: #ff5252; }
+        .btn-dislike { background: white; color: #ef5350; }
         .btn-like { background: var(--accent-orange); color: white; }
-        .btn:hover { transform: scale(1.1); }
-        .btn:active { transform: scale(0.9); }
+        .btn:hover { transform: translateY(-5px) scale(1.05); }
 
-        /* Animaciones */
-        .swipe-left { transform: translateX(-1000px) rotate(-30deg) !important; opacity: 0; }
-        .swipe-right { transform: translateX(1000px) rotate(30deg) !important; opacity: 0; }
-
-        .close-favs {
-            background: var(--dark-purple);
-            color: white;
-            border: none;
-            padding: 12px;
-            width: 100%;
-            border-radius: 12px;
-            margin-top: 15px;
-            cursor: pointer;
-            font-weight: bold;
-        }
+        .swipe-left { transform: translateX(-1000px) rotate(-35deg) !important; opacity: 0; }
+        .swipe-right { transform: translateX(1000px) rotate(35deg) !important; opacity: 0; }
     </style>
 </head>
 <body>
 
     <nav class="navbar">
-        <h1>SwipeLearn</h1>
+        <h1>SWIPE LEARN</h1>
         <div class="nav-links">
-            <button onclick="toggleFavs()">Favoritos (<span id="fav-count">0</span>)</button>
+            <button onclick="toggleFavs()">Mis Conexiones (<span id="fav-count">0</span>)</button>
         </div>
     </nav>
 
-    <div class="main-content">
+    <div class="main-content" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;">
         <div id="favorites-section">
-            <h2 style="color: var(--dark-purple)">Mis Conexiones</h2>
+            <h2 style="color: var(--dark-purple); font-weight: 300;">Estudiando con...</h2>
             <div id="fav-list"></div>
-            <button class="close-favs" onclick="toggleFavs()">Volver a explorar</button>
+            <button style="background: var(--dark-purple); color: white; border: none; padding: 12px; width: 100%; border-radius: 15px; margin-top: 20px; cursor: pointer;" onclick="toggleFavs()">Cerrar</button>
         </div>
 
-        <div class="swipe-container" id="card-stack">
-            </div>
+        <div class="swipe-container" id="card-stack"></div>
 
         <div class="controls">
-            <button class="btn btn-dislike" onclick="handleSwipe('left')">✘</button>
-            <button class="btn btn-like" onclick="handleSwipe('right')">✔</button>
+            <button class="btn btn-dislike" onclick="handleSwipe('left')">✕</button>
+            <button class="btn btn-like" onclick="handleSwipe('right')">❤</button>
         </div>
     </div>
 
     <script>
         const tutorData = [
-            { id: 1, nombre: "Lucía M.", materia: "Física Cuántica", uni: "Complutense" },
-            { id: 2, nombre: "Marcos T.", materia: "Derecho Civil", uni: "U. de Barcelona" },
-            { id: 3, nombre: "Ana P.", materia: "Diseño UX/UI", uni: "IED Madrid" },
-            { id: 4, nombre: "Pablo S.", materia: "Álgebra Lineal", uni: "Politécnica" }
+            { id: 1, nombre: "Lucía M.", materia: "Física Cuántica", uni: "Complutense", img: "https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&w=400&q=80" },
+            { id: 2, nombre: "Marcos T.", materia: "Derecho Civil", uni: "U. de Barcelona", img: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=400&q=80" },
+            { id: 3, nombre: "Ana P.", materia: "Diseño UX/UI", uni: "IED Madrid", img: "https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=400&q=80" },
+            { id: 4, nombre: "Pablo S.", materia: "Álgebra Lineal", uni: "Politécnica", img: "https://images.unsplash.com/photo-1513475382585-d06e58bc0e05?auto=format&fit=crop&w=400&q=80" }
         ];
 
         let favorites = [];
@@ -226,7 +197,7 @@
                 card.className = 'tutor-card';
                 card.dataset.id = tutor.id;
                 card.innerHTML = `
-                    <div class="tutor-photo">👤</div>
+                    <div class="tutor-photo" style="background-image: url('${tutor.img}')"></div>
                     <div class="tutor-details">
                         <h3>${tutor.nombre}</h3>
                         <p><b>Especialidad:</b> ${tutor.materia}</p>
@@ -240,7 +211,6 @@
         function handleSwipe(direction) {
             const cards = document.querySelectorAll('.tutor-card');
             if (cards.length === 0) return;
-
             const topCard = cards[cards.length - 1];
             const tutorId = parseInt(topCard.dataset.id);
 
@@ -254,7 +224,7 @@
             setTimeout(() => {
                 topCard.remove();
                 if (document.querySelectorAll('.tutor-card').length === 0) {
-                    stack.innerHTML = "<div style='text-align:center; color:white;'><h3>¡No hay más tutores!</h3><p>Revisa tu lista de favoritos.</p></div>";
+                    stack.innerHTML = "<h3 style='color: white; font-weight: 300;'>Todo listo por hoy. ¡A estudiar! ☕</h3>";
                 }
             }, 500);
         }
@@ -271,11 +241,8 @@
             favCount.innerText = favorites.length;
             favList.innerHTML = favorites.map(f => `
                 <div class="fav-item">
-                    <div class="fav-avatar">👤</div>
-                    <div>
-                        <strong>${f.nombre}</strong><br>
-                        <small>${f.materia}</small>
-                    </div>
+                    <img src="${f.img}" style="width: 50px; height: 50px; border-radius: 10px; object-fit: cover;">
+                    <div><strong>${f.nombre}</strong><br><small>${f.materia}</small></div>
                 </div>
             `).join('');
         }
@@ -288,4 +255,4 @@
         initCards();
     </script>
 </body>
-</html>
+</html
