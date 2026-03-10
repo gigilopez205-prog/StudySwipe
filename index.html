@@ -23,7 +23,23 @@
         * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
         body { margin: 0; background: var(--navy-dark); color: var(--white); min-height: 100vh; overflow-x: hidden; }
 
-        #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(circle at center, #1e3a8a 0%, #0f172a 100%); }
+        /* FONDO INTERACTIVO MEJORADO */
+        #bg-canvas { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            z-index: -1; 
+            background: linear-gradient(45deg, #0f172a, #1e3a8a, #0f172a);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
 
         /* NAVBAR */
         .navbar { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(20px); padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--glass-border); position: sticky; top: 0; z-index: 1000; }
@@ -161,14 +177,13 @@
             <div style="background:var(--glass); padding:25px; border-radius:30px; border:1px solid var(--glass-border);">
                 <h4 style="margin-top:0; color:var(--electric-blue);">Tus Matches ❤️</h4>
                 <div class="match-list" id="match-display"></div>
-                <p style="font-size:0.8rem; opacity:0.6; margin-top:10px;">Tutores con los que has conectado recientemente.</p>
+                <p style="font-size:0.8rem; opacity:0.6; margin-top:10px;">Tutores recientes.</p>
             </div>
             <div style="background:var(--glass); padding:25px; border-radius:30px; border:1px solid var(--glass-border);">
                 <h4 style="margin-top:0; color:var(--accent-orange);">Próximos Eventos 📅</h4>
                 <div id="calendar-display">
                     <div class="calendar-item"><span>📚 Examen Cálculo II</span><small>Mañana</small></div>
-                    <div class="calendar-item"><span>🗣️ Tutoría Inglés</span><small>Jueves 10:00</small></div>
-                    <div class="calendar-item"><span>💻 Entrega Proyecto</span><small>Viernes</small></div>
+                    <div class="calendar-item"><span>🗣️ Tutoría Inglés</span><small>Jueves</small></div>
                 </div>
             </div>
         </div>
@@ -195,7 +210,7 @@
         <div class="explore-container">
             <div class="side-fact">
                 <h5>¿Sabías qué? 🧠</h5>
-                <p>Estudiar con alguien que te agrada libera <b>oxitocina</b>, lo que reduce el estrés del examen.</p>
+                <p>Estudiar con alguien que te agrada libera <b>oxitocina</b>, lo que reduce el estrés.</p>
             </div>
             <div style="display:flex; flex-direction:column; align-items:center;">
                 <div class="swipe-stack" id="card-stack"></div>
@@ -206,7 +221,7 @@
             </div>
             <div class="side-fact">
                 <h5>Efecto Espejo ✨</h5>
-                <p>Tener un tutor con el que conectas activa las <b>neuronas espejo</b> para aprender más rápido.</p>
+                <p>Tener un tutor con el que conectas activa las <b>neuronas espejo</b>.</p>
             </div>
         </div>
     </div>
@@ -225,36 +240,85 @@
         };
         firebase.initializeApp(firebaseConfig);
 
-        // BG PARTICULAS
+        // MOTOR DE FONDO ULTRA INTERACTIVO
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
+        let mouse = { x: null, y: null, radius: 150 };
+
+        window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
+        window.addEventListener('resize', () => initBg());
+
         class Particle {
             constructor() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
+                this.baseX = this.x;
+                this.baseY = this.y;
                 this.size = Math.random() * 2 + 1;
-                this.speedX = Math.random() * 0.4 - 0.2;
-                this.speedY = Math.random() * 0.4 - 0.2;
+                this.density = (Math.random() * 30) + 1;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1 - 0.5;
             }
             update() {
-                this.x += this.speedX; this.y += this.speedY;
+                // Movimiento autónomo
+                this.x += this.speedX;
+                this.y += this.speedY;
                 if (this.x > canvas.width || this.x < 0) this.speedX *= -1;
                 if (this.y > canvas.height || this.y < 0) this.speedY *= -1;
+
+                // Interacción con ratón
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance < mouse.radius) {
+                    const force = (mouse.radius - distance) / mouse.radius;
+                    const directionX = dx / distance;
+                    const directionY = dy / distance;
+                    this.x -= directionX * force * 5;
+                    this.y -= directionY * force * 5;
+                }
             }
             draw() {
-                ctx.fillStyle = 'rgba(56, 189, 248, 0.3)';
-                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = 'rgba(56, 189, 248, 0.4)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
             }
         }
+
         function initBg() {
-            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
             particles = [];
-            for (let i = 0; i < 70; i++) particles.push(new Particle());
+            let numberOfParticles = (canvas.height * canvas.width) / 9000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                particles.push(new Particle());
+            }
         }
+
+        function connect() {
+            for (let a = 0; a < particles.length; a++) {
+                for (let b = a; b < particles.length; b++) {
+                    let dx = particles[a].x - particles[b].x;
+                    let dy = particles[a].y - particles[b].y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < 100) {
+                        ctx.strokeStyle = `rgba(56, 189, 248, ${1 - distance/100})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[a].x, particles[a].y);
+                        ctx.lineTo(particles[b].x, particles[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
         function animateBg() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             particles.forEach(p => { p.update(); p.draw(); });
+            connect();
             requestAnimationFrame(animateBg);
         }
         initBg(); animateBg();
@@ -288,13 +352,10 @@
             }
         }
 
-        // LÓGICA DE IMAGEN DESDE GALERÍA
+        // IMAGEN
         function previewImage(event) {
             const reader = new FileReader();
-            reader.onload = function() {
-                const output = document.getElementById('pPicDisp');
-                output.src = reader.result;
-            }
+            reader.onload = () => document.getElementById('pPicDisp').src = reader.result;
             reader.readAsDataURL(event.target.files[0]);
         }
 
@@ -312,8 +373,8 @@
         }
 
         // GENERACIÓN CONTENIDO
-        const carreras = ["Medicina", "Ingeniería", "Psicología", "Derecho", "Artes", "Arquitectura"];
-        const nombres = ["Camila", "Andrés", "Sofía", "Mateo", "Lucía", "Diego", "Elena", "Julián"];
+        const carreras = ["Medicina", "Ingeniería", "Psicología", "Derecho", "Artes"];
+        const nombres = ["Camila", "Andrés", "Sofía", "Mateo", "Lucía", "Diego", "Elena"];
         
         function initCards() {
             const stack = document.getElementById('card-stack'); 
@@ -321,17 +382,17 @@
             for(let i=0; i<50; i++) {
                 const card = document.createElement('div');
                 card.className = 'tutor-card';
-                card.innerHTML = `<div style="height:70%; background:url('https://i.pravatar.cc/300?u=${i}') center/cover"></div><div style="padding:20px"><h3 style="margin:0">${nombres[i%8]} ${i}</h3><p style="opacity:0.6">${carreras[i%6]}</p></div>`;
+                card.innerHTML = `<div style="height:70%; background:url('https://i.pravatar.cc/300?u=${i}') center/cover"></div><div style="padding:20px"><h3 style="margin:0">${nombres[i%7]} ${i}</h3><p style="opacity:0.6">${carreras[i%5]}</p></div>`;
                 stack.appendChild(card);
             }
         }
 
         function initFeed() {
             const feed = document.getElementById('feed');
-            for(let i=0; i<50; i++) {
+            for(let i=0; i<30; i++) {
                 const div = document.createElement('div');
                 div.style = "background:#f8fafc; padding:15px; border-radius:15px; margin-top:10px; border-left:4px solid var(--electric-blue); color:#333;";
-                div.innerHTML = `<b>Estudiante ${i}:</b> ¿Alguien para estudiar ${carreras[i%6]}?`;
+                div.innerHTML = `<b>Estudiante ${i}:</b> ¿Alguien para estudiar ${carreras[i%5]}?`;
                 feed.appendChild(div);
             }
         }
@@ -353,7 +414,7 @@
             for(let i=0; i<8; i++) {
                 const div = document.createElement('div');
                 div.className = 'user-card';
-                div.innerHTML = `<img src="https://i.pravatar.cc/150?u=net${i}"><h4>${nombres[i]}</h4><p>${carreras[i%6]}</p><button class="skill-chip" style="width:100%">Conectar</button>`;
+                div.innerHTML = `<img src="https://i.pravatar.cc/150?u=net${i}"><h4>${nombres[i]}</h4><p>${carreras[i%5]}</p><button class="skill-chip" style="width:100%">Conectar</button>`;
                 net.appendChild(div);
             }
         }
