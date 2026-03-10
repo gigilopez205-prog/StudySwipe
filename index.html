@@ -50,6 +50,13 @@
         .user-pic { width: 150px; height: 150px; border-radius: 50%; border: 4px solid var(--electric-blue); object-fit: cover; margin-bottom: 20px; background: #000; }
         .skill-chip { display: inline-block; background: rgba(56, 189, 248, 0.1); border: 1px solid var(--electric-blue); color: var(--electric-blue); padding: 6px 16px; border-radius: 25px; margin: 5px; font-size: 0.85rem; cursor: pointer; }
 
+        /* NUEVOS ESTILOS PERFIL: MATCHES Y CALENDARIO */
+        .profile-footer { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; width: 100%; margin-top: 40px; }
+        .match-list { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 10px; }
+        .match-avatar { width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--electric-blue); flex-shrink: 0; cursor: pointer; transition: 0.3s; }
+        .match-avatar:hover { transform: scale(1.1); }
+        .calendar-item { background: rgba(255,255,255,0.05); padding: 12px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border-left: 3px solid var(--accent-orange); }
+
         /* NETWORKING */
         .net-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; width: 100%; margin-top: 20px; }
         .user-card { background: var(--glass); border: 1px solid var(--glass-border); padding: 20px; border-radius: 25px; text-align: center; transition: 0.3s; backdrop-filter: blur(10px); }
@@ -62,7 +69,7 @@
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
         .modal-content { background: var(--navy-soft); padding: 40px; border-radius: 30px; border: 2px solid var(--electric-blue); width: 90%; max-width: 500px; }
 
-        /* EXPLORAR & FUN FACTS */
+        /* EXPLORAR */
         .explore-container { display: flex; align-items: center; gap: 50px; position: relative; }
         .side-fact { width: 220px; background: var(--glass); border: 1px solid var(--glass-border); padding: 20px; border-radius: 25px; backdrop-filter: blur(10px); font-size: 0.85rem; line-height: 1.5; color: rgba(255,255,255,0.8); }
         .side-fact h5 { color: var(--electric-blue); margin-top: 0; margin-bottom: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
@@ -146,6 +153,23 @@
                 <button class="btn-main" style="width:100%" onclick="showToast('¡Guardado!')">Actualizar</button>
             </div>
         </div>
+
+        <div class="profile-footer">
+            <div style="background:var(--glass); padding:25px; border-radius:30px; border:1px solid var(--glass-border);">
+                <h4 style="margin-top:0; color:var(--electric-blue);">Tus Matches ❤️</h4>
+                <div class="match-list" id="match-display">
+                    </div>
+                <p style="font-size:0.8rem; opacity:0.6; margin-top:10px;">Tutores con los que has conectado recientemente.</p>
+            </div>
+            <div style="background:var(--glass); padding:25px; border-radius:30px; border:1px solid var(--glass-border);">
+                <h4 style="margin-top:0; color:var(--accent-orange);">Próximos Eventos 📅</h4>
+                <div id="calendar-display">
+                    <div class="calendar-item"><span>📚 Examen Cálculo II</span><small>Mañana</small></div>
+                    <div class="calendar-item"><span>🗣️ Tutoría Inglés</span><small>Jueves 10:00</small></div>
+                    <div class="calendar-item"><span>💻 Entrega Proyecto</span><small>Viernes</small></div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div id="networking" class="section">
@@ -169,9 +193,8 @@
         <div class="explore-container">
             <div class="side-fact">
                 <h5>¿Sabías qué? 🧠</h5>
-                <p>Estudiar con alguien que te agrada libera <b>oxitocina</b>, lo que reduce el estrés del examen y facilita la retención de datos complejos.</p>
+                <p>Estudiar con alguien que te agrada libera <b>oxitocina</b>, lo que reduce el estrés del examen.</p>
             </div>
-
             <div style="display:flex; flex-direction:column; align-items:center;">
                 <div class="swipe-stack" id="card-stack"></div>
                 <div style="margin-top:40px; display:flex; gap:30px;">
@@ -179,10 +202,9 @@
                     <button onclick="swipe('right')" style="width:70px; height:70px; border-radius:50%; border:none; background:var(--electric-blue); color:var(--navy-dark); font-size:1.5rem; cursor:pointer;">❤</button>
                 </div>
             </div>
-
             <div class="side-fact">
                 <h5>Efecto Espejo ✨</h5>
-                <p>Tener un tutor con el que conectas activa las <b>neuronas espejo</b>, permitiéndote absorber procesos mentales y trucos lógicos mucho más rápido.</p>
+                <p>Tener un tutor con el que conectas activa las <b>neuronas espejo</b> para aprender más rápido.</p>
             </div>
         </div>
     </div>
@@ -205,8 +227,6 @@
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
-        let mouse = { x: null, y: null };
-        window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
         class Particle {
             constructor() {
                 this.x = Math.random() * canvas.width;
@@ -244,7 +264,7 @@
             if(id === 'app') initCards();
         }
 
-        // --- RELOJ CON PAUSA ---
+        // RELOJ CON PAUSA
         let timerInterval;
         let isRunning = false;
         let timeLeft = 25 * 60;
@@ -262,7 +282,6 @@
                     const m = Math.floor(timeLeft / 60);
                     const s = timeLeft % 60;
                     document.getElementById('timer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
-                    if(timeLeft <= 0) { clearInterval(timerInterval); isRunning = false; }
                 }, 1000);
             }
         }
@@ -278,10 +297,9 @@
             div.innerHTML = `<div><span class="group-tag">NUEVO</span><h4>${n}</h4><p>1 miembro</p></div>`;
             document.getElementById('groups-list').prepend(div);
             cerrarModal();
-            showToast("¡Grupo Creado!");
         }
 
-        // GENERACIÓN 100 EJEMPLOS (DINÁMICO)
+        // GENERACIÓN CONTENIDO
         const carreras = ["Medicina", "Ingeniería", "Psicología", "Derecho", "Artes", "Arquitectura"];
         const nombres = ["Camila", "Andrés", "Sofía", "Mateo", "Lucía", "Diego", "Elena", "Julián"];
         
@@ -306,6 +324,19 @@
             }
         }
         initFeed();
+
+        // INICIALIZAR MATCHES EN PERFIL
+        function initMatches() {
+            const display = document.getElementById('match-display');
+            for(let i=10; i<18; i++) {
+                const img = document.createElement('img');
+                img.src = `https://i.pravatar.cc/100?u=match${i}`;
+                img.className = 'match-avatar';
+                img.title = nombres[i%8];
+                display.appendChild(img);
+            }
+        }
+        initMatches();
 
         function initNetworking() {
             const net = document.getElementById('users-list');
