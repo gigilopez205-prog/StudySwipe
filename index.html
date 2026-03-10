@@ -35,7 +35,7 @@
         .nav-links button {
             background: var(--glass); border: 1px solid rgba(255,255,255,0.3);
             color: white; padding: 8px 15px; border-radius: 20px;
-            cursor: pointer; margin-left: 5px; transition: 0.3s;
+            cursor: pointer; margin-left: 5px; transition: 0.3s; font-size: 0.85rem;
         }
         .nav-links button:hover { background: white; color: var(--primary-navy); }
 
@@ -45,38 +45,30 @@
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- PÁGINA DE INICIO (LANDING) --- */
-        .hero { text-align: center; max-width: 800px; margin: 40px 0; }
-        .hero h1 { font-size: 3.5rem; margin-bottom: 10px; letter-spacing: 2px; }
-        .hero p { font-size: 1.2rem; opacity: 0.9; line-height: 1.6; }
-
-        .info-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px; max-width: 1000px; width: 100%; margin-top: 20px;
+        /* --- SECCIÓN MI PERFIL --- */
+        .profile-container {
+            display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; width: 100%; max-width: 900px;
         }
-
-        .card-info {
+        .profile-form, .profile-display {
             background: var(--glass); backdrop-filter: blur(10px);
-            padding: 25px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.1);
+            padding: 30px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1);
+            flex: 1; min-width: 320px;
         }
-        .card-info h3 { color: var(--accent-orange); margin-top: 0; }
+        .profile-display { background: white; color: #333; text-align: center; }
+        .user-photo-circle {
+            width: 120px; height: 120px; border-radius: 50%; background: #eee; margin: 0 auto 15px;
+            background-size: cover; background-position: center; border: 3px solid var(--accent-orange);
+        }
 
-        /* --- CLASES ONLINE --- */
-        .class-form { background: var(--glass); padding: 20px; border-radius: 20px; width: 100%; max-width: 500px; margin-bottom: 30px; }
+        /* --- ESTILOS REUTILIZADOS --- */
+        .btn-main { background: var(--accent-orange); color: white; border: none; padding: 12px 30px; border-radius: 25px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; }
+        input, textarea { width: 100%; padding: 10px; margin-bottom: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.2); color: white; box-sizing: border-box; }
         .class-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; width: 100%; max-width: 1100px; }
-        .class-card { background: white; color: #333; padding: 20px; border-radius: 20px; position: relative; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
-        .delete-btn { background: #ff4d4d; color: white; border: none; padding: 5px 12px; border-radius: 10px; cursor: pointer; margin-top: 10px; }
-
-        /* --- SWIPE APP --- */
+        .class-card { background: white; color: #333; padding: 20px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
         .swipe-container { position: relative; width: 330px; height: 480px; }
-        .tutor-card { position: absolute; width: 100%; height: 100%; background: white; border-radius: 30px; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.5); color: #333; transition: transform 0.5s; }
+        .tutor-card { position: absolute; width: 100%; height: 100%; background: white; border-radius: 30px; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.5); color: #333; }
         .tutor-photo { height: 70%; background-size: cover; background-position: center; }
-
-        /* --- COMUNIDAD --- */
-        #feed { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
         .post { background: #fff; color: #333; padding: 15px; border-radius: 10px; width: 250px; transform: rotate(-1deg); }
-        
-        .btn-main { background: var(--accent-orange); color: white; border: none; padding: 12px 30px; border-radius: 25px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -84,43 +76,59 @@
     <nav class="navbar">
         <h1 style="cursor:pointer" onclick="showSection('landing')">SwipeLearn</h1>
         <div class="nav-links">
+            <button onclick="showSection('profile')">Mi Perfil 👤</button>
             <button onclick="showSection('community')">Muro 🫂</button>
             <button onclick="showSection('classes')">Clases 💻</button>
             <button onclick="showSection('app')">Explorar 🔍</button>
         </div>
     </nav>
 
-    <div id="landing" class="section active">
-        <div class="hero">
-            <h1>SwipeLearn</h1>
-            <p>¿Por qué somos perfectos para ti? Porque convertimos la soledad del estudio en una experiencia compartida. En España, miles de estudiantes ya están pasando de la confusión a la solución conectando sus talentos.</p>
-            <button class="btn-main" style="font-size: 1.2rem;" onclick="showSection('app')">Empezar a Explorar</button>
-        </div>
-
-        <div class="info-grid">
-            <div class="card-info">
-                <h3>🧠 Fun Facts del Cerebro</h3>
-                <ul style="padding-left: 20px; line-height: 1.7;">
-                    <li>Explicar un tema a un compañero ayuda a retener el 90% de la información.</li>
-                    <li>Escuchar música Lofi o barroca puede aumentar la concentración espacial.</li>
-                    <li>Bloques de estudio de 25 min (Pomodoro) mantienen tu cerebro fresco y evitan el bloqueo mental.</li>
-                </ul>
+    <div id="profile" class="section">
+        <h2 style="margin-bottom: 30px;">Configura tu Perfil de Estudiante</h2>
+        <div class="profile-container">
+            <div class="profile-form">
+                <input type="text" id="userName" placeholder="Nombre completo">
+                <input type="text" id="userGrade" placeholder="Grado (Ej: 3º Ingeniería)">
+                <input type="text" id="userSubject" placeholder="Materia favorita">
+                <input type="text" id="userFrom" placeholder="¿De dónde eres?">
+                <input type="number" id="userAge" placeholder="Edad">
+                <input type="text" id="userPhoto" placeholder="URL de tu foto (Link)">
+                <textarea id="userBio" placeholder="Breve descripción sobre ti..."></textarea>
+                <button class="btn-main" onclick="saveProfile()">Guardar Perfil</button>
             </div>
-            <div class="card-info">
-                <h3>🌍 Noticias Mundiales</h3>
-                <p><strong>Innovación:</strong> El aprendizaje Peer-to-Peer (P2P) es reconocido como el método más efectivo para estudiantes universitarios este año.</p>
-                <p><strong>Comunidad:</strong> SwipeLearn llega a nuevas ciudades para fomentar el apoyo académico gratuito.</p>
+
+            <div class="profile-display" id="profileCard">
+                <div class="user-photo-circle" id="previewPhoto" style="background-image: url('https://via.placeholder.com/150')"></div>
+                <h2 id="displayTitle" style="margin: 5px 0; color: var(--primary-navy)">Tu Nombre</h2>
+                <p id="displayGrade" style="font-weight: bold; color: var(--accent-orange);">Grado Académico</p>
+                <hr style="opacity: 0.2">
+                <p>📍 <span id="displayFrom">Ciudad</span> • 🎂 <span id="displayAge">?</span> años</p>
+                <p>📚 <b>Favorita:</b> <span id="displaySub">Materia</span></p>
+                <p style="font-style: italic; color: #666;" id="displayBio">"Tu descripción aparecerá aquí..."</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="landing" class="section active">
+        <div style="text-align:center; margin: 40px 0;">
+            <h1 style="font-size: 3.5rem;">SwipeLearn</h1>
+            <p style="max-width: 700px; margin: 0 auto; font-size: 1.2rem; opacity: 0.9;">Conectamos el talento universitario. El lugar donde tu duda se convierte en la solución de otro compañero.</p>
+            <button class="btn-main" style="width: auto; margin-top: 30px; padding: 15px 40px;" onclick="showSection('app')">Empezar a Explorar</button>
+        </div>
+        <div style="display:flex; gap:20px; flex-wrap:wrap; justify-content:center; max-width:1000px;">
+            <div style="background:var(--glass); padding:20px; border-radius:20px; flex:1; min-width:300px;">
+                <h3 style="color:var(--accent-orange)">🧠 Fun Fact</h3>
+                <p>Tu cerebro está más receptivo para aprender nuevas materias entre las 10:00 y las 14:00. ¡Aprovecha el pico de dopamina!</p>
             </div>
         </div>
     </div>
 
     <div id="classes" class="section">
-        <h2>Clases Online de la Comunidad</h2>
-        <div class="class-form">
-            <input type="text" id="classTitle" placeholder="Título de la clase" style="width:100%; margin-bottom:10px; padding:8px; border-radius:10px;"><br>
-            <textarea id="classDesc" placeholder="Descripción..." style="width:100%; margin-bottom:10px; padding:8px; border-radius:10px;"></textarea><br>
-            <input type="text" id="classLink" placeholder="Link de Zoom/Meet" style="width:100%; margin-bottom:10px; padding:8px; border-radius:10px;"><br>
-            <button class="btn-main" style="width:100%" onclick="addClass()">Publicar Clase</button>
+        <h2>Clases Online</h2>
+        <div style="background:var(--glass); padding:20px; border-radius:20px; width:100%; max-width:500px; margin-bottom:30px;">
+            <input type="text" id="classTitle" placeholder="Título"><br>
+            <textarea id="classDesc" placeholder="Descripción..."></textarea><br>
+            <button class="btn-main" onclick="addClass()">Publicar Clase</button>
         </div>
         <div class="class-grid" id="classContainer"></div>
     </div>
@@ -128,53 +136,57 @@
     <div id="community" class="section">
         <h2>Muro de Desahogo 🍃</h2>
         <div style="background:var(--glass); padding:20px; border-radius:20px; width:100%; max-width:500px; margin-bottom:20px;">
-            <textarea id="postInput" placeholder="Escribe anónimamente..." style="width:100%; padding:10px; border-radius:10px;"></textarea>
-            <button class="btn-main" style="margin-top:10px; float:right" onclick="addPost()">Subir</button>
-            <div style="clear:both"></div>
+            <textarea id="postInput" placeholder="Exprésate..."></textarea>
+            <button class="btn-main" onclick="addPost()">Subir</button>
         </div>
-        <div id="feed"></div>
+        <div id="feed" style="display:flex; flex-wrap:wrap; gap:15px; justify-content:center;"></div>
     </div>
 
     <div id="app" class="section">
         <div class="swipe-container" id="card-stack"></div>
         <div style="margin-top:30px; display:flex; gap:30px;">
-            <button onclick="swipe('left')" class="btn-main" style="background:white; color:red; font-size:1.5rem">✕</button>
-            <button onclick="swipe('right')" class="btn-main" style="font-size:1.5rem">❤</button>
+            <button onclick="swipe('left')" class="btn-main" style="background:white; color:red; font-size:1.5rem; width:70px;">✕</button>
+            <button onclick="swipe('right')" class="btn-main" style="font-size:1.5rem; width:70px;">❤</button>
         </div>
     </div>
 
     <script>
-        const myContentIds = [];
-        let contentCounter = 0;
-
         function showSection(id) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             if(id === 'app') initCards();
         }
 
-        function addClass() {
-            const title = document.getElementById('classTitle').value;
-            const desc = document.getElementById('classDesc').value;
-            const link = document.getElementById('classLink').value;
-            if(!title || !desc) return;
+        // Lógica Perfil
+        function saveProfile() {
+            const name = document.getElementById('userName').value;
+            const photo = document.getElementById('userPhoto').value;
+            const grade = document.getElementById('userGrade').value;
+            const sub = document.getElementById('userSubject').value;
+            const from = document.getElementById('userFrom').value;
+            const age = document.getElementById('userAge').value;
+            const bio = document.getElementById('userBio').value;
 
-            contentCounter++;
-            const id = 'class-' + contentCounter;
-            myContentIds.push(id);
+            if(name) document.getElementById('displayTitle').innerText = name;
+            if(photo) document.getElementById('previewPhoto').style.backgroundImage = `url('${photo}')`;
+            if(grade) document.getElementById('displayGrade').innerText = grade;
+            if(sub) document.getElementById('displaySub').innerText = sub;
+            if(from) document.getElementById('displayFrom').innerText = from;
+            if(age) document.getElementById('displayAge').innerText = age;
+            if(bio) document.getElementById('displayBio').innerText = bio;
 
-            const card = document.createElement('div');
-            card.className = 'class-card';
-            card.id = id;
-            card.innerHTML = `<h3>${title}</h3><p>${desc}</p>
-                              <a href="${link}" target="_blank" style="color:var(--accent-orange)">Link a la clase</a><br>
-                              <button class="delete-btn" onclick="removeContent('${id}')">Eliminar mi clase</button>`;
-            document.getElementById('classContainer').prepend(card);
-            document.getElementById('classTitle').value = ""; document.getElementById('classDesc').value = "";
+            alert("¡Perfil actualizado con éxito!");
         }
 
-        function removeContent(id) {
-            if(myContentIds.includes(id)) document.getElementById(id).remove();
+        // Funciones auxiliares
+        function addClass() {
+            const t = document.getElementById('classTitle').value;
+            const d = document.getElementById('classDesc').value;
+            if(!t) return;
+            const card = document.createElement('div');
+            card.className = 'class-card';
+            card.innerHTML = `<h3>${t}</h3><p>${d}</p>`;
+            document.getElementById('classContainer').prepend(card);
         }
 
         function addPost() {
@@ -198,8 +210,7 @@
             tutorData.forEach(t => {
                 const c = document.createElement('div');
                 c.className = 'tutor-card';
-                c.innerHTML = `<div class="tutor-photo" style="background-image:url('${t.i}')"></div>
-                               <div style="padding:15px"><h3>${t.n}</h3><p>${t.m}</p></div>`;
+                c.innerHTML = `<div class="tutor-photo" style="background-image:url('${t.i}')"></div><div style="padding:15px"><h3>${t.n}</h3><p>${t.m}</p></div>`;
                 stack.appendChild(c);
             });
         }
