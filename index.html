@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LearnSwipe | Future of Learning</title>
+    <title>LearnSwipe | Connect. Focus. Solve.</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -13,86 +13,79 @@
             --white: #ffffff;
             --accent-orange: #f59e0b;
             --warm-bg: #fffcf2;
-            --glass: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
         }
 
-        * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; }
 
         body {
             margin: 0; background: var(--navy-dark); color: var(--white);
             min-height: 100vh; overflow-x: hidden;
         }
 
-        /* FONDO INTERACTIVO */
-        #bg-canvas {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; background: radial-gradient(circle at center, #1e3a8a 0%, #0f172a 100%);
-        }
+        /* FONDO VIVO */
+        #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(circle at 50% 50%, #1e3a8a 0%, #020617 100%); }
 
         /* --- NAVEGACIÓN --- */
         .navbar {
-            background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(25px);
+            background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(30px);
             padding: 15px 40px; display: flex; justify-content: space-between;
             align-items: center; border-bottom: 1px solid var(--glass-border);
             position: sticky; top: 0; z-index: 1000;
         }
 
-        .logo { font-weight: 800; font-size: 1.6rem; color: var(--electric-blue); cursor: pointer; text-shadow: 0 0 15px rgba(56, 189, 248, 0.5); }
+        .logo { font-weight: 800; font-size: 1.6rem; color: var(--electric-blue); cursor: pointer; letter-spacing: -1px; }
 
         .nav-links button {
-            background: transparent; border: none; color: white; margin-left: 15px;
-            cursor: pointer; font-weight: 600; transition: 0.3s; opacity: 0.7;
+            background: transparent; border: none; color: white; margin-left: 18px;
+            cursor: pointer; font-weight: 600; transition: 0.3s; opacity: 0.6;
         }
-        .nav-links button:hover { opacity: 1; color: var(--electric-blue); transform: translateY(-2px); }
+        .nav-links button:hover { opacity: 1; color: var(--electric-blue); transform: scale(1.05); }
 
         .noti-container { position: relative; }
-        .noti-badge { background: #ef4444; width: 10px; height: 10px; border-radius: 50%; position: absolute; top: 0; right: 0; box-shadow: 0 0 10px #ef4444; }
-        
-        .noti-dropdown { 
-            display: none; position: absolute; top: 40px; right: 0; 
-            background: rgba(30, 41, 59, 0.95); backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border); width: 250px; border-radius: 15px; padding: 10px; z-index: 2000;
-        }
+        .noti-badge { background: #ef4444; width: 8px; height: 8px; border-radius: 50%; position: absolute; top: -2px; right: -2px; box-shadow: 0 0 12px #ef4444; }
 
         /* --- SECCIONES --- */
-        .section { display: none; padding: 40px 20px; animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1); width: 100%; max-width: 1200px; margin: 0 auto; }
+        .section { display: none; padding: 40px 20px; animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1); width: 100%; max-width: 1100px; margin: 0 auto; }
         .active { display: flex; flex-direction: column; align-items: center; }
 
-        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- DASHBOARD --- */
-        .dash-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; width: 100%; }
-        .stat-card { background: var(--glass); padding: 25px; border-radius: 25px; border: 1px solid var(--glass-border); backdrop-filter: blur(10px); transition: 0.4s; }
-        .stat-card:hover { background: rgba(255,255,255,0.1); transform: translateY(-5px); border-color: var(--electric-blue); }
+        /* --- DASHBOARD INNOVADOR --- */
+        .dash-grid { display: grid; grid-template-columns: 1.8fr 1fr; gap: 30px; width: 100%; }
+        .stat-card { background: var(--glass); padding: 25px; border-radius: 30px; border: 1px solid var(--glass-border); text-align: center; backdrop-filter: blur(10px); }
+        
+        .pulse-online { display: inline-flex; align-items: center; gap: 8px; background: rgba(34, 197, 94, 0.1); color: #4ade80; padding: 6px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; margin-bottom: 15px; border: 1px solid rgba(34, 197, 94, 0.2); }
+        .dot-blink { width: 6px; height: 6px; background: #22c55e; border-radius: 50%; animation: blink 1.5s infinite; }
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
 
         .focus-timer { 
-            background: linear-gradient(135deg, #0ea5e9, #2563eb); padding: 30px; 
-            border-radius: 35px; margin-top: 30px; text-align: center; 
-            box-shadow: 0 20px 40px rgba(37, 99, 235, 0.4);
-            animation: pulse-shadow 2s infinite;
+            background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); padding: 35px; 
+            border-radius: 40px; margin-top: 20px; text-align: center; position: relative; overflow: hidden;
         }
-        @keyframes pulse-shadow { 0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7); } 70% { box-shadow: 0 0 0 20px rgba(37, 99, 235, 0); } 100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); } }
+        .timer-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 200px; height: 200px; background: var(--electric-blue); filter: blur(100px); opacity: 0.15; z-index: -1; }
 
-        /* --- PERFIL --- */
-        .profile-preview { background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(15px); padding: 40px; border-radius: 40px; border: 1px solid var(--electric-blue); text-align: center; }
-        .xp-bar { width: 100%; height: 10px; background: rgba(0,0,0,0.3); border-radius: 10px; margin: 15px 0; }
-        .xp-progress { width: 65%; height: 100%; background: var(--electric-blue); border-radius: 10px; box-shadow: 0 0 15px var(--electric-blue); }
+        /* --- PERFIL UNIQUE --- */
+        .profile-layout { display: grid; grid-template-columns: 1fr 1.5fr; gap: 30px; width: 100%; }
+        .profile-card { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(20px); padding: 40px; border-radius: 40px; border: 1px solid var(--electric-blue); text-align: center; }
+        .mood-tag { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--electric-blue); margin-bottom: 10px; display: block; }
+        .xp-label { font-size: 0.65rem; opacity: 0.5; margin-top: 5px; display: block; }
 
         /* --- MURO --- */
-        .muro-container { background: rgba(255, 252, 242, 0.95); border-radius: 40px; padding: 35px; color: #334155; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+        .muro-container { background: rgba(255,255,255,0.98); border-radius: 40px; padding: 40px; color: #1e293b; box-shadow: 0 30px 60px rgba(0,0,0,0.4); }
+        .post-input { width: 100%; border: 2px solid #f1f5f9; border-radius: 20px; padding: 20px; font-size: 1rem; margin-bottom: 15px; resize: none; transition: 0.3s; }
+        .post-input:focus { border-color: var(--electric-blue); outline: none; }
 
         /* --- BOTONES --- */
         .btn-main { 
-            background: linear-gradient(90deg, var(--accent-orange), #fbbf24); 
-            color: white; border: none; padding: 16px 40px; border-radius: 50px; 
-            font-weight: 800; cursor: pointer; transition: 0.3s;
-            box-shadow: 0 10px 20px rgba(245, 158, 11, 0.3);
+            background: linear-gradient(135deg, #38bdf8, #2563eb); color: white; border: none; 
+            padding: 16px 45px; border-radius: 50px; font-weight: 800; cursor: pointer; transition: 0.3s;
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3); text-transform: uppercase; letter-spacing: 1px;
         }
-        .btn-main:hover { transform: scale(1.05); filter: brightness(1.1); }
+        .btn-main:hover { transform: scale(1.05) translateY(-2px); box-shadow: 0 15px 30px rgba(37, 99, 235, 0.4); }
 
-        /* TOAST */
-        #toast { visibility: hidden; min-width: 250px; background: #22c55e; color: white; text-align: center; border-radius: 50px; padding: 16px; position: fixed; z-index: 2000; left: 50%; transform: translateX(-50%); bottom: 30px; font-weight: bold; }
+        #toast { visibility: hidden; min-width: 280px; background: #0f172a; color: white; text-align: center; border-radius: 20px; padding: 20px; position: fixed; z-index: 2000; left: 50%; transform: translateX(-50%); bottom: 40px; font-weight: 600; border: 1px solid var(--electric-blue); }
         #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
     </style>
 </head>
@@ -103,15 +96,15 @@
     <nav class="navbar">
         <div class="logo" onclick="showSection('landing')">LearnSwipe.</div>
         <div class="nav-links">
-            <button onclick="showSection('landing')">Dashboard</button>
-            <button onclick="showSection('profile')">Mi Perfil</button>
-            <button onclick="showSection('community')">Comunidad</button>
-            <button onclick="showSection('app')">Explorar</button>
+            <button onclick="showSection('landing')">Home</button>
+            <button onclick="showSection('profile')">Perfil</button>
+            <button onclick="showSection('community')">Muro</button>
+            <button onclick="showSection('app')">Matches</button>
             <div class="noti-container">
-                <button onclick="toggleNotifications()">🔔<span class="noti-badge" id="dot"></span></button>
-                <div class="noti-dropdown" id="notiBox">
-                    <div style="padding:10px; font-size:0.8rem; border-bottom:1px solid rgba(255,255,255,0.1)">✨ ¡Nueva racha de 5 días!</div>
-                    <div style="padding:10px; font-size:0.8rem;">🤖 Elena M. aceptó tu match</div>
+                <button onclick="toggleNotifications()" style="font-size:1.2rem">🔔<span class="noti-badge" id="dot"></span></button>
+                <div class="noti-dropdown" id="notiBox" style="display:none; position:absolute; top:45px; right:0; background:var(--navy-soft); border:1px solid var(--glass-border); width:280px; border-radius:20px; padding:15px; box-shadow:0 20px 40px rgba(0,0,0,0.6);">
+                    <div style="font-size:0.8rem; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:10px;"><b>Reciente</b></div>
+                    <div style="padding:10px 0; font-size:0.75rem; opacity:0.8;">🔥 Tienes un nuevo match sugerido en Física.</div>
                 </div>
             </div>
         </div>
@@ -119,62 +112,56 @@
 
     <div id="landing" class="section active">
         <div class="dash-grid">
-            <div>
-                <div class="welcome-hero">
-                    <h1 style="font-size: 3.5rem; margin:0;">¡Hola, <span id="userNameHello" style="color:var(--electric-blue)">Pro</span>!</h1>
-                    <p style="opacity: 0.8; font-size: 1.2rem;">Hoy es un gran día para aprender algo nuevo.</p>
-                </div>
-                <div style="display:flex; gap:20px; margin-top:30px;">
-                    <div class="stat-card"><h3>🔥 5</h3><p>Racha</p></div>
-                    <div class="stat-card"><h3>⭐ 4.9</h3><p>Reputación</p></div>
-                </div>
-                <div class="focus-timer">
-                    <h4 style="margin:0; opacity:0.8">SESIÓN DE ENFOQUE</h4>
-                    <div style="font-size: 3.5rem; font-weight: 800;" id="timer">25:00</div>
-                    <button onclick="startTimer()" style="background:white; color:#2563eb; border:none; padding:12px 30px; border-radius:15px; font-weight:bold; cursor:pointer;">COMENZAR</button>
+            <div class="content">
+                <div class="pulse-online"><div class="dot-blink"></div> 1,240 Estudiantes estudiando ahora</div>
+                <h1 style="font-size: 3.8rem; margin:0; letter-spacing:-2px">Focus, <span id="userNameHello" style="color:var(--electric-blue)">Pro</span>.</h1>
+                <p style="opacity: 0.6; font-size: 1.2rem; margin-top:10px;">Tu próxima gran idea está a un Pomodoro de distancia.</p>
+                <div style="display:flex; gap:15px; margin-top:30px;">
+                    <div class="stat-card"><h3>🔥 5</h3><p style="font-size:0.7rem; opacity:0.5">RACHA</p></div>
+                    <div class="stat-card"><h3>⭐ 4.9</h3><p style="font-size:0.7rem; opacity:0.5">KUDOS</p></div>
                 </div>
             </div>
-            <div style="background:var(--glass); border-radius:30px; padding:25px; border:1px solid var(--glass-border); backdrop-filter:blur(10px);">
-                <h3 style="color:var(--electric-blue)">Próximos Matches</h3>
-                <div style="padding:15px; background:rgba(255,255,255,0.05); border-radius:15px; margin-bottom:10px;">
-                    <b>Cálculo III</b><br><small>Con Marc R. • 18:00h</small>
-                </div>
-                <button class="btn-main" style="width:100%; margin-top:20px;" onclick="showSection('app')">BUSCAR MÁS</button>
+            <div class="focus-timer">
+                <div class="timer-glow"></div>
+                <h4 style="margin:0; font-size:0.7rem; letter-spacing:2px; opacity:0.6">DEEP WORK MODE</h4>
+                <div style="font-size: 4rem; font-weight: 800; margin:10px 0;" id="timer">25:00</div>
+                <button class="btn-main" onclick="startTimer()" style="padding:12px 30px; font-size:0.8rem">Iniciar Sesión</button>
             </div>
         </div>
     </div>
 
     <div id="profile" class="section">
-        <div class="profile-layout" style="display:grid; grid-template-columns: 1fr 1.5fr; gap:40px; width:100%;">
-            <div class="profile-preview">
-                <img src="https://via.placeholder.com/150" id="pPicDisp" style="width:150px; height:150px; border-radius:50%; border:4px solid var(--electric-blue); box-shadow: 0 0 30px var(--electric-blue);">
-                <h2 id="pNameDisp" style="margin:15px 0 5px 0">Tu Nombre</h2>
+        <div class="profile-layout">
+            <div class="profile-card">
+                <span class="mood-tag" id="moodDisp">Estado: Enfocado 🎯</span>
+                <img src="https://via.placeholder.com/150" id="pPicDisp" style="width:140px; height:140px; border-radius:50%; border:3px solid var(--electric-blue); padding:5px; object-fit:cover;">
+                <h2 id="pNameDisp" style="margin:15px 0 5px 0">Nombre Usuario</h2>
                 <div class="xp-bar"><div class="xp-progress"></div></div>
-                <p id="pGradeDisp" style="color:var(--electric-blue)">Tu Carrera</p>
-                <div style="font-size:1.5rem; margin:15px 0;">🏆 ⚡ 🎓</div>
-                <p id="pBioDisp" style="opacity:0.7; font-size:0.9rem;">"Bio interactiva..."</p>
-                <div id="pSkillsDisp"></div>
+                <span class="xp-label">650 / 1000 XP para Nivel 5</span>
+                <p id="pGradeDisp" style="color:var(--electric-blue); font-weight:bold; font-size:0.9rem">Carrera</p>
+                <p id="pBioDisp" style="opacity:0.6; font-size:0.8rem; font-style:italic;">"Describe tu meta..."</p>
+                <div id="pSkillsDisp" style="margin-top:15px"></div>
             </div>
-            <div style="background:var(--glass); padding:35px; border-radius:40px; border:1px solid var(--glass-border); backdrop-filter:blur(10px);">
-                <h3>Configura tu Identidad</h3>
-                <input type="file" accept="image/*" onchange="loadPhoto(event)" style="margin-bottom:15px; color:white;">
-                <input type="text" id="inName" placeholder="Nombre" onkeyup="updateProfile()" style="width:100%; padding:15px; margin-bottom:10px; border-radius:15px; background:rgba(0,0,0,0.3); border:1px solid var(--glass-border); color:white;">
-                <input type="text" id="inGrade" placeholder="Carrera" onkeyup="updateProfile()" style="width:100%; padding:15px; margin-bottom:10px; border-radius:15px; background:rgba(0,0,0,0.3); border:1px solid var(--glass-border); color:white;">
-                <textarea id="inBio" placeholder="Descripción" onkeyup="updateProfile()" style="width:100%; height:80px; padding:15px; margin-bottom:10px; border-radius:15px; background:rgba(0,0,0,0.3); border:1px solid var(--glass-border); color:white; resize:none;"></textarea>
-                <input type="text" id="inSkill" placeholder="Habilidad + Enter" onkeydown="if(event.key==='Enter') addSkill()" style="width:100%; padding:15px; margin-bottom:20px; border-radius:15px; background:rgba(0,0,0,0.3); border:1px solid var(--glass-border); color:white;">
-                <button class="btn-main" style="width:100%" onclick="showToast('¡Perfil Blindado! 🚀')">GUARDAR PERFIL</button>
+            <div style="background:var(--glass); padding:40px; border-radius:40px; border:1px solid var(--glass-border); backdrop-filter:blur(15px);">
+                <h3 style="margin-top:0">Personalización</h3>
+                <input type="file" accept="image/*" onchange="loadPhoto(event)" style="margin-bottom:20px; font-size:0.7rem;">
+                <input type="text" id="inName" placeholder="Nombre completo" onkeyup="updateProfile()" style="width:100%; padding:14px; margin-bottom:12px; border-radius:15px; background:rgba(0,0,0,0.2); border:1px solid var(--glass-border); color:white;">
+                <input type="text" id="inGrade" placeholder="¿Qué estudias?" onkeyup="updateProfile()" style="width:100%; padding:14px; margin-bottom:12px; border-radius:15px; background:rgba(0,0,0,0.2); border:1px solid var(--glass-border); color:white;">
+                <textarea id="inBio" placeholder="Tu bio..." onkeyup="updateProfile()" style="width:100%; height:80px; padding:14px; margin-bottom:12px; border-radius:15px; background:rgba(0,0,0,0.2); border:1px solid var(--glass-border); color:white; resize:none;"></textarea>
+                <input type="text" id="inSkill" placeholder="Nueva Skill + Enter" onkeydown="if(event.key==='Enter') addSkill()" style="width:100%; padding:14px; border-radius:15px; background:rgba(0,0,0,0.2); border:1px solid var(--glass-border); color:white;">
+                <button class="btn-main" style="width:100%; margin-top:20px;" onclick="showToast('¡Identidad Actualizada! ✨')">Guardar Cambios</button>
             </div>
         </div>
     </div>
 
     <div id="community" class="section">
-        <div class="muro-container" style="width:100%; max-width:800px;">
-            <h2 style="margin-top:0;">Muro de la Comunidad 🫂</h2>
-            <textarea id="postText" placeholder="¿En qué necesitas ayuda hoy?" style="width:100%; height:100px; padding:20px; border-radius:20px; border:2px solid #e2e8f0; margin-bottom:15px; resize:none;"></textarea>
-            <button class="btn-main" style="width:100%; margin-bottom:30px;" onclick="addPost()">PUBLICAR</button>
+        <div class="muro-container" style="width:100%; max-width:750px;">
+            <h2 style="margin-top:0; letter-spacing:-1px;">Study Feed 🫂</h2>
+            <textarea id="postText" class="post-input" placeholder="¿En qué te has atascado hoy?"></textarea>
+            <button class="btn-main" style="width:100%; margin-bottom:30px;" onclick="addPost()">Compartir con la Red</button>
             <div id="feed">
-                <div style="background:#f1f5f9; padding:20px; border-radius:20px; border-left:6px solid var(--electric-blue);">
-                    <b>🤖 LearnBot:</b> ¡Hay 25 estudiantes de tu carrera conectados ahora!
+                <div style="padding:20px; border-radius:25px; background:#f8fafc; border:1px solid #e2e8f0; border-left:6px solid var(--electric-blue);">
+                    <b>🤖 LearnBot:</b> ¡Hola! Hay una sesión de Java comenzando en 5 min. ¿Te unes?
                 </div>
             </div>
         </div>
@@ -183,19 +170,19 @@
     <div id="app" class="section">
         <div id="card-stack" style="position:relative; width:340px; height:480px;"></div>
         <div style="margin-top:40px; display:flex; gap:30px;">
-            <button onclick="swipe('left')" style="width:70px; height:70px; border-radius:50%; border:none; background:white; color:#ef4444; font-size:1.5rem; cursor:pointer; box-shadow:0 10px 20px rgba(0,0,0,0.2)">✕</button>
-            <button onclick="swipe('right')" style="width:70px; height:70px; border-radius:50%; border:none; background:var(--electric-blue); color:var(--navy-dark); font-size:1.5rem; cursor:pointer; box-shadow:0 10px 20px rgba(56, 189, 248, 0.3)">❤</button>
+            <button onclick="swipe('left')" style="width:75px; height:75px; border-radius:50%; border:none; background:white; color:#ef4444; font-size:1.8rem; cursor:pointer; box-shadow:0 15px 30px rgba(0,0,0,0.15)">✕</button>
+            <button onclick="swipe('right')" style="width:75px; height:75px; border-radius:50%; border:none; background:var(--electric-blue); color:var(--navy-dark); font-size:1.8rem; cursor:pointer; box-shadow:0 15px 30px rgba(56, 189, 248, 0.4)">❤</button>
         </div>
     </div>
 
-    <div id="toast">Perfil guardado con éxito</div>
+    <div id="toast">Notificación</div>
 
     <script>
-        // --- LÓGICA DE FONDO INTERACTIVO ---
+        // --- CANVAS ANIMATION ---
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
-        const mouse = { x: null, y: null };
+        let mouse = { x: null, y: null };
 
         window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
 
@@ -203,17 +190,17 @@
             constructor() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2 + 1;
-                this.speedX = Math.random() * 1 - 0.5;
-                this.speedY = Math.random() * 1 - 0.5;
+                this.size = Math.random() * 1.5 + 0.5;
+                this.speedX = Math.random() * 0.8 - 0.4;
+                this.speedY = Math.random() * 0.8 - 0.4;
             }
             update() {
                 this.x += this.speedX; this.y += this.speedY;
-                if (this.x > canvas.width) this.x = 0; if (this.x < 0) this.x = canvas.width;
-                if (this.y > canvas.height) this.y = 0; if (this.y < 0) this.y = canvas.height;
+                if(this.x > canvas.width || this.x < 0) this.speedX *= -1;
+                if(this.y > canvas.height || this.y < 0) this.speedY *= -1;
             }
             draw() {
-                ctx.fillStyle = 'rgba(56, 189, 248, 0.3)';
+                ctx.fillStyle = 'rgba(56, 189, 248, 0.2)';
                 ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
             }
         }
@@ -221,26 +208,26 @@
         function initBg() {
             canvas.width = window.innerWidth; canvas.height = window.innerHeight;
             particles = [];
-            for (let i = 0; i < 80; i++) particles.push(new Particle());
+            for(let i=0; i<100; i++) particles.push(new Particle());
         }
 
-        function animateBg() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        function animate() {
+            ctx.clearRect(0,0, canvas.width, canvas.height);
             particles.forEach(p => {
                 p.update(); p.draw();
                 let dx = mouse.x - p.x; let dy = mouse.y - p.y;
                 let dist = Math.sqrt(dx*dx + dy*dy);
-                if(dist < 150) {
-                    ctx.strokeStyle = `rgba(56, 189, 248, ${1 - dist/150})`;
-                    ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
+                if(dist < 120) {
+                    ctx.strokeStyle = `rgba(56, 189, 248, ${0.2 * (1 - dist/120)})`;
+                    ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
                 }
             });
-            requestAnimationFrame(animateBg);
+            requestAnimationFrame(animate);
         }
-        initBg(); animateBg();
+        initBg(); animate();
         window.addEventListener('resize', initBg);
 
-        // --- LÓGICA DE LA APP ---
+        // --- APP LOGIC ---
         function showSection(id) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
@@ -260,42 +247,43 @@
         }
 
         function updateProfile() {
-            document.getElementById('pNameDisp').innerText = document.getElementById('inName').value || "Tu Nombre";
-            document.getElementById('pGradeDisp').innerText = document.getElementById('inGrade').value || "Tu Carrera";
+            const n = document.getElementById('inName').value || "Estudiante";
+            document.getElementById('pNameDisp').innerText = n;
+            document.getElementById('pGradeDisp').innerText = document.getElementById('inGrade').value || "Carrera";
             document.getElementById('pBioDisp').innerText = document.getElementById('inBio').value || "Bio...";
-            document.getElementById('userNameHello').innerText = (document.getElementById('inName').value || "Pro").split(' ')[0];
+            document.getElementById('userNameHello').innerText = n.split(' ')[0];
         }
 
         function addSkill() {
-            const val = document.getElementById('inSkill').value;
-            if(val) {
-                const chip = document.createElement('span');
-                chip.style = "background:rgba(56,189,248,0.2); border:1px solid var(--electric-blue); color:var(--electric-blue); padding:5px 15px; border-radius:20px; margin:5px; display:inline-block; font-size:0.8rem; cursor:pointer;";
-                chip.innerText = val; chip.onclick = function() { this.remove(); };
-                document.getElementById('pSkillsDisp').appendChild(chip);
+            const v = document.getElementById('inSkill').value;
+            if(v) {
+                const s = document.createElement('span');
+                s.style = "display:inline-block; background:rgba(56,189,248,0.1); border:1px solid var(--electric-blue); color:var(--electric-blue); padding:5px 12px; border-radius:20px; margin:4px; font-size:0.75rem; cursor:pointer;";
+                s.innerText = v; s.onclick = function() { this.remove(); };
+                document.getElementById('pSkillsDisp').appendChild(s);
                 document.getElementById('inSkill').value = "";
             }
         }
 
         function addPost() {
-            const text = document.getElementById('postText').value; if(!text) return;
-            const div = document.createElement('div');
-            div.style = "background:white; padding:20px; border-radius:20px; margin-top:15px; box-shadow:0 5px 15px rgba(0,0,0,0.05); border-left:6px solid var(--accent-orange);";
-            div.innerHTML = `<b>Tú:</b> ${text}`;
-            document.getElementById('feed').prepend(div);
+            const t = document.getElementById('postText').value; if(!t) return;
+            const d = document.createElement('div');
+            d.style = "background:white; padding:20px; border-radius:25px; margin-top:15px; box-shadow:0 10px 20px rgba(0,0,0,0.03); border-left:6px solid var(--accent-orange); animation: slideUp 0.4s ease;";
+            d.innerHTML = `<b>Tú:</b> ${t}`;
+            document.getElementById('feed').prepend(d);
             document.getElementById('postText').value = "";
         }
 
         function startTimer() {
             let m = 24, s = 59;
-            setInterval(() => {
+            const i = setInterval(() => {
                 document.getElementById('timer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
-                if(s == 0) { m--; s = 59; } else s--;
+                if(s == 0) { if(m == 0) { clearInterval(i); showToast("¡Sesión completada! +50 XP"); } else { m--; s = 59; } } else s--;
             }, 1000);
         }
 
-        function showToast(msg) {
-            const x = document.getElementById("toast"); x.innerText = msg;
+        function showToast(m) {
+            const x = document.getElementById("toast"); x.innerText = m;
             x.className = "show"; setTimeout(() => x.className = "", 3000);
         }
 
@@ -305,24 +293,24 @@
         ];
 
         function initCards() {
-            const stack = document.getElementById('card-stack'); stack.innerHTML = "";
+            const st = document.getElementById('card-stack'); st.innerHTML = "";
             tutors.forEach(t => {
-                const card = document.createElement('div');
-                card.className = 'tutor-card';
-                card.style = "position:absolute; width:100%; height:100%; background:white; border-radius:35px; overflow:hidden; color:#1e293b; box-shadow:0 20px 40px rgba(0,0,0,0.4);";
-                card.innerHTML = `<div style="height:70%; background:url('${t.i}') center/cover"></div><div style="padding:25px"><h3 style="margin:0">${t.n}</h3><p style="opacity:0.6">${t.s}</p></div>`;
-                stack.appendChild(card);
+                const c = document.createElement('div');
+                c.className = 'tutor-card';
+                c.style = "position:absolute; width:100%; height:100%; background:white; border-radius:40px; overflow:hidden; color:#1e293b; box-shadow:0 20px 40px rgba(0,0,0,0.3);";
+                c.innerHTML = `<div style="height:70%; background:url('${t.i}') center/cover"></div><div style="padding:30px"><h3 style="margin:0">${t.n}</h3><p style="opacity:0.6; font-size:0.9rem">${t.s}</p></div>`;
+                st.appendChild(c);
             });
         }
 
-        function swipe(dir) {
-            const cards = document.querySelectorAll('.tutor-card'); if(!cards.length) return;
-            const top = cards[cards.length - 1];
-            top.style.transition = "0.6s cubic-bezier(0.23, 1, 0.32, 1)";
-            top.style.transform = dir === 'right' ? 'translateX(1000px) rotate(30deg)' : 'translateX(-1000px) rotate(-30deg)';
-            top.style.opacity = "0";
-            if(dir === 'right') showToast("¡Match Educativo! 🎓");
-            setTimeout(() => top.remove(), 600);
+        function swipe(d) {
+            const cs = document.querySelectorAll('.tutor-card'); if(!cs.length) return;
+            const t = cs[cs.length - 1];
+            t.style.transition = "0.7s cubic-bezier(0.16, 1, 0.3, 1)";
+            t.style.transform = d === 'right' ? 'translateX(1000px) rotate(45deg)' : 'translateX(-1000px) rotate(-45deg)';
+            t.style.opacity = "0";
+            if(d === 'right') showToast("¡Conexión establecida! 🚀");
+            setTimeout(() => t.remove(), 700);
         }
     </script>
 </body>
