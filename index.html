@@ -10,6 +10,7 @@
             --navy-card: #1e293b;
             --electric-blue: #38bdf8;
             --accent-orange: #f59e0b;
+            --warm-post: #fef3c7; /* Color cálido para el muro */
             --glass: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.1);
         }
@@ -21,7 +22,7 @@
             background-image: radial-gradient(circle at 50% -20%, #1e3a8a, var(--navy-bg));
         }
 
-        /* --- NAV --- */
+        /* --- NAVEGACIÓN FIJA --- */
         .navbar {
             background: rgba(15, 23, 42, 0.9);
             backdrop-filter: blur(15px); padding: 15px 30px;
@@ -43,26 +44,28 @@
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- HOME ESTRUCTURA PASADA --- */
+        /* --- HOME --- */
         .hero { text-align: center; max-width: 800px; margin-bottom: 50px; }
         .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; width: 100%; max-width: 1100px; }
         .card-aesthetic { background: var(--glass); border: 1px solid var(--glass-border); padding: 30px; border-radius: 25px; backdrop-filter: blur(10px); }
 
-        /* --- PERFIL INTERACTIVO --- */
+        /* --- PERFIL CON SUBIDA DE ARCHIVO --- */
         .profile-container { display: grid; grid-template-columns: 1fr 1.5fr; gap: 30px; max-width: 1000px; width: 100%; }
         .profile-card-left { background: var(--navy-card); border: 1px solid var(--glass-border); padding: 30px; border-radius: 30px; text-align: center; }
-        .profile-pic { width: 130px; height: 130px; border-radius: 50%; border: 3px solid var(--electric-blue); object-fit: cover; margin-bottom: 15px; background: #000; }
-        
+        .profile-pic { width: 140px; height: 140px; border-radius: 50%; border: 3px solid var(--electric-blue); object-fit: cover; background: #000; margin-bottom: 15px; }
         .skill-tag { display: inline-block; background: var(--glass); border: 1px solid var(--electric-blue); color: var(--electric-blue); padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; margin: 4px; }
         
-        input, select { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: white; box-sizing: border-box; }
-        
-        .btn-action { background: var(--accent-orange); color: white; border: none; padding: 15px 30px; border-radius: 30px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        .btn-action:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(245, 158, 11, 0.4); }
+        /* --- MURO CÁLIDO --- */
+        .wall-container { width: 100%; max-width: 600px; }
+        .post-card { background: var(--warm-post); color: #92400e; padding: 20px; border-radius: 20px; margin-bottom: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); border-left: 5px solid var(--accent-orange); }
+        .bot-post { background: #e0f2fe; color: #0369a1; border-left: 5px solid var(--electric-blue); }
 
+        input, textarea { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: white; box-sizing: border-box; }
+        .btn-action { background: var(--accent-orange); color: white; border: none; padding: 15px 30px; border-radius: 30px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        
         /* --- EXPLORAR --- */
         .mood-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 340px; }
-        .mood-box { background: var(--navy-card); border: 1px solid var(--glass-border); height: 160px; border-radius: 20px; display: flex; align-items: center; justify-content: center; padding: 15px; text-align: center; }
+        .mood-box { background: var(--navy-card); height: 160px; border-radius: 20px; display: flex; align-items: center; justify-content: center; padding: 15px; text-align: center; }
     </style>
 </head>
 <body>
@@ -71,7 +74,7 @@
         <div class="logo" onclick="showSection('landing')">LearnSwipe</div>
         <div class="nav-links">
             <button onclick="showSection('landing')">Inicio</button>
-            <button onclick="showSection('profile')">Mi Perfil</button>
+            <button onclick="showSection('profile')">Perfil</button>
             <button onclick="showSection('community')">Muro</button>
             <button onclick="showSection('app')">Explorar</button>
         </div>
@@ -79,18 +82,17 @@
 
     <div id="landing" class="section active">
         <div class="hero">
-            <h1 style="font-size: 3.5rem; margin-bottom: 10px;">De la confusión <br><span style="color:var(--electric-blue)">a la solución</span></h1>
-            <p style="font-size: 1.2rem; opacity: 0.8;">La red social donde tu duda encuentra a su tutor ideal.</p>
+            <h1 style="font-size: 3.5rem;">De la confusión <br><span style="color:var(--electric-blue)">a la solución</span></h1>
             <button class="btn-action" onclick="showSection('app')">Empezar ahora</button>
         </div>
         <div class="info-grid">
             <div class="card-aesthetic">
                 <h3 style="color:var(--accent-orange)">🧠 Brain Power</h3>
-                <p>Aprender de un compañero reduce la ansiedad académica y mejora la retención de datos un 40%.</p>
+                <p>Estudiar en grupo activa neuronas espejo que facilitan la comprensión de temas complejos.</p>
             </div>
             <div class="card-aesthetic">
                 <h3 style="color:var(--accent-orange)">🌍 Global News</h3>
-                <p>Nuevos grupos de estudio de la Universidad de Twente se han unido hoy a LearnSwipe.</p>
+                <p>LearnSwipe ya está disponible en 5 facultades nuevas este mes.</p>
             </div>
         </div>
     </div>
@@ -99,26 +101,38 @@
         <div class="profile-container">
             <div class="profile-card-left">
                 <img src="https://via.placeholder.com/150" class="profile-pic" id="pPicDisp">
-                <h2 id="pNameDisp" style="margin:0;">Tu Nombre</h2>
-                <p id="pGradeDisp" style="color:var(--electric-blue); font-size:0.9rem;">Grado / Carrera</p>
-                <div id="pSkillsDisp" style="margin-top:20px;">
-                    </div>
+                <h2 id="pNameDisp">Usuario</h2>
+                <div id="pSkillsDisp"></div>
             </div>
 
-            <div style="background:var(--glass); padding:30px; border-radius:30px; border:1px solid var(--glass-border);">
-                <h3>Configura tu Identidad</h3>
+            <div style="background:var(--glass); padding:30px; border-radius:30px;">
+                <h3>Tu Espacio</h3>
+                <label>Foto de Perfil (Sube desde tu galería):</label>
+                <input type="file" id="fileInput" accept="image/*" onchange="loadPhoto(event)" style="color:white; margin-top:10px;">
                 
-                <label style="font-size:0.8rem; opacity:0.6;">URL de tu Foto</label>
-                <input type="text" id="inPic" placeholder="Pega el link de tu imagen aquí..." onchange="updateProfile()">
-                
-                <label style="font-size:0.8rem; opacity:0.6;">Nombre y Grado</label>
-                <input type="text" id="inName" placeholder="Nombre completo" onkeyup="updateProfile()">
-                <input type="text" id="inGrade" placeholder="Ej: 3º Ingeniería Aeroespacial" onkeyup="updateProfile()">
-                
-                <label style="font-size:0.8rem; opacity:0.6;">Mis Skills (Escribe y pulsa Enter)</label>
-                <input type="text" id="inSkill" placeholder="Ej: Matemáticas, Photoshop, Java..." onkeydown="if(event.key==='Enter') addSkill()">
-                
-                <button class="btn-action" style="width:100%" onclick="alert('Perfil Guardado')">Guardar Cambios</button>
+                <input type="text" id="inName" placeholder="Tu Nombre" onkeyup="updateProfile()">
+                <input type="text" id="inSkill" placeholder="Escribe una skill y pulsa Enter" onkeydown="if(event.key==='Enter') addSkill()">
+                <button class="btn-action" style="width:100%" onclick="alert('Perfil Guardado')">Guardar Todo</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="community" class="section">
+        <div class="wall-container">
+            <h2 style="text-align:center">Muro de la Comunidad 🫂</h2>
+            <textarea id="postIn" placeholder="Escribe algo acogedor..." style="background:white; color:#333;"></textarea>
+            <button class="btn-action" style="width:100%; margin-bottom:30px;" onclick="addPost()">Compartir</button>
+            
+            <div id="feed">
+                <div class="post-card bot-post">
+                    <b>🤖 LearnBot:</b> ¡Hola! Bienvenido al muro. Recuerda que aquí todos estamos para ayudarnos. ¿Qué tal va tu sesión de estudio?
+                </div>
+                <div class="post-card bot-post">
+                    <b>🤖 TipBot:</b> ¡No olvides la técnica Pomodoro! 25 min de estudio, 5 min de descanso. 🍅
+                </div>
+                <div class="post-card">
+                    <b>Anónimo:</b> He conseguido entender las derivadas gracias a un tutor de aquí. ¡Sí se puede! ✨
+                </div>
             </div>
         </div>
     </div>
@@ -128,25 +142,15 @@
             <div style="position:relative; width:330px; height:460px;" id="card-stack"></div>
             <div class="mood-grid">
                 <div class="mood-box" style="background:url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=300&q=80') center/cover"></div>
-                <div class="mood-box">"Estudia hoy, domina mañana."</div>
-                <div class="mood-box" style="background:#000;">POV: El examen es mañana y no sabes qué es una integral. 💀</div>
-                <div class="mood-box" style="font-size:2rem;">☕📚🎓✨</div>
+                <div class="mood-box">"La disciplina vence al talento."</div>
+                <div class="mood-box" style="background:#000;">Mañana hay examen y yo solo sé que no sé nada. 🤡</div>
+                <div class="mood-box" style="font-size:2rem;">☕📚✨</div>
             </div>
         </div>
         <div style="margin-top:30px; display:flex; gap:30px;">
-            <button onclick="swipe('left')" style="background:#ef4444; color:white; border:none; width:65px; height:65px; border-radius:50%; cursor:pointer; font-size:1.5rem;">✕</button>
-            <button onclick="swipe('right')" style="background:var(--electric-blue); color:var(--navy-bg); border:none; width:65px; height:65px; border-radius:50%; cursor:pointer; font-size:1.5rem;">❤</button>
+            <button onclick="swipe('left')" style="background:#ef4444; width:65px; height:65px; border-radius:50%; border:none; cursor:pointer;">✕</button>
+            <button onclick="swipe('right')" style="background:var(--electric-blue); width:65px; height:65px; border-radius:50%; border:none; cursor:pointer;">❤</button>
         </div>
-    </div>
-
-    <div id="community" class="section">
-        <h2>Muro de la Comunidad</h2>
-        <div style="background:var(--navy-card); padding:20px; border-radius:20px; width:100%; max-width:500px;">
-            <textarea id="postIn" placeholder="¿Cómo vas con el estudio?" style="width:100%; height:80px; background:rgba(0,0,0,0.2); color:white; border:1px solid var(--glass-border); padding:10px; border-radius:12px; resize:none;"></textarea>
-            <button class="btn-action" style="margin-top:10px; float:right;" onclick="addPost()">Postear</button>
-            <div style="clear:both"></div>
-        </div>
-        <div id="feed" style="margin-top:20px; width:100%; max-width:500px;"></div>
     </div>
 
     <script>
@@ -156,35 +160,33 @@
             if(id === 'app') initCards();
         }
 
-        // Lógica Perfil
-        function updateProfile() {
-            const pic = document.getElementById('inPic').value;
-            const name = document.getElementById('inName').value;
-            const grade = document.getElementById('inGrade').value;
+        // Cargar foto desde galería local
+        function loadPhoto(event) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                document.getElementById('pPicDisp').src = reader.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
 
-            if(pic) document.getElementById('pPicDisp').src = pic;
-            document.getElementById('pNameDisp').innerText = name || "Tu Nombre";
-            document.getElementById('pGradeDisp').innerText = grade || "Grado / Carrera";
+        function updateProfile() {
+            document.getElementById('pNameDisp').innerText = document.getElementById('inName').value || "Usuario";
         }
 
         function addSkill() {
             const input = document.getElementById('inSkill');
-            const skill = input.value.trim();
-            if(skill) {
-                const span = document.createElement('span');
-                span.className = 'skill-tag';
-                span.innerText = skill;
-                span.onclick = function() { this.remove(); }; // Click para borrar
-                document.getElementById('pSkillsDisp').appendChild(span);
+            if(input.value) {
+                const s = document.createElement('span'); s.className = 'skill-tag';
+                s.innerText = input.value; s.onclick = function() { this.remove(); };
+                document.getElementById('pSkillsDisp').appendChild(s);
                 input.value = "";
             }
         }
 
         function addPost() {
             const val = document.getElementById('postIn').value; if(!val) return;
-            const p = document.createElement('div');
-            p.style.cssText = "background:var(--glass); border:1px solid var(--glass-border); padding:15px; border-radius:15px; margin-bottom:10px;";
-            p.innerHTML = `<b>Anónimo:</b> ${val}`;
+            const p = document.createElement('div'); p.className = 'post-card';
+            p.innerHTML = `<b>Tú:</b> ${val}`;
             document.getElementById('feed').prepend(p);
             document.getElementById('postIn').value = "";
         }
@@ -198,8 +200,8 @@
             const s = document.getElementById('card-stack'); s.innerHTML = "";
             tutors.forEach(t => {
                 const c = document.createElement('div');
-                c.className = 'tutor-card';
                 c.style.cssText = "position:absolute; width:100%; height:100%; background:white; border-radius:30px; overflow:hidden; color:#0f172a; box-shadow:0 15px 40px rgba(0,0,0,0.5);";
+                c.className = 'tutor-card';
                 c.innerHTML = `<div style="height:70%; background:url('${t.i}') center/cover"></div><div style="padding:20px"><h3>${t.n}</h3><p>${t.m}</p></div>`;
                 s.appendChild(c);
             });
