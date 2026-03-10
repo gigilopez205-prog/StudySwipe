@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LearnSwipe | From Confusion to Solution</title>
+    <title>LearnSwipe | Future of Learning</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -21,88 +21,84 @@
 
         body {
             margin: 0; background: var(--navy-dark); color: var(--white);
-            background-image: radial-gradient(circle at top right, #1e3a8a, var(--navy-dark));
-            background-attachment: fixed; min-height: 100vh;
-            overflow-x: hidden;
+            min-height: 100vh; overflow-x: hidden;
         }
 
-        body::before {
-            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: url('https://www.transparenttextures.com/patterns/cubes.png');
-            opacity: 0.05; z-index: -1;
+        /* FONDO INTERACTIVO */
+        #bg-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; background: radial-gradient(circle at center, #1e3a8a 0%, #0f172a 100%);
         }
 
         /* --- NAVEGACIÓN --- */
         .navbar {
-            background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(20px);
+            background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(25px);
             padding: 15px 40px; display: flex; justify-content: space-between;
             align-items: center; border-bottom: 1px solid var(--glass-border);
             position: sticky; top: 0; z-index: 1000;
         }
 
-        .logo { font-weight: 800; font-size: 1.6rem; color: var(--electric-blue); cursor: pointer; }
+        .logo { font-weight: 800; font-size: 1.6rem; color: var(--electric-blue); cursor: pointer; text-shadow: 0 0 15px rgba(56, 189, 248, 0.5); }
 
-        .nav-links { display: flex; align-items: center; }
         .nav-links button {
             background: transparent; border: none; color: white; margin-left: 15px;
             cursor: pointer; font-weight: 600; transition: 0.3s; opacity: 0.7;
         }
-        .nav-links button:hover { opacity: 1; color: var(--electric-blue); }
+        .nav-links button:hover { opacity: 1; color: var(--electric-blue); transform: translateY(-2px); }
 
         .noti-container { position: relative; }
-        .noti-badge { background: #ef4444; width: 10px; height: 10px; border-radius: 50%; display: inline-block; position: absolute; top: 0; right: 0; box-shadow: 0 0 10px #ef4444; }
+        .noti-badge { background: #ef4444; width: 10px; height: 10px; border-radius: 50%; position: absolute; top: 0; right: 0; box-shadow: 0 0 10px #ef4444; }
         
         .noti-dropdown { 
             display: none; position: absolute; top: 40px; right: 0; 
-            background: var(--navy-soft); border: 1px solid var(--glass-border); 
-            width: 250px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            padding: 10px; z-index: 2000;
+            background: rgba(30, 41, 59, 0.95); backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border); width: 250px; border-radius: 15px; padding: 10px; z-index: 2000;
         }
-        .noti-item { padding: 10px; border-bottom: 1px solid var(--glass-border); font-size: 0.8rem; }
 
         /* --- SECCIONES --- */
-        .section { display: none; padding: 40px 20px; animation: slideUp 0.6s ease; width: 100%; max-width: 1200px; margin: 0 auto; }
+        .section { display: none; padding: 40px 20px; animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1); width: 100%; max-width: 1200px; margin: 0 auto; }
         .active { display: flex; flex-direction: column; align-items: center; }
 
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- DASHBOARD LLENO --- */
+        /* --- DASHBOARD --- */
         .dash-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; width: 100%; }
-        .welcome-hero { text-align: left; margin-bottom: 40px; }
-        .welcome-hero h1 { font-size: 3rem; letter-spacing: -2px; margin-bottom: 10px; }
-        .stats-bar { display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
-        .stat-card { background: var(--glass); padding: 20px; border-radius: 20px; border: 1px solid var(--glass-border); text-align: center; flex: 1; min-width: 100px; }
-        
-        .sidebar-box { background: rgba(255,255,255,0.03); border: 1px dashed var(--glass-border); border-radius: 25px; padding: 20px; }
-        .event-mini { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; font-size: 0.8rem; background: var(--glass); padding: 10px; border-radius: 10px; }
+        .stat-card { background: var(--glass); padding: 25px; border-radius: 25px; border: 1px solid var(--glass-border); backdrop-filter: blur(10px); transition: 0.4s; }
+        .stat-card:hover { background: rgba(255,255,255,0.1); transform: translateY(-5px); border-color: var(--electric-blue); }
 
-        .focus-timer { background: linear-gradient(135deg, #0ea5e9, #2563eb); padding: 25px; border-radius: 30px; margin-top: 30px; text-align: center; box-shadow: 0 15px 35px rgba(37, 99, 235, 0.3); }
+        .focus-timer { 
+            background: linear-gradient(135deg, #0ea5e9, #2563eb); padding: 30px; 
+            border-radius: 35px; margin-top: 30px; text-align: center; 
+            box-shadow: 0 20px 40px rgba(37, 99, 235, 0.4);
+            animation: pulse-shadow 2s infinite;
+        }
+        @keyframes pulse-shadow { 0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7); } 70% { box-shadow: 0 0 0 20px rgba(37, 99, 235, 0); } 100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); } }
 
-        /* --- PERFIL LLENO --- */
-        .profile-layout { display: grid; grid-template-columns: 1fr 1.5fr; gap: 40px; width: 100%; }
-        .profile-preview { background: var(--navy-soft); padding: 40px; border-radius: 35px; border: 1px solid var(--electric-blue); text-align: center; }
-        .xp-bar { width: 100%; height: 8px; background: #334155; border-radius: 10px; margin: 15px 0; overflow: hidden; }
-        .xp-progress { width: 65%; height: 100%; background: var(--electric-blue); }
-        .achievements { display: flex; justify-content: center; gap: 10px; margin-top: 15px; font-size: 1.2rem; }
+        /* --- PERFIL --- */
+        .profile-preview { background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(15px); padding: 40px; border-radius: 40px; border: 1px solid var(--electric-blue); text-align: center; }
+        .xp-bar { width: 100%; height: 10px; background: rgba(0,0,0,0.3); border-radius: 10px; margin: 15px 0; }
+        .xp-progress { width: 65%; height: 100%; background: var(--electric-blue); border-radius: 10px; box-shadow: 0 0 15px var(--electric-blue); }
 
-        /* --- MURO LLENO --- */
-        .muro-layout { display: grid; grid-template-columns: 1fr 280px; gap: 20px; width: 100%; }
-        .muro-container { background: var(--warm-bg); border-radius: 35px; padding: 30px; color: #444; }
-        .feed-card { background: white; padding: 20px; border-radius: 20px; margin-bottom: 15px; border-left: 6px solid var(--accent-orange); box-shadow: 0 4px 6px rgba(0,0,0,0.05); position: relative; }
-        .online-friend { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-size: 0.85rem; }
-        .dot-green { width: 8px; height: 8px; background: #22c55e; border-radius: 50%; }
+        /* --- MURO --- */
+        .muro-container { background: rgba(255, 252, 242, 0.95); border-radius: 40px; padding: 35px; color: #334155; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
 
-        /* --- EXPLORAR --- */
-        .swipe-stack { position: relative; width: 340px; height: 480px; }
-        .tutor-card { position: absolute; width: 100%; height: 100%; background: var(--white); border-radius: 35px; overflow: hidden; color: var(--navy-dark); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        /* --- BOTONES --- */
+        .btn-main { 
+            background: linear-gradient(90deg, var(--accent-orange), #fbbf24); 
+            color: white; border: none; padding: 16px 40px; border-radius: 50px; 
+            font-weight: 800; cursor: pointer; transition: 0.3s;
+            box-shadow: 0 10px 20px rgba(245, 158, 11, 0.3);
+        }
+        .btn-main:hover { transform: scale(1.05); filter: brightness(1.1); }
 
-        .btn-main { background: linear-gradient(90deg, var(--accent-orange), #fbbf24); color: white; border: none; padding: 16px 35px; border-radius: 50px; font-weight: 800; cursor: pointer; transition: 0.3s; }
-
-        #toast { visibility: hidden; min-width: 250px; background-color: #22c55e; color: white; text-align: center; border-radius: 15px; padding: 16px; position: fixed; z-index: 2000; left: 50%; transform: translateX(-50%); bottom: 30px; font-weight: bold; }
+        /* TOAST */
+        #toast { visibility: hidden; min-width: 250px; background: #22c55e; color: white; text-align: center; border-radius: 50px; padding: 16px; position: fixed; z-index: 2000; left: 50%; transform: translateX(-50%); bottom: 30px; font-weight: bold; }
         #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
     </style>
 </head>
 <body>
+
+    <canvas id="bg-canvas"></canvas>
 
     <nav class="navbar">
         <div class="logo" onclick="showSection('landing')">LearnSwipe.</div>
@@ -114,9 +110,8 @@
             <div class="noti-container">
                 <button onclick="toggleNotifications()">🔔<span class="noti-badge" id="dot"></span></button>
                 <div class="noti-dropdown" id="notiBox">
-                    <div class="noti-item">✨ ¡Bienvenido a LearnSwipe!</div>
-                    <div class="noti-item">🔥 Tu racha ha subido a 5 días.</div>
-                    <div class="noti-item">🤖 LearnBot: 3 tutores nuevos.</div>
+                    <div style="padding:10px; font-size:0.8rem; border-bottom:1px solid rgba(255,255,255,0.1)">✨ ¡Nueva racha de 5 días!</div>
+                    <div style="padding:10px; font-size:0.8rem;">🤖 Elena M. aceptó tu match</div>
                 </div>
             </div>
         </div>
@@ -124,86 +119,128 @@
 
     <div id="landing" class="section active">
         <div class="dash-grid">
-            <div class="main-content">
+            <div>
                 <div class="welcome-hero">
-                    <h1>Hola, <span id="userNameHello" style="color:var(--electric-blue)">Estudiante</span>.</h1>
-                    <p style="opacity: 0.7; font-size: 1.1rem;">Tienes 2 tareas pendientes para hoy.</p>
+                    <h1 style="font-size: 3.5rem; margin:0;">¡Hola, <span id="userNameHello" style="color:var(--electric-blue)">Pro</span>!</h1>
+                    <p style="opacity: 0.8; font-size: 1.2rem;">Hoy es un gran día para aprender algo nuevo.</p>
                 </div>
-                <div class="stats-bar">
-                    <div class="stat-card"><h3>🔥 5</h3><p style="font-size:0.7rem">RACHA</p></div>
-                    <div class="stat-card"><h3>📚 12</h3><p style="font-size:0.7rem">SESIONES</p></div>
-                    <div class="stat-card"><h3>⭐ 4.9</h3><p style="font-size:0.7rem">RATING</p></div>
+                <div style="display:flex; gap:20px; margin-top:30px;">
+                    <div class="stat-card"><h3>🔥 5</h3><p>Racha</p></div>
+                    <div class="stat-card"><h3>⭐ 4.9</h3><p>Reputación</p></div>
                 </div>
                 <div class="focus-timer">
-                    <h4 style="margin:0; font-size: 0.8rem; letter-spacing: 1px;">ENFOQUE POMODORO</h4>
-                    <div style="font-size: 2.5rem; font-weight: 800; margin: 5px 0;" id="timer">25:00</div>
-                    <button onclick="startTimer()" style="background:white; color:#2563eb; border:none; padding:8px 20px; border-radius:12px; font-weight:bold; cursor:pointer;">Iniciar Sesión</button>
+                    <h4 style="margin:0; opacity:0.8">SESIÓN DE ENFOQUE</h4>
+                    <div style="font-size: 3.5rem; font-weight: 800;" id="timer">25:00</div>
+                    <button onclick="startTimer()" style="background:white; color:#2563eb; border:none; padding:12px 30px; border-radius:15px; font-weight:bold; cursor:pointer;">COMENZAR</button>
                 </div>
             </div>
-            
-            <div class="sidebar-box">
-                <h4 style="margin-top:0; color:var(--electric-blue)">📅 Agenda</h4>
-                <div class="event-mini"><span>🕒</span> <div><b>Cálculo II</b><br><small>Hoy 18:00</small></div></div>
-                <div class="event-mini"><span>🕒</span> <div><b>Java Match</b><br><small>Mañana 10:00</small></div></div>
-                <button class="btn-main" style="padding:10px; font-size:0.7rem; width:100%" onclick="showSection('app')">+ Nueva Sesión</button>
+            <div style="background:var(--glass); border-radius:30px; padding:25px; border:1px solid var(--glass-border); backdrop-filter:blur(10px);">
+                <h3 style="color:var(--electric-blue)">Próximos Matches</h3>
+                <div style="padding:15px; background:rgba(255,255,255,0.05); border-radius:15px; margin-bottom:10px;">
+                    <b>Cálculo III</b><br><small>Con Marc R. • 18:00h</small>
+                </div>
+                <button class="btn-main" style="width:100%; margin-top:20px;" onclick="showSection('app')">BUSCAR MÁS</button>
             </div>
         </div>
     </div>
 
     <div id="profile" class="section">
-        <div class="profile-layout">
+        <div class="profile-layout" style="display:grid; grid-template-columns: 1fr 1.5fr; gap:40px; width:100%;">
             <div class="profile-preview">
-                <img src="https://via.placeholder.com/150" class="user-pic" id="pPicDisp">
-                <h2 id="pNameDisp" style="margin:0">Tu Nombre</h2>
+                <img src="https://via.placeholder.com/150" id="pPicDisp" style="width:150px; height:150px; border-radius:50%; border:4px solid var(--electric-blue); box-shadow: 0 0 30px var(--electric-blue);">
+                <h2 id="pNameDisp" style="margin:15px 0 5px 0">Tu Nombre</h2>
                 <div class="xp-bar"><div class="xp-progress"></div></div>
-                <small style="opacity:0.5">Nivel 4 - Estudiante Pro</small>
-                <p id="pGradeDisp" style="color:var(--electric-blue); font-weight:600; margin:10px 0;">Tu Carrera</p>
-                <div class="achievements"><span>🏆</span><span>⚡</span><span>🎓</span><span>🔥</span></div>
-                <p id="pBioDisp" style="opacity:0.7; font-size:0.8rem; margin:15px 0;">"Bio..."</p>
+                <p id="pGradeDisp" style="color:var(--electric-blue)">Tu Carrera</p>
+                <div style="font-size:1.5rem; margin:15px 0;">🏆 ⚡ 🎓</div>
+                <p id="pBioDisp" style="opacity:0.7; font-size:0.9rem;">"Bio interactiva..."</p>
                 <div id="pSkillsDisp"></div>
             </div>
-            <div style="background:var(--glass); padding:30px; border-radius:35px; border:1px solid var(--glass-border);">
-                <h3>Editor de Perfil</h3>
-                <input type="file" accept="image/*" onchange="loadPhoto(event)" style="margin-bottom:15px; font-size:0.8rem;">
-                <input type="text" id="inName" placeholder="Nombre" onkeyup="updateProfile()" style="width:100%; padding:12px; margin-bottom:10px; border-radius:10px; background:rgba(0,0,0,0.3); border:1px solid var(--glass-border); color:white;">
-                <input type="text" id="inGrade" placeholder="Carrera" onkeyup="updateProfile()" style="width:100%; padding:12px; margin-bottom:10px; border-radius:10px; background:rgba(0,0,0,0.3); border:1px solid var(--glass-border); color:white;">
-                <textarea id="inBio" placeholder="Bio" onkeyup="updateProfile()" style="width:100%; height:60px; padding:12px; margin-bottom:10px; border-radius:10px; background:rgba(0,0,0,0.3); border:1px solid var(--glass-border); color:white; resize:none;"></textarea>
-                <input type="text" id="inSkill" placeholder="Habilidad + Enter" onkeydown="if(event.key==='Enter') addSkill()" style="width:100%; padding:12px; margin-bottom:15px; border-radius:10px; background:rgba(0,0,0,0.3); border:1px solid var(--glass-border); color:white;">
-                <button class="btn-main" style="width:100%" onclick="showToast('¡Datos actualizados!')">Guardar Todo</button>
+            <div style="background:var(--glass); padding:35px; border-radius:40px; border:1px solid var(--glass-border); backdrop-filter:blur(10px);">
+                <h3>Configura tu Identidad</h3>
+                <input type="file" accept="image/*" onchange="loadPhoto(event)" style="margin-bottom:15px; color:white;">
+                <input type="text" id="inName" placeholder="Nombre" onkeyup="updateProfile()" style="width:100%; padding:15px; margin-bottom:10px; border-radius:15px; background:rgba(0,0,0,0.3); border:1px solid var(--glass-border); color:white;">
+                <input type="text" id="inGrade" placeholder="Carrera" onkeyup="updateProfile()" style="width:100%; padding:15px; margin-bottom:10px; border-radius:15px; background:rgba(0,0,0,0.3); border:1px solid var(--glass-border); color:white;">
+                <textarea id="inBio" placeholder="Descripción" onkeyup="updateProfile()" style="width:100%; height:80px; padding:15px; margin-bottom:10px; border-radius:15px; background:rgba(0,0,0,0.3); border:1px solid var(--glass-border); color:white; resize:none;"></textarea>
+                <input type="text" id="inSkill" placeholder="Habilidad + Enter" onkeydown="if(event.key==='Enter') addSkill()" style="width:100%; padding:15px; margin-bottom:20px; border-radius:15px; background:rgba(0,0,0,0.3); border:1px solid var(--glass-border); color:white;">
+                <button class="btn-main" style="width:100%" onclick="showToast('¡Perfil Blindado! 🚀')">GUARDAR PERFIL</button>
             </div>
         </div>
     </div>
 
     <div id="community" class="section">
-        <div class="muro-layout">
-            <div class="muro-container">
-                <h2 style="margin:0 0 20px 0; color:var(--navy-dark)">Feed Global 🫂</h2>
-                <textarea class="post-input" id="postText" placeholder="Duda rápida..." style="width:100%; border:2px solid #ddd; border-radius:15px; padding:15px; margin-bottom:10px;"></textarea>
-                <button class="btn-main" style="width:100%; margin-bottom:20px;" onclick="addPost()">Publicar Post</button>
-                <div id="feed">
-                    <div class="feed-card"><b>Alex G.</b> ¿Alguien para repasar integrales?</div>
+        <div class="muro-container" style="width:100%; max-width:800px;">
+            <h2 style="margin-top:0;">Muro de la Comunidad 🫂</h2>
+            <textarea id="postText" placeholder="¿En qué necesitas ayuda hoy?" style="width:100%; height:100px; padding:20px; border-radius:20px; border:2px solid #e2e8f0; margin-bottom:15px; resize:none;"></textarea>
+            <button class="btn-main" style="width:100%; margin-bottom:30px;" onclick="addPost()">PUBLICAR</button>
+            <div id="feed">
+                <div style="background:#f1f5f9; padding:20px; border-radius:20px; border-left:6px solid var(--electric-blue);">
+                    <b>🤖 LearnBot:</b> ¡Hay 25 estudiantes de tu carrera conectados ahora!
                 </div>
-            </div>
-            <div class="sidebar-box" style="background:var(--navy-soft); border-style:solid;">
-                <h4 style="margin:0 0 15px 0; color:var(--electric-blue)">🟢 Conectados</h4>
-                <div class="online-friend"><div class="dot-green"></div> Maria Lopez</div>
-                <div class="online-friend"><div class="dot-green"></div> Carlos Ruiz</div>
-                <div class="online-friend"><div class="dot-green"></div> Elena Tutor</div>
             </div>
         </div>
     </div>
 
     <div id="app" class="section">
-        <div class="swipe-stack" id="card-stack"></div>
-        <div style="margin-top:40px; display:flex; gap:20px;">
-            <button onclick="swipe('left')" style="width:60px; height:60px; border-radius:50%; border:none; background:white; color:#ef4444; font-size:1.2rem; cursor:pointer;">✕</button>
-            <button onclick="swipe('right')" style="width:60px; height:60px; border-radius:50%; border:none; background:var(--electric-blue); color:var(--navy-dark); font-size:1.2rem; cursor:pointer;">❤</button>
+        <div id="card-stack" style="position:relative; width:340px; height:480px;"></div>
+        <div style="margin-top:40px; display:flex; gap:30px;">
+            <button onclick="swipe('left')" style="width:70px; height:70px; border-radius:50%; border:none; background:white; color:#ef4444; font-size:1.5rem; cursor:pointer; box-shadow:0 10px 20px rgba(0,0,0,0.2)">✕</button>
+            <button onclick="swipe('right')" style="width:70px; height:70px; border-radius:50%; border:none; background:var(--electric-blue); color:var(--navy-dark); font-size:1.5rem; cursor:pointer; box-shadow:0 10px 20px rgba(56, 189, 248, 0.3)">❤</button>
         </div>
     </div>
 
     <div id="toast">Perfil guardado con éxito</div>
 
     <script>
+        // --- LÓGICA DE FONDO INTERACTIVO ---
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        const mouse = { x: null, y: null };
+
+        window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1 - 0.5;
+            }
+            update() {
+                this.x += this.speedX; this.y += this.speedY;
+                if (this.x > canvas.width) this.x = 0; if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0; if (this.y < 0) this.y = canvas.height;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(56, 189, 248, 0.3)';
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+
+        function initBg() {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            particles = [];
+            for (let i = 0; i < 80; i++) particles.push(new Particle());
+        }
+
+        function animateBg() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update(); p.draw();
+                let dx = mouse.x - p.x; let dy = mouse.y - p.y;
+                let dist = Math.sqrt(dx*dx + dy*dy);
+                if(dist < 150) {
+                    ctx.strokeStyle = `rgba(56, 189, 248, ${1 - dist/150})`;
+                    ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
+                }
+            });
+            requestAnimationFrame(animateBg);
+        }
+        initBg(); animateBg();
+        window.addEventListener('resize', initBg);
+
+        // --- LÓGICA DE LA APP ---
         function showSection(id) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
@@ -212,9 +249,8 @@
 
         function toggleNotifications() {
             const box = document.getElementById('notiBox');
-            const dot = document.getElementById('dot');
             box.style.display = box.style.display === 'block' ? 'none' : 'block';
-            dot.style.display = 'none';
+            document.getElementById('dot').style.display = 'none';
         }
 
         function loadPhoto(e) {
@@ -227,14 +263,14 @@
             document.getElementById('pNameDisp').innerText = document.getElementById('inName').value || "Tu Nombre";
             document.getElementById('pGradeDisp').innerText = document.getElementById('inGrade').value || "Tu Carrera";
             document.getElementById('pBioDisp').innerText = document.getElementById('inBio').value || "Bio...";
-            document.getElementById('userNameHello').innerText = (document.getElementById('inName').value || "Estudiante").split(' ')[0];
+            document.getElementById('userNameHello').innerText = (document.getElementById('inName').value || "Pro").split(' ')[0];
         }
 
         function addSkill() {
             const val = document.getElementById('inSkill').value;
             if(val) {
-                const chip = document.createElement('span'); chip.className = 'skill-chip';
-                chip.style = "background:rgba(56,189,248,0.1); border:1px solid var(--electric-blue); color:var(--electric-blue); padding:5px 10px; border-radius:20px; margin:3px; display:inline-block; font-size:0.7rem;";
+                const chip = document.createElement('span');
+                chip.style = "background:rgba(56,189,248,0.2); border:1px solid var(--electric-blue); color:var(--electric-blue); padding:5px 15px; border-radius:20px; margin:5px; display:inline-block; font-size:0.8rem; cursor:pointer;";
                 chip.innerText = val; chip.onclick = function() { this.remove(); };
                 document.getElementById('pSkillsDisp').appendChild(chip);
                 document.getElementById('inSkill').value = "";
@@ -243,7 +279,8 @@
 
         function addPost() {
             const text = document.getElementById('postText').value; if(!text) return;
-            const div = document.createElement('div'); div.className = 'feed-card';
+            const div = document.createElement('div');
+            div.style = "background:white; padding:20px; border-radius:20px; margin-top:15px; box-shadow:0 5px 15px rgba(0,0,0,0.05); border-left:6px solid var(--accent-orange);";
             div.innerHTML = `<b>Tú:</b> ${text}`;
             document.getElementById('feed').prepend(div);
             document.getElementById('postText').value = "";
@@ -263,14 +300,16 @@
         }
 
         const tutors = [
-            {n: "Elena M.", s: "Software Eng.", i: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=400&q=80"},
-            {n: "Marc R.", s: "Física", i: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80"}
+            {n: "Elena M.", s: "Ingeniería", i: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=400&q=80"},
+            {n: "Marc R.", s: "Matemáticas", i: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80"}
         ];
 
         function initCards() {
             const stack = document.getElementById('card-stack'); stack.innerHTML = "";
             tutors.forEach(t => {
-                const card = document.createElement('div'); card.className = 'tutor-card';
+                const card = document.createElement('div');
+                card.className = 'tutor-card';
+                card.style = "position:absolute; width:100%; height:100%; background:white; border-radius:35px; overflow:hidden; color:#1e293b; box-shadow:0 20px 40px rgba(0,0,0,0.4);";
                 card.innerHTML = `<div style="height:70%; background:url('${t.i}') center/cover"></div><div style="padding:25px"><h3 style="margin:0">${t.n}</h3><p style="opacity:0.6">${t.s}</p></div>`;
                 stack.appendChild(card);
             });
@@ -279,10 +318,10 @@
         function swipe(dir) {
             const cards = document.querySelectorAll('.tutor-card'); if(!cards.length) return;
             const top = cards[cards.length - 1];
-            top.style.transition = "0.6s ease";
+            top.style.transition = "0.6s cubic-bezier(0.23, 1, 0.32, 1)";
             top.style.transform = dir === 'right' ? 'translateX(1000px) rotate(30deg)' : 'translateX(-1000px) rotate(-30deg)';
             top.style.opacity = "0";
-            if(dir === 'right') showToast("¡Es un Match! 🎉");
+            if(dir === 'right') showToast("¡Match Educativo! 🎓");
             setTimeout(() => top.remove(), 600);
         }
     </script>
