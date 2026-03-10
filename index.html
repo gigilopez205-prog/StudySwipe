@@ -128,16 +128,24 @@
             <div class="profile-preview">
                 <img src="https://via.placeholder.com/150" class="user-pic" id="pPicDisp">
                 <h2 id="pNameDisp" style="margin:0">Tu Nombre</h2>
-                <p id="pGradeDisp" style="opacity:0.6">Tu Carrera</p>
-                <div id="pSkillsDisp" style="margin-top:20px;"></div>
+                <p id="pGradeDisp" style="color:var(--electric-blue); font-weight: 600; margin: 5px 0;">Tu Carrera</p>
+                <p id="pBioDisp" style="opacity:0.7; font-size: 0.9rem; margin: 15px 0; font-style: italic; line-height: 1.4;">"Cuéntanos algo sobre ti..."</p>
+                <div id="pSkillsDisp" style="margin-top:10px;"></div>
             </div>
 
             <div style="background:var(--glass); padding:30px; border-radius:35px; border:1px solid var(--glass-border);">
                 <h3>Personaliza tu Perfil</h3>
                 <label style="font-size:0.8rem; opacity:0.6">Sube tu foto de la galería:</label>
                 <input type="file" accept="image/*" onchange="loadPhoto(event)" style="margin-bottom:20px; display:block; margin-top:10px;">
+                
                 <input type="text" id="inName" placeholder="Nombre completo" onkeyup="updateProfile()" style="width:100%; padding:15px; margin-bottom:15px; border-radius:15px; background:rgba(0,0,0,0.2); border:1px solid var(--glass-border); color:white;">
+                
+                <input type="text" id="inGrade" placeholder="Carrera Universitaria (ej: Ing. Software)" onkeyup="updateProfile()" style="width:100%; padding:15px; margin-bottom:15px; border-radius:15px; background:rgba(0,0,0,0.2); border:1px solid var(--glass-border); color:white;">
+                
+                <textarea id="inBio" placeholder="Pequeña descripción sobre ti..." onkeyup="updateProfile()" style="width:100%; height:80px; padding:15px; margin-bottom:15px; border-radius:15px; background:rgba(0,0,0,0.2); border:1px solid var(--glass-border); color:white; resize: none;"></textarea>
+                
                 <input type="text" id="inSkill" placeholder="Añade una skill (ej: Java) y pulsa Enter" onkeydown="if(event.key==='Enter') addSkill()" style="width:100%; padding:15px; margin-bottom:15px; border-radius:15px; background:rgba(0,0,0,0.2); border:1px solid var(--glass-border); color:white;">
+                
                 <button class="btn-main" style="width:100%" onclick="showToast('Perfil guardado con éxito')">Guardar Todo</button>
             </div>
         </div>
@@ -184,8 +192,13 @@
         }
 
         function updateProfile() {
-            const name = document.getElementById('inName').value || "Estudiante";
+            const name = document.getElementById('inName').value || "Tu Nombre";
+            const grade = document.getElementById('inGrade').value || "Tu Carrera";
+            const bio = document.getElementById('inBio').value || "Cuéntanos algo sobre ti...";
+            
             document.getElementById('pNameDisp').innerText = name;
+            document.getElementById('pGradeDisp').innerText = grade;
+            document.getElementById('pBioDisp').innerText = bio;
             document.getElementById('userNameHello').innerText = name.split(' ')[0];
         }
 
