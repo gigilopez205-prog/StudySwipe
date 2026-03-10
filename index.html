@@ -49,30 +49,32 @@
             display: flex; flex-wrap: wrap; gap: 40px; justify-content: center; align-items: flex-start; width: 100%; max-width: 1100px;
         }
         
-        /* Moodboard Derecha */
-        .moodboard {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 340px;
-        }
+        .moodboard { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 340px; }
         .mood-box {
             background: white; border-radius: 20px; height: 160px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.4); color: #333;
             padding: 15px; display: flex; flex-direction: column;
             justify-content: center; align-items: center; text-align: center;
             font-size: 0.9rem; position: relative; overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.2);
         }
         .mood-box img { width: 100%; height: 100%; object-fit: cover; border-radius: 15px; }
 
-        /* --- LANDING / INICIO --- */
-        .hero { text-align: center; margin: 40px 0; }
-        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 1000px; width: 100%; }
-        .card-info { background: var(--glass); padding: 25px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.1); }
+        /* --- FAVORITOS --- */
+        #fav-list {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px; width: 100%; max-width: 800px; margin-top: 20px;
+        }
+        .fav-card {
+            background: white; color: #333; padding: 10px; border-radius: 15px;
+            display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .fav-card img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; }
 
-        /* --- PERFIL / CLASES / MURO --- */
-        input, textarea { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 10px; background: rgba(0,0,0,0.3); color: white; border: 1px solid rgba(255,255,255,0.2); box-sizing: border-box;}
+        /* --- ESTILOS GENERALES --- */
+        .hero { text-align: center; margin: 40px 0; }
         .btn-main { background: var(--accent-orange); color: white; border: none; padding: 12px 25px; border-radius: 25px; cursor: pointer; font-weight: bold; }
-        .tutor-card { position: absolute; width: 330px; height: 450px; background: white; border-radius: 30px; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.5); color: #333; transition: transform 0.5s; }
         .swipe-container { position: relative; width: 330px; height: 450px; }
+        .tutor-card { position: absolute; width: 100%; height: 100%; background: white; border-radius: 30px; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.5); color: #333; transition: transform 0.5s; }
     </style>
 </head>
 <body>
@@ -82,6 +84,7 @@
         <div class="nav-links">
             <button onclick="showSection('landing')">Inicio 🏠</button>
             <button onclick="showSection('profile')">Perfil 👤</button>
+            <button onclick="showSection('favorites')">Favoritos ❤ (<span id="fav-count">0</span>)</button>
             <button onclick="showSection('community')">Muro 🫂</button>
             <button onclick="showSection('classes')">Clases 💻</button>
             <button onclick="showSection('app')">Explorar 🔍</button>
@@ -91,18 +94,12 @@
     <div id="landing" class="section active">
         <div class="hero">
             <h1>SwipeLearn</h1>
-            <p style="max-width:700px; line-height:1.6;">De la confusión a la solución. Conectamos estudiantes para que el estudio sea colaborativo, cozy y efectivo.</p>
-            <button class="btn-main" style="padding:15px 40px" onclick="showSection('app')">Empezar a Explorar</button>
+            <p>Conecta, colabora y aprueba. Tu compañero de estudio ideal a un swipe de distancia.</p>
+            <button class="btn-main" onclick="showSection('app')">Empezar a Explorar</button>
         </div>
-        <div class="info-grid">
-            <div class="card-info">
-                <h3>🧠 Sabías que...</h3>
-                <p>Tu cerebro aprende un 90% más cuando enseñas a otro compañero. ¡Es el efecto SwipeLearn!</p>
-            </div>
-            <div class="card-info">
-                <h3>🌍 Noticias</h3>
-                <p>Nuevos grupos de estudio creados en Madrid y Barcelona. ¡Únete a la red académica más grande!</p>
-            </div>
+        <div style="background:var(--glass); padding:20px; border-radius:20px; max-width:600px; text-align:center;">
+            <h3>🧠 Cerebro Activo</h3>
+            <p>¿Sabías que tu cerebro consume glucosa rápidamente al estudiar? ¡No olvides hidratarte y merendar algo sano mientras conectas con tus tutores!</p>
         </div>
     </div>
 
@@ -117,77 +114,53 @@
             </div>
 
             <div class="moodboard">
-                <div class="mood-box">
-                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=300&q=80" alt="Study Aesthetic">
-                    <small style="position:absolute; bottom:5px; color:white; background:rgba(0,0,0,0.5); padding:2px 5px; border-radius:5px;">Pinterest Vibe</small>
-                </div>
-                <div class="mood-box" style="background:#f9f9f9; font-style:italic;">
-                    "No te detengas hasta que estés orgulloso." ✨
-                </div>
-                <div class="mood-box" style="background:#fff3e0;">
-                    <span style="font-size:1.5rem;">🔥</span>
-                    <p style="font-weight:bold; font-size:0.7rem;">Yo: Solo 5 min de descanso.<br>3 horas después...</p>
-                </div>
-                <div class="mood-box" style="background:#e3f2fd; font-size:2rem;">
-                    🌸 🌱 📚 ☕
-                    <small style="font-size:0.7rem; display:block;">Spring Semester</small>
-                </div>
+                <div class="mood-box"><img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=300&q=80"></div>
+                <div class="mood-box" style="background:#fef9e7;">"El éxito es la suma de pequeños esfuerzos." 📚</div>
+                <div class="mood-box" style="background:#f4f6f7;">😎<br>POV: Entiendes el tema a la primera.</div>
+                <div class="mood-box" style="background:#ebf5fb; font-size:1.5rem;">🌸☕📖✨</div>
             </div>
         </div>
     </div>
 
-    <div id="profile" class="section">
-        <div style="background:var(--glass); padding:30px; border-radius:30px; width:100%; max-width:500px;">
-            <h2>Mi Perfil</h2>
-            <input type="text" id="pName" placeholder="Nombre">
-            <input type="text" id="pGrade" placeholder="Grado">
-            <input type="text" id="pSubj" placeholder="Materia Favorita">
-            <input type="text" id="pFrom" placeholder="Ciudad">
-            <input type="number" id="pAge" placeholder="Edad">
-            <textarea id="pBio" placeholder="Descripción..."></textarea>
-            <button class="btn-main" onclick="alert('Perfil Guardado')">Guardar</button>
+    <div id="favorites" class="section">
+        <h2>Mis Conexiones Guardadas</h2>
+        <div id="fav-list">
+            <p style="opacity:0.6">Aún no has guardado a ningún tutor. ¡Empieza a explorar!</p>
         </div>
     </div>
 
-    <div id="community" class="section">
-        <h2>Muro de la Comunidad 🫂</h2>
-        <div style="background:var(--glass); padding:20px; border-radius:20px; width:100%; max-width:500px; margin-bottom:20px;">
-            <textarea id="postIn" placeholder="Escribe anónimamente..."></textarea>
-            <button class="btn-main" onclick="addPost()">Postear</button>
-        </div>
-        <div id="feed" style="display:flex; flex-wrap:wrap; gap:15px; justify-content:center;"></div>
-    </div>
-
-    <div id="classes" class="section">
-        <h2>Clases Online 💻</h2>
-        <div style="background:var(--glass); padding:20px; border-radius:20px; margin-bottom:20px;">
-            <input type="text" id="clTitle" placeholder="Título de la clase">
-            <button class="btn-main" onclick="addClass()">Publicar</button>
-        </div>
-        <div id="classCont" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:20px; width:100%;"></div>
-    </div>
+    <div id="profile" class="section"><h2>Mi Perfil</h2><p>Configura tus datos aquí...</p></div>
+    <div id="community" class="section"><h2>Muro</h2><p>Comparte tus pensamientos...</p></div>
+    <div id="classes" class="section"><h2>Clases</h2><p>Publica tus lecciones...</p></div>
 
     <script>
+        const tutorData = [
+            { id: 1, n: "Lucía M.", m: "Física Cuántica", i: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=400&q=80" },
+            { id: 2, n: "Marcos T.", m: "Derecho Civil", i: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=400&q=80" },
+            { id: 3, n: "Elena R.", m: "Biología Molecular", i: "https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=400&q=80" }
+        ];
+
+        let favorites = [];
+
         function showSection(id) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             if(id === 'app') initCards();
+            if(id === 'favorites') updateFavs();
         }
-
-        const tutorData = [
-            { n: "Lucía M.", m: "Física", i: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=400&q=80" },
-            { n: "Marcos T.", m: "Derecho", i: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=400&q=80" }
-        ];
 
         function initCards() {
             const stack = document.getElementById('card-stack');
             stack.innerHTML = "";
             tutorData.forEach(t => {
-                const c = document.createElement('div');
-                c.className = 'tutor-card';
-                c.innerHTML = `<div style="height:70%; background:url('${t.i}') center/cover"></div>
-                               <div style="padding:15px"><h3>${t.n}</h3><p>${t.m}</p></div>`;
-                stack.appendChild(c);
+                if(!favorites.find(f => f.id === t.id)) {
+                    const c = document.createElement('div');
+                    c.className = 'tutor-card';
+                    c.dataset.id = t.id;
+                    c.innerHTML = `<div style="height:70%; background:url('${t.i}') center/cover"></div>
+                                   <div style="padding:15px"><h3>${t.n}</h3><p>${t.m}</p></div>`;
+                    stack.appendChild(c);
+                }
             });
         }
 
@@ -195,22 +168,28 @@
             const cards = document.querySelectorAll('.tutor-card');
             if(cards.length === 0) return;
             const top = cards[cards.length - 1];
-            top.style.transform = dir === 'right' ? 'translateX(800px) rotate(30deg)' : 'translateX(-800px) rotate(-30deg)';
+            const tId = parseInt(top.dataset.id);
+
+            if(dir === 'right') {
+                top.style.transform = 'translateX(800px) rotate(30deg)';
+                const tutor = tutorData.find(t => t.id === tId);
+                favorites.push(tutor);
+                document.getElementById('fav-count').innerText = favorites.length;
+            } else {
+                top.style.transform = 'translateX(-800px) rotate(-30deg)';
+            }
             setTimeout(() => top.remove(), 400);
         }
 
-        function addPost() {
-            const val = document.getElementById('postIn').value; if(!val) return;
-            const p = document.createElement('div'); p.className = 'post';
-            p.innerHTML = `<b>Anónimo:</b> ${val}`; document.getElementById('feed').prepend(p);
-            document.getElementById('postIn').value = "";
-        }
-
-        function addClass() {
-            const t = document.getElementById('clTitle').value; if(!t) return;
-            const c = document.createElement('div'); c.className = 'mood-box';
-            c.style.height="auto"; c.innerHTML = `<h3>${t}</h3><button class="btn-main" onclick="this.parentElement.remove()">Eliminar</button>`;
-            document.getElementById('classCont').prepend(c);
+        function updateFavs() {
+            const list = document.getElementById('fav-list');
+            if(favorites.length === 0) return;
+            list.innerHTML = favorites.map(f => `
+                <div class="fav-card">
+                    <img src="${f.i}">
+                    <div><strong>${f.n}</strong><br><small>${f.m}</small></div>
+                </div>
+            `).join('');
         }
     </script>
 </body>
