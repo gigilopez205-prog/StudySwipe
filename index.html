@@ -62,9 +62,9 @@
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
         .modal-content { background: var(--navy-soft); padding: 40px; border-radius: 30px; border: 2px solid var(--electric-blue); width: 90%; max-width: 500px; text-align: left; }
 
-        /* EXPLORAR - SOMBRA SUAVIZADA */
+        /* EXPLORAR - SOMBRA CON INTENSIDAD MÍNIMA */
         .swipe-stack { position: relative; width: 320px; height: 450px; }
-        .tutor-card { position: absolute; width: 100%; height: 100%; background: var(--white); border-radius: 30px; overflow: hidden; color: var(--navy-dark); box-shadow: 0 15px 35px rgba(0,0,0,0.15); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease; cursor: grab; }
+        .tutor-card { position: absolute; width: 100%; height: 100%; background: var(--white); border-radius: 30px; overflow: hidden; color: var(--navy-dark); box-shadow: 0 10px 25px rgba(0,0,0,0.05); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease; cursor: grab; }
         
         .btn-main { background: linear-gradient(90deg, var(--accent-orange), #fbbf24); color: white; border: none; padding: 16px 35px; border-radius: 50px; font-weight: 800; cursor: pointer; transition: 0.3s; }
         
@@ -184,8 +184,8 @@
     <div id="app" class="section">
         <div class="swipe-stack" id="card-stack"></div>
         <div style="margin-top:40px; display:flex; gap:30px;">
-            <button onclick="swipe('left')" style="width:70px; height:70px; border-radius:50%; border:none; background:white; color:#ef4444; font-size:1.5rem; cursor:pointer; box-shadow:0 10px 20px rgba(0,0,0,0.1)">✕</button>
-            <button onclick="swipe('right')" style="width:70px; height:70px; border-radius:50%; border:none; background:var(--electric-blue); color:var(--navy-dark); font-size:1.5rem; cursor:pointer; box-shadow:0 10px 20px rgba(56,189,248,0.2)">❤</button>
+            <button onclick="swipe('left')" style="width:70px; height:70px; border-radius:50%; border:none; background:white; color:#ef4444; font-size:1.5rem; cursor:pointer;">✕</button>
+            <button onclick="swipe('right')" style="width:70px; height:70px; border-radius:50%; border:none; background:var(--electric-blue); color:var(--navy-dark); font-size:1.5rem; cursor:pointer;">❤</button>
         </div>
     </div>
 
@@ -255,7 +255,7 @@
             if(id === 'app') initCards();
         }
 
-        // --- TEMPORIZADOR CON PAUSA ---
+        // --- RELOJ POMODORO CON LÓGICA DE PAUSA ---
         let timerInterval;
         let isRunning = false;
         let timeLeft = 25 * 60; 
@@ -278,7 +278,7 @@
                         clearInterval(timerInterval);
                         isRunning = false;
                         btn.innerText = "Terminado";
-                        showToast("¡Tiempo cumplido! Descansa.");
+                        showToast("¡Buen trabajo!");
                     }
                 }, 1000);
             }
@@ -290,7 +290,7 @@
         function confirmarCrearGrupo() {
             const nombre = document.getElementById('modalGroupName').value;
             const tag = document.getElementById('modalGroupTag').value;
-            if(!nombre) return alert("Ponle un nombre a tu grupo");
+            if(!nombre) return alert("Elige un nombre");
             const list = document.getElementById('groups-list');
             const div = document.createElement('div');
             div.className = 'group-card';
@@ -301,10 +301,10 @@
             document.getElementById('modalGroupName').value = "";
         }
 
-        // GENERACIÓN DE EJEMPLOS
+        // GENERACIÓN CONTENIDO
         const carreras = ["Medicina", "Derecho", "Ing. Sistemas", "Psicología", "Arquitectura", "Biología", "Economía", "Música"];
         const nombres = ["Andrés", "Camila", "Julián", "Sara", "Mateo", "Valentina", "Diego", "Paula", "Elena", "Fernando"];
-        const temas = ["¿Alguien entiende las integrales triples? 🤯", "Busco grupo para Sociología", "¡Pasé el examen de Anatomía!", "¿Mejor café para estudiar?", "Tengo resumen de Historia del Arte"];
+        const temas = ["¿Duda sobre integrales?", "Busco grupo para Sociología", "¡Pasé Anatomía!", "Recomienden café", "Tengo resumen de Arte"];
 
         function initCards() {
             const stack = document.getElementById('card-stack'); 
@@ -345,7 +345,6 @@
         }
         initNetworking();
 
-        // FUNCIONES BASE
         function swipe(dir) {
             const cards = document.querySelectorAll('.tutor-card'); if(!cards.length) return;
             const top = cards[cards.length - 1];
