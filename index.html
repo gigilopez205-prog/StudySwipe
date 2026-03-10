@@ -45,40 +45,38 @@
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- CLASES ONLINE --- */
-        .class-form {
-            background: var(--glass); backdrop-filter: blur(10px);
-            padding: 20px; border-radius: 20px; width: 100%; max-width: 500px; margin-bottom: 30px;
-        }
-        .input-group { margin-bottom: 10px; }
-        input, textarea {
-            width: 100%; padding: 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2);
-            background: rgba(0,0,0,0.3); color: white; box-sizing: border-box;
-        }
-        .class-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px; width: 100%; max-width: 1100px;
-        }
-        .class-card {
-            background: white; color: #333; padding: 20px; border-radius: 20px;
-            position: relative; box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-        .class-card h3 { color: var(--primary-navy); margin-top: 0; }
-        .delete-btn {
-            background: #ff4d4d; color: white; border: none; padding: 5px 12px;
-            border-radius: 10px; cursor: pointer; font-size: 0.8rem; margin-top: 10px;
+        /* --- PÁGINA DE INICIO (LANDING) --- */
+        .hero { text-align: center; max-width: 800px; margin: 40px 0; }
+        .hero h1 { font-size: 3.5rem; margin-bottom: 10px; letter-spacing: 2px; }
+        .hero p { font-size: 1.2rem; opacity: 0.9; line-height: 1.6; }
+
+        .info-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px; max-width: 1000px; width: 100%; margin-top: 20px;
         }
 
-        /* --- ESTILOS DE LANDING Y SWIPE (RESUMIDOS) --- */
-        .hero { text-align: center; max-width: 800px; margin: 40px 0; }
-        .btn-main { background: var(--accent-orange); color: white; border: none; padding: 12px 30px; border-radius: 25px; cursor: pointer; font-weight: bold; }
+        .card-info {
+            background: var(--glass); backdrop-filter: blur(10px);
+            padding: 25px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .card-info h3 { color: var(--accent-orange); margin-top: 0; }
+
+        /* --- CLASES ONLINE --- */
+        .class-form { background: var(--glass); padding: 20px; border-radius: 20px; width: 100%; max-width: 500px; margin-bottom: 30px; }
+        .class-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; width: 100%; max-width: 1100px; }
+        .class-card { background: white; color: #333; padding: 20px; border-radius: 20px; position: relative; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .delete-btn { background: #ff4d4d; color: white; border: none; padding: 5px 12px; border-radius: 10px; cursor: pointer; margin-top: 10px; }
+
+        /* --- SWIPE APP --- */
         .swipe-container { position: relative; width: 330px; height: 480px; }
-        .tutor-card { position: absolute; width: 100%; height: 100%; background: white; border-radius: 30px; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.5); color: #333; transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1); }
+        .tutor-card { position: absolute; width: 100%; height: 100%; background: white; border-radius: 30px; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.5); color: #333; transition: transform 0.5s; }
         .tutor-photo { height: 70%; background-size: cover; background-position: center; }
 
         /* --- COMUNIDAD --- */
         #feed { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
         .post { background: #fff; color: #333; padding: 15px; border-radius: 10px; width: 250px; transform: rotate(-1deg); }
+        
+        .btn-main { background: var(--accent-orange); color: white; border: none; padding: 12px 30px; border-radius: 25px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -95,17 +93,23 @@
     <div id="landing" class="section active">
         <div class="hero">
             <h1>SwipeLearn</h1>
-            <p>Conectamos tu talento con otros estudiantes. La solución colaborativa perfecta para tu carrera.</p>
-            <button class="btn-main" onclick="showSection('app')">Empezar a Explorar</button>
+            <p>¿Por qué somos perfectos para ti? Porque convertimos la soledad del estudio en una experiencia compartida. En España, miles de estudiantes ya están pasando de la confusión a la solución conectando sus talentos.</p>
+            <button class="btn-main" style="font-size: 1.2rem;" onclick="showSection('app')">Empezar a Explorar</button>
         </div>
-        <div style="display:flex; gap:20px; flex-wrap:wrap; justify:center; max-width:1000px;">
-            <div style="background:var(--glass); padding:20px; border-radius:20px; flex:1; min-width:300px;">
-                <h3 style="color:var(--accent-orange)">🧠 Cerebro al Estudiar</h3>
-                <p>Estudiar en grupos reduce el cortisol (estrés) y activa la dopamina, haciendo que retengas información un 40% más rápido.</p>
+
+        <div class="info-grid">
+            <div class="card-info">
+                <h3>🧠 Fun Facts del Cerebro</h3>
+                <ul style="padding-left: 20px; line-height: 1.7;">
+                    <li>Explicar un tema a un compañero ayuda a retener el 90% de la información.</li>
+                    <li>Escuchar música Lofi o barroca puede aumentar la concentración espacial.</li>
+                    <li>Bloques de estudio de 25 min (Pomodoro) mantienen tu cerebro fresco y evitan el bloqueo mental.</li>
+                </ul>
             </div>
-            <div style="background:var(--glass); padding:20px; border-radius:20px; flex:1; min-width:300px;">
-                <h3 style="color:var(--accent-orange)">🌍 Educación Global</h3>
-                <p>Las plataformas P2P (estudiante a estudiante) son la tendencia nº1 en innovación educativa este 2026.</p>
+            <div class="card-info">
+                <h3>🌍 Noticias Mundiales</h3>
+                <p><strong>Innovación:</strong> El aprendizaje Peer-to-Peer (P2P) es reconocido como el método más efectivo para estudiantes universitarios este año.</p>
+                <p><strong>Comunidad:</strong> SwipeLearn llega a nuevas ciudades para fomentar el apoyo académico gratuito.</p>
             </div>
         </div>
     </div>
@@ -113,24 +117,18 @@
     <div id="classes" class="section">
         <h2>Clases Online de la Comunidad</h2>
         <div class="class-form">
-            <div class="input-group"><input type="text" id="classTitle" placeholder="Título de la clase (Ej: Álgebra Avanzada)"></div>
-            <div class="input-group"><textarea id="classDesc" placeholder="Descripción y qué aprenderemos..."></textarea></div>
-            <div class="input-group"><input type="text" id="classLink" placeholder="Link de Zoom/Meet"></div>
+            <input type="text" id="classTitle" placeholder="Título de la clase" style="width:100%; margin-bottom:10px; padding:8px; border-radius:10px;"><br>
+            <textarea id="classDesc" placeholder="Descripción..." style="width:100%; margin-bottom:10px; padding:8px; border-radius:10px;"></textarea><br>
+            <input type="text" id="classLink" placeholder="Link de Zoom/Meet" style="width:100%; margin-bottom:10px; padding:8px; border-radius:10px;"><br>
             <button class="btn-main" style="width:100%" onclick="addClass()">Publicar Clase</button>
         </div>
-        <div class="class-grid" id="classContainer">
-            <div class="class-card">
-                <h3>Introducción a Python</h3>
-                <p>Clase básica para aprender sintaxis. ¡Trae café!</p>
-                <a href="#" style="color:var(--accent-orange)">Unirse a la clase</a>
-            </div>
-        </div>
+        <div class="class-grid" id="classContainer"></div>
     </div>
 
     <div id="community" class="section">
         <h2>Muro de Desahogo 🍃</h2>
         <div style="background:var(--glass); padding:20px; border-radius:20px; width:100%; max-width:500px; margin-bottom:20px;">
-            <textarea id="postInput" placeholder="Exprésate anónimamente..."></textarea>
+            <textarea id="postInput" placeholder="Escribe anónimamente..." style="width:100%; padding:10px; border-radius:10px;"></textarea>
             <button class="btn-main" style="margin-top:10px; float:right" onclick="addPost()">Subir</button>
             <div style="clear:both"></div>
         </div>
@@ -146,8 +144,8 @@
     </div>
 
     <script>
-        const myPostsIds = []; // Simulamos el usuario actual
-        let classCounter = 0;
+        const myContentIds = [];
+        let contentCounter = 0;
 
         function showSection(id) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -155,44 +153,30 @@
             if(id === 'app') initCards();
         }
 
-        // Lógica de Clases
         function addClass() {
             const title = document.getElementById('classTitle').value;
             const desc = document.getElementById('classDesc').value;
             const link = document.getElementById('classLink').value;
-            
-            if(!title || !desc) return alert("Por favor rellena título y descripción");
+            if(!title || !desc) return;
 
-            classCounter++;
-            const classId = "class-" + classCounter;
-            myPostsIds.push(classId); // Guardamos que esta clase es NUESTRA
+            contentCounter++;
+            const id = 'class-' + contentCounter;
+            myContentIds.push(id);
 
             const card = document.createElement('div');
             card.className = 'class-card';
-            card.id = classId;
-            card.innerHTML = `
-                <h3>${title}</h3>
-                <p>${desc}</p>
-                <a href="${link}" target="_blank" style="color:var(--accent-orange)">Unirse a clase</a><br>
-                <button class="delete-btn" onclick="removeContent('${classId}')">Eliminar mi clase</button>
-            `;
+            card.id = id;
+            card.innerHTML = `<h3>${title}</h3><p>${desc}</p>
+                              <a href="${link}" target="_blank" style="color:var(--accent-orange)">Link a la clase</a><br>
+                              <button class="delete-btn" onclick="removeContent('${id}')">Eliminar mi clase</button>`;
             document.getElementById('classContainer').prepend(card);
-            
-            // Limpiar
-            document.getElementById('classTitle').value = "";
-            document.getElementById('classDesc').value = "";
-            document.getElementById('classLink').value = "";
+            document.getElementById('classTitle').value = ""; document.getElementById('classDesc').value = "";
         }
 
         function removeContent(id) {
-            if(myPostsIds.includes(id)) {
-                document.getElementById(id).remove();
-            } else {
-                alert("Solo el creador puede eliminar esta clase");
-            }
+            if(myContentIds.includes(id)) document.getElementById(id).remove();
         }
 
-        // Muro y Swipe (Funciones base)
         function addPost() {
             const val = document.getElementById('postInput').value;
             if(!val) return;
